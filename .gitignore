@@ -1,0 +1,23 @@
+# for testing, ignore these
+
+# dev stuff
+.tags
+.R_tags
+.*.swp
+.*.swo
+
+*.so
+*.o
+
+ohenery.Rcheck
+ohenery*tar.gz
+ohenery*crancheck
+ohenery
+.docker_img
+cache
+.drat_*
+
+.check_tmp
+
+.ohenery_*.installed
+submodule_directions.sh
