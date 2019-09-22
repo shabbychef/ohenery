@@ -85,6 +85,7 @@ setOldClass('harsm')
 #' @template etc
 #' @template ref-harville
 #' @importFrom maxLik maxLik
+#' @importFrom dplyr summarize
 #' @importFrom stats sd
 #'
 #' @examples 
@@ -211,12 +212,12 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #' eta0 <- rowMeans(X)
 #' data <- cbind(data.frame(outcome=y,race=g,eta0=eta0),as.data.frame(X))
 #' fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
-#' fitm <- sm(fmla,data,group=race)
+#' fitm <- harsm(fmla,data,group=race)
 #'
 #' # with weights
 #' data <- cbind(data.frame(outcome=y,race=g,eta0=eta0,wts=runif(length(y),min=1,max=2)),as.data.frame(X))
 #' fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
-#' fitm <- sm(fmla,data,group=race,weights=wts)
+#' fitm <- harsm(fmla,data,group=race,weights=wts)
 #'
 #' # softmax on the Best Picture data
 #' data(best_picture)
