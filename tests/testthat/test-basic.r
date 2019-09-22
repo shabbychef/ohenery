@@ -180,11 +180,12 @@ test_that("rhenery bits",{#FOLDUP
 	expect_equal(y1,y2)
 })#UNFOLD
 test_that("erank bits",{#FOLDUP
-	nfeat <- 8
 	set.seed(321)
-	probs <- runif(nfeat)
-	probs <- probs / sum(probs)
-	expect_error(erank(probs),NA)
+	for (nfeat in c(1,2,3,4,8)) {
+		probs <- runif(nfeat)
+		probs <- probs / sum(probs)
+		expect_error(erank(probs),NA)
+	}
 
 	set.seed(2345)
 	eta <- rnorm(7)
@@ -193,6 +194,17 @@ test_that("erank bits",{#FOLDUP
 
 	expect_equal(val1, val2, tolerance=0.05)
 })#UNFOLD
+test_that("utils",{#FOLDUP
+	set.seed(321)
+	x <- rnorm(10)
+	expect_error(normalize(x),NA)
+	expect_error(smax(x),NA)
+
+	X <- matrix(rnorm(10*5),ncol=5)
+	expect_error(row_normalize(X),NA)
+	expect_error(row_smax(X),NA)
+})#UNFOLD
+
 #UNFOLD
 context("group invariance")# FOLDUP
 
@@ -486,7 +498,7 @@ test_that("hensm bits",{#FOLDUP
 })#UNFOLD
 test_that("hensm consistency",{#FOLDUP
 	# travis only?
-	#skip_on_cran()
+	skip_on_cran()
 	nfeat <- 2
 	set.seed(1234)
 	g <- 1 + ((1:120000) %% 20000)
