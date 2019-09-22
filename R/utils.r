@@ -83,7 +83,7 @@ row_normalize <- function(X) { sweep(X,1,FUN="/",rowSums(X)) }
 #' @return the exponentiated data normalized.
 #' For the row-wise version, each row is soft maxed.
 #' @note This function can deal with overflow in a semi-coherent way.
-#' @importFrom dplyr group_by mutate ungroup arrange
+#' @importFrom dplyr group_by mutate ungroup arrange n
 #' @template etc
 #' @export
 #' @seealso \code{\link{normalize}}, \code{\link{inv_smax}}.
@@ -137,7 +137,7 @@ row_smax <- function(Eta) { apply(Eta,2,smax) }
 #' @inheritParams rsm
 #' @return the centered log probabilities.
 #' @note This function can deal with overflow in a semi-coherent way.
-#' @importFrom dplyr group_by mutate ungroup arrange
+#' @importFrom dplyr group_by mutate ungroup arrange n
 #' @template etc
 #' @export
 #' @seealso \code{\link{smax}}
