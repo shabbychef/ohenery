@@ -23,7 +23,7 @@ Imports:
     Rcpp (>= 0.12.3),
     maxLik,
     magrittr,
-dnl methods,
+    methods,
     rlang,
 dnl matrixcalc,
     tidyr,

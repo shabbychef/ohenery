@@ -5,7 +5,7 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
 Version: 0.0.0.001
-Date: 2019-09-09
+Date: 2019-09-21
 License: LGPL-3
 Title: Modeling of Ordinal Random Variables via Softmax
 BugReports: https://github.com/shabbychef/ohenery/issues
@@ -19,6 +19,7 @@ Imports:
     Rcpp (>= 0.12.3),
     maxLik,
     magrittr,
+    methods,
     rlang,
     tidyr,
     dplyr
