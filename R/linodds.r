@@ -80,6 +80,7 @@ as.linodds <- function(object, formula, beta) {
 #' @param na.action  How to deal with missing values in \code{y}, \code{g},
 #' \code{X}, \code{wt}, \code{eta0}.
 #' @seealso \code{\link{smax}}, \code{\link{harsm_invlink}}.
+#' @importFrom stats delete.response terms model.offset model.matrix model.extract as.formula na.pass
 #' @export
 #' @method predict linodds
 predict.linodds <- function(object,newdata,type=c('eta','mu','erank'),na.action=na.pass,group=NULL,...) {

@@ -36,7 +36,15 @@ setOldClass('harsm')
 	if (!is.null(eta0)) { eta <- eta + eta0 }
 	attr(harsmlik(grp, idx, eta, wt, deleta=X),'gradient')
 }
-.mse <- function(x,y,na.rm=TRUE) { sum((x-y)^2,na.rm=na.rm) }
+.wmse <- function(x,y,wt=NULL,na.rm=TRUE) { 
+	if (!is.null(wt)) {
+		retv <- sum(wt*(x-y)^2,na.rm=na.rm) 
+	} else {
+		retv <- sum((x-y)^2,na.rm=na.rm) 
+	}
+	retv
+}
+
 #' @title Experts only softmax regression under Harville model.
 #'
 #' @description 
@@ -133,18 +141,25 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 	retv$etahat <- etahat
 	retv$erank <- harsm_invlink(retv$etahat,g=g)
 
-	SSres <- .mse(retv$erank,y)
-	SStot <- data.frame(g=g,y=y) %>%
+	SSres <- .wmse(retv$erank,y,wt=wt)
+	ssdf <- data.frame(g=g,y=y)
+	if (is.null(wt)) { 
+		ssdf$wt <- 1
+	} else {
+		ssdf$wt <- wt
+	}
+		
+	SStot <- ssdf %>%
 		group_by(g) %>%
 			mutate(dumb_rank=(1 + n())/2) %>%
 		ungroup() %>%
-		summarize(err=.mse(dumb_rank,y)) %>%
+		summarize(err=.wmse(dumb_rank,y,wt=wt)) %>%
 		{ .$err }
 	retv$R2 <- 1- SSres / SStot
 
 	if (!is.null(eta0)) {
 		erank0 <- harsm_invlink(eta0,g=g)
-		SSeta0 <- .mse(erank0,y)
+		SSeta0 <- .wmse(erank0,y,wt=wt)
 		retv$delta_R2 <- 1- SSres / SSeta0
 	} else {
 		retv$delta_R2 <- NA_real_
@@ -183,6 +198,13 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #' Note that the expected ranks are only easy to produce
 #' under the Harville model; under the Henery model, 
 #' the summary R-squared statistics are not produced.
+#' Note that this computation uses weighted sums of squares,
+#' as the weights contribute to the likelihood term.
+#' However, the square sum computation does not take into
+#' account the standard error of the rank, and so
+#' unlike in linear regression, the softmax regression
+#' does not always give positive R-squareds,
+#' and the statistic is otherwise hard to interpret.
 #'
 #' @inheritParams stats::lm
 #' @template param-group

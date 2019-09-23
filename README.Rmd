@@ -313,6 +313,10 @@ offmod <- harsm(Outcome ~ offset(eta0) + bettype,data=df,group=EventId,weights=w
 print(offmod)
 ```
 
+Unfortunately, the R-squareds are hard to interpret, and can sometimes give
+negative values. The softmax regression is not guaranteed to improve the
+residual sum of squared errors in the rank.
+
 ### Henery Model
 
 Here we fit a Henery model to the horse race data.

@@ -62,6 +62,13 @@ ranks over the model based on the offset term.
 Note that the expected ranks are only easy to produce
 under the Harville model; under the Henery model, 
 the summary R-squared statistics are not produced.
+Note that this computation uses weighted sums of squares,
+as the weights contribute to the likelihood term.
+However, the square sum computation does not take into
+account the standard error of the rank, and so
+unlike in linear regression, the softmax regression
+does not always give positive R-squareds,
+and the statistic is otherwise hard to interpret.
 }
 \note{
 This regression may give odd results when the outcomes are tied,

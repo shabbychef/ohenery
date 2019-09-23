@@ -151,7 +151,7 @@ print(osmod)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
-##    R2: -0.45 
+##    R2: 0.77 
 ## --------------------------------------------
 ```
 
@@ -285,7 +285,7 @@ print(effmod)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
-##    R2: -0.33 
+##    R2: 0.53 
 ## --------------------------------------------
 ```
 
@@ -334,10 +334,14 @@ print(offmod)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
-##    R2: 0.019 
-## delR2: 0.22 
+##    R2: 0.1 
+## delR2: -0.86 
 ## --------------------------------------------
 ```
+
+Unfortunately, the R-squareds are hard to interpret, and can sometimes give
+negative values. The softmax regression is not guaranteed to improve the
+residual sum of squared errors in the rank.
 
 ### Henery Model
 
