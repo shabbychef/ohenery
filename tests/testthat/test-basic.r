@@ -199,10 +199,6 @@ test_that("utils",{#FOLDUP
 	x <- rnorm(10)
 	expect_error(normalize(x),NA)
 	expect_error(smax(x),NA)
-
-	X <- matrix(rnorm(10*5),ncol=5)
-	expect_error(row_normalize(X),NA)
-	expect_error(row_smax(X),NA)
 })#UNFOLD
 
 #UNFOLD

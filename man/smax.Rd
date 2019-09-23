@@ -2,12 +2,9 @@
 % Please edit documentation in R/utils.r
 \name{smax}
 \alias{smax}
-\alias{row_smax}
 \title{The softmax function.}
 \usage{
 smax(eta, g = NULL)
-
-row_smax(Eta)
 }
 \arguments{
 \item{eta}{numeric array of the odds.

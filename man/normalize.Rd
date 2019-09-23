@@ -2,12 +2,9 @@
 % Please edit documentation in R/utils.r
 \name{normalize}
 \alias{normalize}
-\alias{row_normalize}
 \title{Normalize a vector to sum to one.}
 \usage{
 normalize(x)
-
-row_normalize(X)
 }
 \arguments{
 \item{x}{vector of input data.}

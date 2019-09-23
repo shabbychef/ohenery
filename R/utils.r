@@ -41,9 +41,6 @@
 #' @export
 #' @rdname normalize
 normalize <- function(x) { x / sum(x) }
-#' @export
-#' @rdname normalize
-row_normalize <- function(X) { sweep(X,1,FUN="/",rowSums(X)) }
 
 # this is a big more complicated than I would have liked, but here we go:
 # assume the input is already centered:
@@ -104,9 +101,6 @@ smax <- function(eta,g=NULL) {
 		arrange(rowid)
 	rv$retv
 }
-#' @export
-#' @rdname smax
-row_smax <- function(Eta) { apply(Eta,2,smax) }  
 
 .inv_smax_two <- function(x) { 
 	eta <- log(x)
