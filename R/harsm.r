@@ -251,7 +251,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #'
 #' harsm(fmla,data=df,group=year,weights=weight) 
 #'
-#' @importFrom stats coef formula model.frame model.matrix na.omit
+#' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights
 #' @template note-ties
 #' @template note-weights
 #' @template param-weights
