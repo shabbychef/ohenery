@@ -273,13 +273,20 @@ test_that("harsm_invlink",{#FOLDUP
 	beta <- rnorm(nfeat)
 	eta <- X %*% beta
 
-	ernk <- harsm_invlink(eta,g=g)
+	expect_error(ernk <- harsm_invlink(eta),NA)
+	expect_error(ernk <- harsm_invlink(eta,g=g),NA)
+	expect_error(ernk2 <- harsm_invlink(eta,g=rep(g[1],length(g))),NA)
+
+	# get warning
+	expect_error(mu <- smax(eta,g),NA)
+	expect_warning(ernk2 <- harsm_invlink(eta=eta,mu=mu,g=g))
+
 
 	set.seed(789)
 	newidx <- sample.int(length(g),length(g))
 	gi <- g[newidx]
 	ei <- eta[newidx]
-	ernki <- harsm_invlink(ei,g=gi)
+	expect_error(ernki <- harsm_invlink(ei,g=gi),NA)
 
 	expect_equal(ernk[newidx],ernki)
 })#UNFOLD
@@ -373,7 +380,6 @@ test_that("harsmfit bits",{#FOLDUP
 	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
 	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
 	donotuse <- capture.output(expect_error(print(fitm),NA))
-
 	expect_error(vcov(fitm),NA)
 
 	# can deal with a single offset
@@ -439,14 +445,14 @@ test_that("harsmfit prediction",{#FOLDUP
 	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
 	expect_error(fitlet <- harsm(outcome ~ V1 + V2,data,group=letrace),NA)
 	expect_error(fitfac <- harsm(outcome ~ V1 + V2,data,group=facrace),NA)
-
-	expect_error(vcov(fitnum),NA)
+	expect_error(fitoff <- harsm(outcome ~ V1 + offset(V2),data,group=race),NA)
 
 	for (ttype in c('eta','mu','erank')) {
 		expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
 		expect_error(fuh <- predict(fitlet,newdata=data,type=ttype),NA)
 		expect_error(fuh <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
 		expect_error(fuh <- predict(fitlet,newdata=data,type=ttype,group=letrace),NA)
+		expect_error(fuh <- predict(fitoff,newdata=data,type=ttype,group=race),NA)
 	}
 	# deal with na actions
 	expect_error(fuh <- as.numeric(predict(fitlet,newdata=data,type='eta',group=letrace,na.action=na.pass)),NA)
