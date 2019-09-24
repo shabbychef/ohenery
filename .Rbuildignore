@@ -15,11 +15,11 @@ man-roxygen
 ^\.docker_img$
 nodist
 ^rebuildTags.sh
-^varo.*.tar.gz$
-^varo.Rcheck$
-^varo$
-varo/libs
-varo.pdf
+^ohenery.*.tar.gz$
+^ohenery.Rcheck$
+^ohenery$
+ohenery/libs
+ohenery.pdf
 ^github_extra
 unit_test.log
 LICENSE
