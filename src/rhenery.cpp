@@ -39,7 +39,7 @@ using namespace Rcpp;
 int pick_winner(NumericVector probs,int max_el) {
 	double apick = R::runif(0.0,1.0);
 	if (probs.length() < max_el) {
-		max_el = probs.length();
+		max_el = probs.length(); // nocov
 	} 
 	if ((apick < 0.0) or (apick > 1.0)) { stop("runif acting weird."); }
 	double cumprob=probs[0];
