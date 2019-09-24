@@ -5,15 +5,14 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
 Version: 0.1.0
-Date: 2019-09-23
+Date: 2019-09-24
 License: LGPL-3
-Title: Modeling of Ordinal Random Variables via Softmax
+Title: Modeling of Ordinal Random Variables via Softmax Regression
 BugReports: https://github.com/shabbychef/ohenery/issues
 Description: Supports the modeling of ordinal random variables, 
-    like the outcomes of races, via the softmax function. 
-    Performs regression under the Harville and Henery models.
-In particular, fits the Henery <doi: 10.1111/j.2517-6161.1981.tb01153.x>,
-and Harville <doi: 10.1080/01621459.1973.10482425> models.
+    like the outcomes of races, via softmax regression,
+    under the Harville <doi:10.1080/01621459.1973.10482425> and
+    Henery <doi:10.1111/j.2517-6161.1981.tb01153.x> models.
 Depends: 
     R (>= 3.0.2)
 Imports:

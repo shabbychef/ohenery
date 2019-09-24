@@ -9,7 +9,7 @@ News for package \sQuote{ohenery}
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\ohenery}{\CRANpkg{ohenery}}
 }
-\section{\ohenery{} Initial Version 0.1.0 (2018-09-23) }{
+\section{\ohenery{} Initial Version 0.1.0 (2018-09-24) }{
 
 \itemize{
 \item first CRAN release.

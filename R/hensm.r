@@ -192,7 +192,7 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,na.action=na.omi
 	retv
 }
 #' @export
-#' @rdname hm
+#' @rdname hensm
 #' @importFrom stats vcov
 #' @param object  an object of class \code{hensm}.
 #' @method vcov hensm
@@ -210,7 +210,7 @@ vcov.hensm <- function(object, ...) {
 #' @export
 #' @importFrom stats printCoefmat
 #' @importFrom methods show
-#' @rdname hm
+#' @rdname hensm
 #' @method print hensm
 print.hensm <- function(x, ...) {
 	show(summary(x$mle))

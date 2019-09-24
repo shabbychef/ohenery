@@ -2,10 +2,16 @@
 % Please edit documentation in R/hensm.r
 \name{hensm}
 \alias{hensm}
+\alias{vcov.hensm}
+\alias{print.hensm}
 \title{Friendly interface to softmax regression under Henery model.}
 \usage{
 hensm(formula, data, group = NULL, weights = NULL, ngamma = 4,
   na.action = na.omit)
+
+\method{vcov}{hensm}(object, ...)
+
+\method{print}{hensm}(x, ...)
 }
 \arguments{
 \item{formula}{an object of class \code{"\link{formula}"} (or one that
@@ -33,6 +39,16 @@ for none.}
 
 \item{na.action}{How to deal with missing values in \code{y}, \code{g},
 \code{X}, \code{wt}, \code{eta0}.}
+
+\item{object}{an object of class \code{hensm}.}
+
+\item{...}{additional arguments to be passed to the low level
+    regression fitting functions (see below).}
+
+\item{x}{logicals.  If \code{TRUE} the corresponding
+    components of the fit (the model frame, the model matrix, the
+    response, the QR decomposition) are returned.
+  }
 }
 \value{
 An object of class \code{hensm}, but also of \code{maxLik} with the

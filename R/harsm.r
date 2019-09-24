@@ -261,7 +261,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #' @template note-weights
 #' @template param-weights
 #' @export
-#' @rdname sm
+#' @rdname harsm
 harsm <- function(formula,data,group=NULL,weights=NULL,na.action=na.omit) {
 	substitute(formula)
 	# I find it highly offensive that this cannot be done reasonably
