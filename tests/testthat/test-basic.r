@@ -364,6 +364,9 @@ test_that("harsmfit bits",{#FOLDUP
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
 	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
 	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
+	donotuse <- capture.output(expect_error(print(fitm),NA))
+
+	expect_error(vcov(fitm),NA)
 
 	# can deal with a single offset
 	fmla <- outcome ~ offset(V1) + V2 
@@ -397,10 +400,12 @@ test_that("harsmfit bits",{#FOLDUP
 	data <- data[data$race <= 26,]
 	data$letrace <- letters[data$race]
 	data$facrace <- factor(data$letrace)
+	data$intrace <- as.integer(data$race)
 
 	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
 	expect_error(fitlet <- harsm(outcome ~ V1 + V2,data,group=letrace),NA)
 	expect_error(fitfac <- harsm(outcome ~ V1 + V2,data,group=facrace),NA)
+	expect_error(fitint <- harsm(outcome ~ V1 + V2,data,group=intrace),NA)
 
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
@@ -426,6 +431,8 @@ test_that("harsmfit prediction",{#FOLDUP
 	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
 	expect_error(fitlet <- harsm(outcome ~ V1 + V2,data,group=letrace),NA)
 	expect_error(fitfac <- harsm(outcome ~ V1 + V2,data,group=facrace),NA)
+
+	expect_error(vcov(fitnum),NA)
 
 	for (ttype in c('eta','mu','erank')) {
 		expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
@@ -476,8 +483,11 @@ test_that("hensm bits",{#FOLDUP
 	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
 
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	# deterministic?
+	# runs?
 	expect_error(fitm <- hensm(fmla,data,group=race),NA)
+	donotuse <- capture.output(expect_error(print(fitm),NA))
+	expect_error(vcov(fitm),NA)
+	# deterministic?
 	expect_error(fitm2 <- hensm(fmla,data,group=race),NA)
 	expect_equal(fitm$coefficients,fitm2$coefficients)
 
@@ -513,10 +523,12 @@ test_that("hensm bits",{#FOLDUP
 	data <- data[data$race <= 26,]
 	data$letrace <- letters[data$race]
 	data$facrace <- factor(data$letrace)
+	data$intrace <- as.integer(data$race)
 
 	expect_error(fitnum <- hensm(outcome ~ V1 + V2,data,group=race),NA)
 	expect_error(fitlet <- hensm(outcome ~ V1 + V2,data,group=letrace),NA)
 	expect_error(fitfac <- hensm(outcome ~ V1 + V2,data,group=facrace),NA)
+	expect_error(fitint <- hensm(outcome ~ V1 + V2,data,group=intrace),NA)
 
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
