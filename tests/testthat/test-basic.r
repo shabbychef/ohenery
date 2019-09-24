@@ -124,6 +124,19 @@ test_that("hensmlik bits",{#FOLDUP
 })#UNFOLD
 
 test_that("smax bits",{#FOLDUP
+	# location invariant
+	nfeat <- 10
+	set.seed(1001)
+	eta <- rnorm(nfeat)
+	keta <- eta + 10
+	expect_error(mu <- smax(eta),NA)
+	expect_error(kmu <- smax(keta),NA)
+	expect_equal(mu,kmu,tolerance=1e-7)
+
+	expect_error(smax(c(1,0)),NA)
+	expect_error(mubig <- smax(c(10000,0,0,0)),NA)
+	expect_equal(mubig,c(1,0,0,0))
+
 	nfeat <- 5
 	set.seed(4234)
 	g <- ceiling(seq(0.1,100,by=0.1))
@@ -136,8 +149,8 @@ test_that("smax bits",{#FOLDUP
 			ungroup() %>%
 			{ .$eta }
 
-	mu <- smax(eta,g=g)
-	eta0 <- inv_smax(mu,g=g)
+	expect_error(mu <- smax(eta,g=g),NA)
+	expect_error(eta0 <- inv_smax(mu,g=g),NA)
 	expect_equal(eta,eta0,tolerance=1e-14)
 })#UNFOLD
 test_that("rsm bits",{#FOLDUP
@@ -199,6 +212,14 @@ test_that("utils",{#FOLDUP
 	x <- rnorm(10)
 	expect_error(normalize(x),NA)
 	expect_error(smax(x),NA)
+})#UNFOLD
+test_that("normalize ok",{#FOLDUP
+	set.seed(111)
+	x <- rnorm(10)
+	kx <- 4 * x
+	expect_error(y <- normalize(x),NA)
+	expect_error(ky <- normalize(kx),NA)
+	expect_equal(y, ky, tolerance=1e-8)
 })#UNFOLD
 
 #UNFOLD

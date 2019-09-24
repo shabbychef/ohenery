@@ -46,7 +46,7 @@ globalVariables(c('rowid'))
 # this is a big more complicated than I would have liked, but here we go:
 # assume the input is already centered:
 .smax_one <- function(xc) {
-	if (any(xc > 709.78)) {  # where overflow occurs
+	if (any(xc > 709.78,na.rm=TRUE)) {  # where overflow occurs
 		fsrt <- sort.int(xc,decreasing=TRUE,index.return=TRUE) 
 		vals <- normalize(c(1,exp(cumsum(diff(fsrt$x)))))
 		retv <- rep(0,length(xc))
@@ -56,6 +56,7 @@ globalVariables(c('rowid'))
 	# else
 	normalize(exp(xc))
 }
+# 2FIX: check for infinity?
 .smax_two <- function(x) { .smax_one(x - mean(x,na.rm=TRUE)) }
 
 #' @title The softmax function.
