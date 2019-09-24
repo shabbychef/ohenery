@@ -37,6 +37,36 @@ library(dplyr)
 library(numDeriv)
 context("code runs at all")#FOLDUP
 
+test_that("rsm bits",{#FOLDUP
+	# travis only?
+	#skip_on_cran()
+	nfeat <- 5
+	set.seed(1234)
+	g <- ceiling(seq(0.1,100,by=0.1))
+	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
+	beta <- rnorm(nfeat)
+	eta <- X %*% beta
+	expect_error(mu <- smax(eta,g=g),NA)
+	set.seed(5234)
+	expect_error(y1 <- rsm(eta,g=g),NA)
+	# first, is it deterministic?
+	set.seed(5234)
+	expect_error(y2 <- rsm(eta,g=g),NA)
+	expect_equal(y1,y2)
+	
+	# secondly, does it also accept mu?
+	set.seed(5234)
+	expect_error(y3 <- rsm(g=g,mu=mu),NA)
+	expect_equal(y1,y3)
+
+	# rsm for henery
+	set.seed(1212)
+	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,1,1)),NA)
+	set.seed(1212)
+	expect_error(yb <- rsm(g=g,mu=mu),NA)
+	expect_equal(ya,yb)
+
+})#UNFOLD
 test_that("harsmlik bits",{#FOLDUP
 	# travis only?
 	#skip_on_cran()
@@ -167,28 +197,6 @@ test_that("smax bits",{#FOLDUP
 	expect_equal(mu,mu1,tolerance=1e-10)
 
 
-})#UNFOLD
-test_that("rsm bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	mu <- smax(eta,g=g)
-	set.seed(5234)
-	expect_error(y1 <- rsm(eta,g=g),NA)
-	# first, is it deterministic?
-	set.seed(5234)
-	expect_error(y2 <- rsm(eta,g=g),NA)
-	expect_equal(y1,y2)
-	
-	# secondly, does it also accept mu?
-	set.seed(5234)
-	expect_error(y3 <- rsm(g=g,mu=mu),NA)
-	expect_equal(y1,y3)
 })#UNFOLD
 test_that("rhenery bits",{#FOLDUP
 	# travis only?
