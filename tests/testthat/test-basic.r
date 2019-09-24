@@ -66,6 +66,12 @@ test_that("rsm bits",{#FOLDUP
 	expect_error(yb <- rsm(g=g,mu=mu),NA)
 	expect_equal(ya,yb)
 
+	# rsm henery: is this ok?
+	set.seed(1212)
+	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,0.8,0.8,0.8)),NA)
+	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,rep(0.8,15))),NA)
+
+
 })#UNFOLD
 test_that("harsmlik bits",{#FOLDUP
 	# travis only?
