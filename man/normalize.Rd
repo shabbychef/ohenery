@@ -8,8 +8,6 @@ normalize(x)
 }
 \arguments{
 \item{x}{vector of input data.}
-
-\item{X}{matrix of input data.}
 }
 \value{
 the input divided by its sum. 

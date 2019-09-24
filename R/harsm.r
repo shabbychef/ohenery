@@ -45,6 +45,11 @@ setOldClass('harsm')
 	retv
 }
 
+# to get CRAN checks to not complain about mutated variables
+globalVariables(c('dumb_rank','.'))
+#. <- NULL
+#rm(.)
+
 #' @title Experts only softmax regression under Harville model.
 #'
 #' @description 

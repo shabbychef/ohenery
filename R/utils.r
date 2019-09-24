@@ -31,7 +31,6 @@
 #' sum equal to one.
 #'
 #' @param x vector of input data.
-#' @param X matrix of input data.
 #' @return the input divided by its sum. 
 #' For the row-wise version, each row is divided by its sum.
 #' @template etc
@@ -41,6 +40,8 @@
 #' @export
 #' @rdname normalize
 normalize <- function(x) { x / sum(x) }
+
+globalVariables(c('rowid'))
 
 # this is a big more complicated than I would have liked, but here we go:
 # assume the input is already centered:

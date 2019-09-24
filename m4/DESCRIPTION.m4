@@ -24,12 +24,12 @@ Imports:
     maxLik,
     magrittr,
     methods,
-    rlang,
 dnl matrixcalc,
-    tidyr,
     dplyr
 LinkingTo: Rcpp
 Suggests: 
+    rlang,
+    tidyr,
     microbenchmark,
     testthat, 
     numDeriv,
