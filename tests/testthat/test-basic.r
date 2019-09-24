@@ -461,6 +461,13 @@ test_that("harsmfit prediction",{#FOLDUP
 		expect_error(fuh <- predict(fitlet,newdata=data,type=ttype,group=letrace),NA)
 		expect_error(fuh <- predict(fitoff,newdata=data,type=ttype,group=race),NA)
 	}
+
+	# given by name
+	ttype <- 'eta'
+	expect_error(fuhbar <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
+	expect_error(barfuh <- predict(fitnum,newdata=data,type=ttype,group='race'),NA)
+	expect_equal(fuhbar,barfuh,tolerance=1e-7)
+
 	# deal with na actions
 	expect_error(fuh <- as.numeric(predict(fitlet,newdata=data,type='eta',group=letrace,na.action=na.pass)),NA)
 	expect_equal(length(fuh),nrow(data))
