@@ -368,7 +368,7 @@ test_that("harsmfit bits",{#FOLDUP
 	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
 	beta <- rnorm(nfeat)
 	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+	expect_error(y <- rsm(eta,g=g),NA)
 			 
 	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
 	expect_equal(as.numeric(coefficients(mod0)),beta,tolerance=0.1)
@@ -381,6 +381,10 @@ test_that("harsmfit bits",{#FOLDUP
 	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
 	donotuse <- capture.output(expect_error(print(fitm),NA))
 	expect_error(vcov(fitm),NA)
+
+	# group given by name 
+	expect_error(fitm2 <- harsm(fmla,group='race',data=data),NA)
+	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=0.0001)
 
 	# can deal with a single offset
 	fmla <- outcome ~ offset(V1) + V2 
@@ -402,7 +406,10 @@ test_that("harsmfit bits",{#FOLDUP
 	wt <- runif(length(y))
 	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,data,group=race,weights='wt'),NA)
+	expect_error(fitm <- harsm(fmla,data,group=race,weights=wt),NA)
+	# weights given by name
+	expect_error(fitm2 <- harsm(fmla,data,group=race,weights='wt'),NA)
+	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=0.0001)
 
 	# this should error: negative weights
 	data <- cbind(data.frame(outcome=y,race=g,wt=rep(-1,length(y))),as.data.frame(X))
@@ -487,7 +494,7 @@ test_that("hensm bits",{#FOLDUP
 	#skip_on_cran()
 	nfeat <- 5
 	set.seed(1234)
-	g <- 1 + ((1:10000) %% 1000)
+	g <- 1 + ((1:1000) %% 100)
 	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
 	beta <- rnorm(nfeat)
 	eta <- X %*% beta
@@ -503,7 +510,11 @@ test_that("hensm bits",{#FOLDUP
 	expect_error(vcov(fitm),NA)
 	# deterministic?
 	expect_error(fitm2 <- hensm(fmla,data,group=race),NA)
-	expect_equal(fitm$coefficients,fitm2$coefficients)
+	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
+
+	# group given by name
+	expect_error(fitm3 <- hensm(fmla,data,group='race'),NA)
+	expect_equal(fitm$coefficients,fitm3$coefficients)
 
 	# can deal with a single offset
 	fmla <- outcome ~ offset(V1) + V2 
@@ -525,12 +536,15 @@ test_that("hensm bits",{#FOLDUP
 	wt <- runif(length(y))
 	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race,weights='wt'),NA)
+	expect_error(fitm <- hensm(fmla,data,group=race,weights=wt),NA)
+	# weights given by name
+	expect_error(fitm2 <- hensm(fmla,data,group=race,weights='wt'),NA)
+	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
 
 	# this should error: negative weights
 	data <- cbind(data.frame(outcome=y,race=g,wt=rep(-1,length(y))),as.data.frame(X))
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race,weights='wt'))
+	expect_error(fitm <- hensm(fmla,data,group=race,weights=wt))
 	
 	# check on non-numeric race ids
 	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
