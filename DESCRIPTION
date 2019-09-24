@@ -10,7 +10,8 @@ License: LGPL-3
 Title: Modeling of Ordinal Random Variables via Softmax
 BugReports: https://github.com/shabbychef/ohenery/issues
 Description: Supports the modeling of ordinal random variables, 
-    like races, via the softmax function. 
+    like the outcomes of races, via the softmax function. 
+    Performs regression under the Harville and Henery models.
 In particular, fits the Henery <doi:10.1111/j.2517-6161.1981.tb01153.x>,
 and Harville <doi:10.1080/01621459.1973.10482425> models.
 Depends: 
