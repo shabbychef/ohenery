@@ -152,6 +152,21 @@ test_that("smax bits",{#FOLDUP
 	expect_error(mu <- smax(eta,g=g),NA)
 	expect_error(eta0 <- inv_smax(mu,g=g),NA)
 	expect_equal(eta,eta0,tolerance=1e-14)
+
+	nfeat <- 8
+	set.seed(808)
+	expect_error(mu <- normalize(runif(nfeat)),NA)
+	expect_error(eta0 <- inv_smax(mu),NA)
+	expect_error(mu1 <- smax(eta0),NA)
+	expect_equal(mu,mu1,tolerance=1e-10)
+
+	# fingers crossed.
+	mu <- c(1,0,0,0)
+	expect_error(eta0 <- inv_smax(mu),NA)
+	expect_error(mu1 <- smax(eta0),NA)
+	expect_equal(mu,mu1,tolerance=1e-10)
+
+
 })#UNFOLD
 test_that("rsm bits",{#FOLDUP
 	# travis only?
