@@ -10,7 +10,7 @@
 VMAJOR 						 = 0
 VMINOR 						 = 0
 VPATCH  					 = 0
-VDEV 							 = .001
+VDEV 							 = .100
 PKG_NAME 					:= ohenery
 
 RPKG_USES_RCPP 		:= 1
