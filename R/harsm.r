@@ -242,7 +242,8 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #' fitm <- harsm(fmla,data,group=race)
 #'
 #' # with weights
-#' data <- cbind(data.frame(outcome=y,race=g,eta0=eta0,wts=runif(length(y),min=1,max=2)),as.data.frame(X))
+#' data <- cbind(data.frame(outcome=y,race=g,eta0=eta0),as.data.frame(X))
+#' data$wts <- runif(nrow(data),min=1,max=2)
 #' fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
 #' fitm <- harsm(fmla,data,group=race,weights=wts)
 #'
