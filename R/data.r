@@ -262,7 +262,7 @@
 #'   mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) %>%
 #'   mutate(home_advantage=NOC==HOST_NOC)
 #' 
-#' harsm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
+#' hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
 #'
 "diving"
 
