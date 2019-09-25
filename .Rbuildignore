@@ -53,4 +53,3 @@ nodist/node_modules
 ^nodist/node_modules$
 ^node_modules$
 ^nodist/readings$
-.R
