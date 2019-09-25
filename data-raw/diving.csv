@@ -1,0 +1,696 @@
+Name,Age,Height,Weight,Team,NOC,Games,Year,City,Medal,EventId,AthleteId,HOST_NOC
+Otto Satzinger,27,NA,NA,Austria,AUT,1906 Summer,1906,Athina,Bronze,1,343,GRE
+Gottlob Friedrich Walz,24,NA,NA,Germany,GER,1906 Summer,1906,Athina,Gold,1,166,GRE
+Georg Hoffmann,NA,NA,NA,Germany,GER,1906 Summer,1906,Athina,Silver,1,153,GRE
+"Johan Gottfrid ""John"" Andersson",36,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,230,GRE
+Robert Theodor Andersson,19,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,382,GRE
+D. Argalias,NA,NA,NA,Greece,GRE,1906 Summer,1906,Athina,NA,1,84,GRE
+Carlo Bonfanti,30,NA,NA,Italy,ITA,1906 Summer,1906,Athina,NA,1,64,GRE
+Frank Alexander Bornamann,29,NA,NA,United States,USA,1906 Summer,1906,Athina,NA,1,136,GRE
+Luigi Capra,NA,NA,NA,Italy,ITA,1906 Summer,1906,Athina,NA,1,299,GRE
+Gordon Melville Clark,23,NA,NA,Great Britain,GBR,1906 Summer,1906,Athina,NA,1,165,GRE
+Otto Josias Engelbrekt Hagborg,51,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,342,GRE
+Johan Alfred Emmanuel Johansson,29,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,229,GRE
+Carl August Hjalmar Johansson,32,170,76,Sweden,SWE,1906 Summer,1906,Athina,NA,1,62,GRE
+Emilios Krouazas,NA,NA,NA,Greece,GRE,1906 Summer,1906,Athina,NA,1,109,GRE
+Sigfrid Daniel Larsson,24,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,412,GRE
+Johan Wilhelm Lindgren,25,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,232,GRE
+Emil August Lundberg,42,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,107,GRE
+"Friedrich Karl August ""Fritz"" Nicolai",27,NA,NA,Germany,GER,1906 Summer,1906,Athina,NA,1,142,GRE
+Karl Axel Patrik Norling,22,178,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,260,GRE
+P. Paraskevopoulos,NA,NA,NA,Greece,GRE,1906 Summer,1906,Athina,NA,1,357,GRE
+August Herman Gerlach Richter,18,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,48,GRE
+Ernst Einar Rosengren,21,NA,NA,Sweden,SWE,1906 Summer,1906,Athina,NA,1,117,GRE
+Harold Nelson Smyrk,16,NA,NA,Great Britain,GBR,1906 Summer,1906,Athina,NA,1,184,GRE
+Albert Hermann Zrner,16,NA,NA,Germany,GER,1906 Summer,1906,Athina,NA,1,12,GRE
+Arvid Fredrik Spngberg,18,170,NA,Sweden,SWE,1908 Summer,1908,London,Bronze,2,47,GBR
+Carl August Hjalmar Johansson,34,170,76,Sweden,SWE,1908 Summer,1908,London,Gold,2,62,GBR
+Karl Fritiof Malmstrm,32,NA,NA,Sweden,SWE,1908 Summer,1908,London,Silver,2,262,GBR
+Erik William Adlerz,15,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,115,GBR
+Horace James Murrall Aldous,25,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,198,GBR
+Robert Theodor Andersson,21,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,382,GBR
+Gustaf Harald Arbin (Andersson-),40,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,175,GBR
+Toivo Nestori Aro (Ahlstedt-),21,NA,NA,Finland,FIN,1908 Summer,1908,London,NA,2,440,GBR
+George F. Cane,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,151,GBR
+Thomas J. Collins,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,432,GBR
+"Heinrich ""Heinz"" Freyschmidt",20,NA,NA,Germany,GER,1908 Summer,1908,London,NA,2,189,GBR
+George William Gaidzik,23,166,NA,United States,USA,1908 Summer,1908,London,NA,2,152,GBR
+Harold Goodworth,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,183,GBR
+Harold C. Grote,NA,NA,NA,United States,USA,1908 Summer,1908,London,NA,2,182,GBR
+Thomas Harrington,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,430,GBR
+William O. Hoare,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,473,GBR
+Joseph Huketick,NA,NA,NA,Belgium,BEL,1908 Summer,1908,London,NA,2,247,GBR
+Sigfrid Daniel Larsson,26,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,412,GBR
+Hilmer Lfberg,20,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,197,GBR
+"Friedrich Karl August ""Fritz"" Nicolai",29,NA,NA,Germany,GER,1908 Summer,1908,London,NA,2,142,GBR
+Axel Vilhelm Runstrm,24,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,50,GBR
+William E. Webb,NA,NA,NA,Great Britain,GBR,1908 Summer,1908,London,NA,2,472,GBR
+Oskar Wilhelm Wetzell,19,NA,NA,Finland,FIN,1908 Summer,1908,London,NA,2,341,GBR
+Axel Gunnar Wingqvist,22,NA,NA,Sweden,SWE,1908 Summer,1908,London,NA,2,49,GBR
+Gustaf Adolf Viktor Blomgren,24,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,Bronze,3,174,SWE
+Erik William Adlerz,19,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,Gold,3,115,SWE
+Albert Hermann Zrner,22,NA,NA,Germany,GER,1912 Summer,1912,Stockholm,Silver,3,12,SWE
+Sigvard August Andersen,18,NA,NA,Norway,NOR,1912 Summer,1912,Stockholm,NA,3,413,SWE
+Robert Theodor Andersson,25,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,382,SWE
+Gustaf Harald Arbin (Andersson-),44,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,175,SWE
+Toivo Nestori Aro (Ahlstedt-),25,NA,NA,Finland,FIN,1912 Summer,1912,Stockholm,NA,3,440,SWE
+Kurt Edward Behrens,27,173,NA,Germany,GER,1912 Summer,1912,Stockholm,NA,3,280,SWE
+Ernst Magnus Brandsten,28,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,118,SWE
+Alvin Herman Carlsson,20,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,27,SWE
+Ernst Rudolf Eklund,17,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,119,SWE
+George William Gaidzik,27,166,NA,United States,USA,1912 Summer,1912,Stockholm,NA,3,152,SWE
+Carl Johan Erik Jansson,19,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,63,SWE
+Carl August Hjalmar Johansson,38,170,76,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,62,SWE
+Kalle Kainuvaara (Ingberg-),21,NA,NA,Finland,FIN,1912 Summer,1912,Stockholm,NA,3,258,SWE
+Hans Luber,18,NA,NA,Germany,GER,1912 Summer,1912,Stockholm,NA,3,181,SWE
+"John Patrick ""Jack"" Lyons",35,172,NA,Canada,CAN,1912 Summer,1912,Stockholm,NA,3,237,SWE
+"Arthur McAleenan, Jr.",17,NA,NA,United States,USA,1912 Summer,1912,Stockholm,NA,3,46,SWE
+Gsta Gabriel Sjberg,16,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,172,SWE
+Jens Harald Stefenson,17,NA,NA,Sweden,SWE,1912 Summer,1912,Stockholm,NA,3,218,SWE
+Leo Olavi Suni,20,NA,NA,Finland,FIN,1912 Summer,1912,Stockholm,NA,3,290,SWE
+Oskar Wilhelm Wetzell,23,NA,NA,Finland,FIN,1912 Summer,1912,Stockholm,NA,3,341,SWE
+George Alexandre Yvon,25,NA,NA,Great Britain,GBR,1912 Summer,1912,Stockholm,NA,3,149,SWE
+"Haig ""Harry"" Prieste (Keshishian-)",23,157,NA,United States,USA,1920 Summer,1920,Antwerpen,Bronze,4,179,BEL
+"Clarence Elmer ""Bud"" Pinkston",20,NA,NA,United States,USA,1920 Summer,1920,Antwerpen,Gold,4,74,BEL
+Erik William Adlerz,27,NA,NA,Sweden,SWE,1920 Summer,1920,Antwerpen,Silver,4,115,BEL
+Sigvard August Andersen,26,NA,NA,Norway,NOR,1920 Summer,1920,Antwerpen,NA,4,413,BEL
+Louis James Balbach,23,169,NA,United States,USA,1920 Summer,1920,Antwerpen,NA,4,294,BEL
+Gustaf Adolf Viktor Blomgren,32,NA,NA,Sweden,SWE,1920 Summer,1920,Antwerpen,NA,4,174,BEL
+Gunnar Ekstrand,28,NA,NA,Sweden,SWE,1920 Summer,1920,Antwerpen,NA,4,173,BEL
+Richard Arless Flint,20,168,NA,Canada,CAN,1920 Summer,1920,Antwerpen,NA,4,369,BEL
+Skld Yngve Johnson,24,NA,NA,Sweden,SWE,1920 Summer,1920,Antwerpen,NA,4,414,BEL
+Kalle Kainuvaara (Ingberg-),29,NA,NA,Finland,FIN,1920 Summer,1920,Antwerpen,NA,4,258,BEL
+Paul Georg Daniel Khler,24,NA,NA,Denmark,DEN,1920 Summer,1920,Antwerpen,NA,4,350,BEL
+Lauri Viljo Kystil,26,169,68,Finland,FIN,1920 Summer,1920,Antwerpen,NA,4,286,BEL
+Sven Palle Laurs Srensen,21,NA,NA,Denmark,DEN,1920 Summer,1920,Antwerpen,NA,4,425,BEL
+Clyde Acle Swendsen,24,170,NA,United States,USA,1920 Summer,1920,Antwerpen,NA,4,77,BEL
+Adolpho Wellisch,34,NA,NA,Brazil,BRA,1920 Summer,1920,Antwerpen,NA,4,7,BEL
+"Clarence Elmer ""Bud"" Pinkston",24,NA,NA,United States,USA,1924 Summer,1924,Paris,Bronze,5,74,FRA
+"Albert Cosad ""Al"" White",28,171,NA,United States,USA,1924 Summer,1924,Paris,Gold,5,11,FRA
+"David Athelstane ""Dave"" Fall",21,NA,NA,United States,USA,1924 Summer,1924,Paris,Silver,5,87,FRA
+Erik William Adlerz,31,NA,NA,Sweden,SWE,1924 Summer,1924,Paris,NA,5,115,FRA
+Luigi C. Cangiullo,NA,NA,NA,Italy,ITA,1924 Summer,1924,Paris,NA,5,300,FRA
+Andr Cochinal,NA,NA,NA,France,FRA,1924 Summer,1924,Paris,NA,5,31,FRA
+Antonio de Tort,NA,NA,NA,Spain,ESP,1924 Summer,1924,Paris,NA,5,41,FRA
+Adolf Fredrik Hellquist,22,NA,NA,Sweden,SWE,1924 Summer,1924,Paris,NA,5,6,FRA
+"Henri Christiaan ""Henk"" Hemsing",32,NA,NA,Netherlands,NED,1924 Summer,1924,Paris,NA,5,193,FRA
+Hannes Krkkinen,21,NA,NA,Finland,FIN,1924 Summer,1924,Paris,NA,5,180,FRA
+"Albert Reginald ""Reggie"" Knight",NA,NA,NA,Great Britain,GBR,1924 Summer,1924,Paris,NA,5,16,FRA
+Lauri Viljo Kystil,30,169,68,Finland,FIN,1924 Summer,1924,Paris,NA,5,286,FRA
+Eugne Lenormand,NA,NA,NA,France,FRA,1924 Summer,1924,Paris,NA,5,122,FRA
+"Hendrik ""Henk"" Lotgering",21,NA,NA,Netherlands,NED,1924 Summer,1924,Paris,NA,5,192,FRA
+Eric M. MacDonald,NA,NA,NA,Great Britain,GBR,1924 Summer,1924,Paris,NA,5,113,FRA
+John Helge berg,18,NA,NA,Sweden,SWE,1924 Summer,1924,Paris,NA,5,235,FRA
+Sven Palle Laurs Srensen,25,NA,NA,Denmark,DEN,1924 Summer,1924,Paris,NA,5,425,FRA
+Santiago Ulio Pascual,14,NA,NA,Spain,ESP,1924 Summer,1924,Paris,NA,5,402,FRA
+Albert Van Heymbeek,NA,NA,NA,Belgium,BEL,1924 Summer,1924,Paris,NA,5,17,FRA
+tienne Vincent,NA,NA,NA,France,FRA,1924 Summer,1924,Paris,NA,5,438,FRA
+"Michael Riley ""Mickey"" Galitzen",18,NA,NA,United States,USA,1928 Summer,1928,Amsterdam,Bronze,6,319,NED
+"Ulise Joseph ""Pete"" Desjardins",21,NA,NA,United States,USA,1928 Summer,1928,Amsterdam,Gold,6,451,NED
+Farid Simaika,20,NA,NA,Egypt,EGY,1928 Summer,1928,Amsterdam,Silver,6,127,NED
+Eugen Nikolaus Ahnstrm,23,NA,NA,Sweden,SWE,1928 Summer,1928,Amsterdam,NA,6,121,NED
+Armand Billard,NA,NA,NA,France,FRA,1928 Summer,1928,Amsterdam,NA,6,45,NED
+Wilfred Godfrey Thomas Burne,25,NA,NA,Great Britain,GBR,1928 Summer,1928,Amsterdam,NA,6,467,NED
+Luigi C. Cangiullo,NA,NA,NA,Italy,ITA,1928 Summer,1928,Amsterdam,NA,6,300,NED
+Walter Newell Colbath,22,NA,NA,United States,USA,1928 Summer,1928,Amsterdam,NA,6,465,NED
+Emanuel Davidson,25,NA,NA,Netherlands,NED,1928 Summer,1928,Amsterdam,NA,6,106,NED
+"Lars Gustaf ""Gsta"" Horn",21,NA,NA,Sweden,SWE,1928 Summer,1928,Amsterdam,NA,6,285,NED
+"Albert Reginald ""Reggie"" Knight",NA,NA,NA,Great Britain,GBR,1928 Summer,1928,Amsterdam,NA,6,16,NED
+Yrj Daniel Lampila,27,NA,NA,Finland,FIN,1928 Summer,1928,Amsterdam,NA,6,488,NED
+Eugne Lenormand,NA,NA,NA,France,FRA,1928 Summer,1928,Amsterdam,NA,6,122,NED
+"Hendrik ""Henk"" Lotgering",25,NA,NA,Netherlands,NED,1928 Summer,1928,Amsterdam,NA,6,192,NED
+"Thomas J. ""Tommy"" Mather",NA,NA,NA,Great Britain,GBR,1928 Summer,1928,Amsterdam,NA,6,433,NED
+Abdel Moneim Mokhtar,NA,NA,NA,Egypt,EGY,1928 Summer,1928,Amsterdam,NA,6,1,NED
+"Thomas Henry ""Harry"" Morris",NA,NA,NA,Australia,AUS,1928 Summer,1928,Amsterdam,NA,6,431,NED
+John Helge berg,22,NA,NA,Sweden,SWE,1928 Summer,1928,Amsterdam,NA,6,235,NED
+Alfred Henry Phillips,19,NA,NA,Canada,CAN,1928 Summer,1928,Amsterdam,NA,6,26,NED
+Karl Julius Rehborn,28,NA,NA,Germany,GER,1928 Summer,1928,Amsterdam,NA,6,264,NED
+Ewald Riebschlger,23,NA,NA,Germany,GER,1928 Summer,1928,Amsterdam,NA,6,123,NED
+Karl Schumm,29,NA,NA,Germany,GER,1928 Summer,1928,Amsterdam,NA,6,265,NED
+Ezio Selva,26,NA,NA,Italy,ITA,1928 Summer,1928,Amsterdam,NA,6,124,NED
+Josef Staudinger,21,173,NA,Austria,AUT,1928 Summer,1928,Amsterdam,NA,6,246,NED
+Frank Allen Kurtz,20,NA,NA,United States,USA,1932 Summer,1932,Los Angeles,Bronze,7,137,USA
+Edwin Harold Smith,23,NA,NA,United States,USA,1932 Summer,1932,Los Angeles,Gold,7,104,USA
+"Michael Riley ""Mickey"" Galitzen",22,NA,NA,United States,USA,1932 Summer,1932,Los Angeles,Silver,7,319,USA
+Carlos T. Curiel Galvn,NA,165,NA,Mexico,MEX,1932 Summer,1932,Los Angeles,NA,7,66,USA
+Jess Flores Alba,19,NA,NA,Mexico,MEX,1932 Summer,1932,Los Angeles,NA,7,221,USA
+Hidekatsu Ishida,NA,NA,NA,Japan,JPN,1932 Summer,1932,Los Angeles,NA,7,196,USA
+Alfred Henry Phillips,24,NA,NA,Canada,CAN,1932 Summer,1932,Los Angeles,NA,7,26,USA
+Josef Staudinger,25,173,NA,Austria,AUT,1932 Summer,1932,Los Angeles,NA,7,246,USA
+Hermann Albert Stork,24,NA,NA,Germany,GER,1936 Summer,1936,Berlin,Bronze,8,195,GER
+Marshall Wayne,24,NA,NA,United States,USA,1936 Summer,1936,Berlin,Gold,8,307,GER
+Elbert Alonzo Root,21,NA,NA,United States,USA,1936 Summer,1936,Berlin,Silver,8,105,GER
+Rauf Abdul Seoud,21,NA,NA,Egypt,EGY,1936 Summer,1936,Berlin,NA,8,362,GER
+"George Dimitri Athans, Sr.",15,NA,NA,Canada,CAN,1936 Summer,1936,Berlin,NA,8,150,GER
+"Karl ""Carlo"" Dibiasi",26,NA,NA,Italy,ITA,1936 Summer,1936,Berlin,NA,8,261,GER
+Franco Ferraris,17,NA,NA,Italy,ITA,1936 Summer,1936,Berlin,NA,8,134,GER
+Jess Flores Alba,23,NA,NA,Mexico,MEX,1936 Summer,1936,Berlin,NA,8,221,GER
+Lszl Hidvgi (Heckmann-),19,NA,NA,Hungary,HUN,1936 Summer,1936,Berlin,NA,8,298,GER
+Lszl Hdi (Hoffmann),24,NA,NA,Hungary,HUN,1936 Summer,1936,Berlin,NA,8,297,GER
+Khalil Ibrahim Dessouki,NA,NA,NA,Egypt,EGY,1936 Summer,1936,Berlin,NA,8,273,GER
+Vclav Kacl,26,NA,NA,Czechoslovakia,TCH,1936 Summer,1936,Berlin,NA,8,453,GER
+Tomio Koyanagi,20,NA,NA,Japan,JPN,1936 Summer,1936,Berlin,NA,8,443,GER
+Frank Allen Kurtz,24,NA,NA,United States,USA,1936 Summer,1936,Berlin,NA,8,137,GER
+Frantiek Leikert,22,NA,NA,Czechoslovakia,TCH,1936 Summer,1936,Berlin,NA,8,139,GER
+Ferrero Marianetti,24,NA,NA,Italy,ITA,1936 Summer,1936,Berlin,NA,8,130,GER
+"Ronald ""Ron"" Masters",23,NA,NA,Australia,AUS,1936 Summer,1936,Berlin,NA,8,391,GER
+Sam Thorolf Tjm Melberg,23,NA,NA,Norway,NOR,1936 Summer,1936,Berlin,NA,8,399,GER
+Josef Nesvadba,27,NA,NA,Czechoslovakia,TCH,1936 Summer,1936,Berlin,NA,8,245,GER
+Heikki Ilmari Niemelinen,25,NA,NA,Finland,FIN,1936 Summer,1936,Berlin,NA,8,187,GER
+Gsta Emanuel lander,25,NA,NA,Sweden,SWE,1936 Summer,1936,Berlin,NA,8,171,GER
+Tsuneo Shibahara,19,NA,NA,Japan,JPN,1936 Summer,1936,Berlin,NA,8,450,GER
+"Charles Douglas ""Doug"" Tomalin",21,NA,NA,Great Britain,GBR,1936 Summer,1936,Berlin,NA,8,68,GER
+Siegfried Viebahn,25,NA,NA,Germany,GER,1936 Summer,1936,Berlin,NA,8,411,GER
+"Erhard ""Johnny"" Wei",22,NA,NA,Germany,GER,1936 Summer,1936,Berlin,NA,8,111,GER
+Branko Ziherl,19,NA,NA,Yugoslavia,YUG,1936 Summer,1936,Berlin,NA,8,54,GER
+Joaqun Capilla Prez,19,168,NA,Mexico,MEX,1948 Summer,1948,London,Bronze,9,226,GBR
+"Samuel ""Sammy"" Lee",27,NA,NA,United States,USA,1948 Summer,1948,London,Gold,9,400,GBR
+Bruce Ira Harlan,22,NA,NA,United States,USA,1948 Summer,1948,London,Silver,9,58,GBR
+Rauf Abdul Seoud,33,NA,NA,Egypt,EGY,1948 Summer,1948,London,NA,9,362,GBR
+Mohamed Abdel Khalek Allam,NA,NA,NA,Egypt,EGY,1948 Summer,1948,London,NA,9,325,GBR
+"George Dimitri Athans, Sr.",27,NA,NA,Canada,CAN,1948 Summer,1948,London,NA,9,150,GBR
+Knut Lennart Herbert Brunnhage,32,NA,NA,Sweden,SWE,1948 Summer,1948,London,NA,9,277,GBR
+Thomas Knud Christiansen,28,NA,NA,Denmark,DEN,1948 Summer,1948,London,NA,9,434,GBR
+Kamal Ali Hassan,24,NA,NA,Egypt,EGY,1948 Summer,1948,London,NA,9,259,GBR
+Peter Heatly,24,NA,NA,Great Britain,GBR,1948 Summer,1948,London,NA,9,355,GBR
+Guy Hernandez,NA,NA,NA,France,FRA,1948 Summer,1948,London,NA,9,177,GBR
+Wilhelm Lippa,25,NA,NA,Austria,AUT,1948 Summer,1948,London,NA,9,469,GBR
+"Geoffrey Hurndall ""Geoff"" Mandy",28,NA,NA,South Africa,RSA,1948 Summer,1948,London,NA,9,148,GBR
+Louis Walter George Marchant,32,NA,NA,Great Britain,GBR,1948 Summer,1948,London,NA,9,296,GBR
+Haroldo Mariano,19,NA,NA,Brazil,BRA,1948 Summer,1948,London,NA,9,185,GBR
+Diego Mariscal Abascal,22,NA,NA,Mexico,MEX,1948 Summer,1948,London,NA,9,94,GBR
+Raymond Mulinghausen,27,NA,NA,France,FRA,1948 Summer,1948,London,NA,9,364,GBR
+Heikki Ilmari Niemelinen,37,NA,NA,Finland,FIN,1948 Summer,1948,London,NA,9,187,GBR
+Willy Rist,NA,NA,NA,Switzerland,SUI,1948 Summer,1948,London,NA,9,477,GBR
+Zouheir Al-Shourbagi,NA,NA,NA,Syria,SYR,1948 Summer,1948,London,NA,9,492,GBR
+Gustavo Adolfo Somohano Winfield,23,NA,NA,Mexico,MEX,1948 Summer,1948,London,NA,9,176,GBR
+Rolf Mrck Stigersand,31,NA,NA,Norway,NOR,1948 Summer,1948,London,NA,9,385,GBR
+Ernst Strupler (-Wespi),29,NA,NA,Switzerland,SUI,1948 Summer,1948,London,NA,9,120,GBR
+Gordon Frank Ward,27,NA,NA,Great Britain,GBR,1948 Summer,1948,London,NA,9,164,GBR
+Franz Worisch,22,NA,NA,Austria,AUT,1948 Summer,1948,London,NA,9,140,GBR
+Gnther Haase,27,NA,NA,Germany,GER,1952 Summer,1952,Helsinki,Bronze,10,161,FIN
+"Samuel ""Sammy"" Lee",31,NA,NA,United States,USA,1952 Summer,1952,Helsinki,Gold,10,400,FIN
+Joaqun Capilla Prez,23,168,NA,Mexico,MEX,1952 Summer,1952,Helsinki,Silver,10,226,FIN
+Mohamed Fakhry Rifaat Abbas,19,NA,NA,Egypt,EGY,1952 Summer,1952,Helsinki,NA,10,327,FIN
+Ahmed Kamel Aly,27,NA,NA,Egypt,EGY,1952 Summer,1952,Helsinki,NA,10,9,FIN
+Aleksandr Bakatin,NA,NA,NA,Soviet Union,URS,1952 Summer,1952,Helsinki,NA,10,20,FIN
+Roman Borysovych Brener,20,NA,NA,Soviet Union,URS,1952 Summer,1952,Helsinki,NA,10,387,FIN
+John Collier Calhoun,27,NA,NA,United States,USA,1952 Summer,1952,Helsinki,NA,10,234,FIN
+Alberto Capilla Prez,25,170,NA,Mexico,MEX,1952 Summer,1952,Helsinki,NA,10,13,FIN
+Mikhail Chachba,NA,NA,NA,Soviet Union,URS,1952 Summer,1952,Helsinki,NA,10,321,FIN
+Thomas Knud Christiansen,32,NA,NA,Denmark,DEN,1952 Summer,1952,Helsinki,NA,10,434,FIN
+Fritz Geyer,27,NA,NA,Germany,GER,1952 Summer,1952,Helsinki,NA,10,144,FIN
+Jacob Christian Lune Gjerding,23,NA,NA,Denmark,DEN,1952 Summer,1952,Helsinki,NA,10,208,FIN
+Arie Richard Hanitzsch,24,NA,NA,Brazil,BRA,1952 Summer,1952,Helsinki,NA,10,44,FIN
+Kamal Ali Hassan,28,NA,NA,Egypt,EGY,1952 Summer,1952,Helsinki,NA,10,259,FIN
+Peter Heatly,28,NA,NA,Great Britain,GBR,1952 Summer,1952,Helsinki,NA,10,355,FIN
+Julius Janowsky,21,NA,NA,Austria,AUT,1952 Summer,1952,Helsinki,NA,10,254,FIN
+Jarl Birger Kivel,31,175,77,Finland,FIN,1952 Summer,1952,Helsinki,NA,10,213,FIN
+Kurt Liederer,25,NA,NA,Austria,AUT,1952 Summer,1952,Helsinki,NA,10,281,FIN
+Lamberto Mari,18,172,75,Italy,ITA,1952 Summer,1952,Helsinki,NA,10,284,FIN
+John William McCormack,26,NA,NA,United States,USA,1952 Summer,1952,Helsinki,NA,10,238,FIN
+Katsuichi Mori,22,NA,NA,Japan,JPN,1952 Summer,1952,Helsinki,NA,10,266,FIN
+Raymond Mulinghausen,31,NA,NA,France,FRA,1952 Summer,1952,Helsinki,NA,10,364,FIN
+"Francis Thomas ""Frank"" Murphy",23,NA,NA,Australia,AUS,1952 Summer,1952,Helsinki,NA,10,133,FIN
+Toivo Sture hman,19,165,65,Sweden,SWE,1952 Summer,1952,Helsinki,NA,10,441,FIN
+Rodolfo Perea Cifuentes,22,NA,NA,Mexico,MEX,1952 Summer,1952,Helsinki,NA,10,384,FIN
+Yoav Ra'anan,24,NA,NA,Israel,ISR,1952 Summer,1952,Helsinki,NA,10,485,FIN
+Heinz Schaub,23,NA,NA,Switzerland,SUI,1952 Summer,1952,Helsinki,NA,10,190,FIN
+Werner Sobek,30,NA,NA,Germany,GER,1952 Summer,1952,Helsinki,NA,10,466,FIN
+"Anthony Abraham ""Tony"" Turner",19,NA,NA,Great Britain,GBR,1952 Summer,1952,Helsinki,NA,10,38,FIN
+Franz Worisch,26,NA,NA,Austria,AUT,1952 Summer,1952,Helsinki,NA,10,140,FIN
+"Richard Carroll ""Dick"" Connor",22,167,64,United States,USA,1956 Summer,1956,Melbourne,Bronze,11,370,AUS
+Joaqun Capilla Prez,27,168,NA,Mexico,MEX,1956 Summer,1956,Melbourne,Gold,11,226,AUS
+Gary Milburn Tobian,21,183,73,United States,USA,1956 Summer,1956,Melbourne,Silver,11,146,AUS
+Yutaka Baba,22,NA,NA,Japan,JPN,1956 Summer,1956,Melbourne,NA,11,490,AUS
+Juan Botella Medina,15,170,68,Mexico,MEX,1956 Summer,1956,Melbourne,NA,11,251,AUS
+Roman Borysovych Brener,24,NA,NA,Soviet Union,URS,1956 Summer,1956,Melbourne,NA,11,387,AUS
+Raymond Eric Cann,18,NA,NA,Great Britain,GBR,1956 Summer,1956,Melbourne,NA,11,363,AUS
+Alberto Capilla Prez,29,170,NA,Mexico,MEX,1956 Summer,1956,Melbourne,NA,11,13,AUS
+Mikhail Chachba,NA,NA,NA,Soviet Union,URS,1956 Summer,1956,Melbourne,NA,11,321,AUS
+"William Cesar ""Willie"" Farrell",22,170,69,United States,USA,1956 Summer,1956,Melbourne,NA,11,471,AUS
+Gennady Aleksandrovich Galkin,22,168,68,Soviet Union,URS,1956 Summer,1956,Melbourne,NA,11,147,AUS
+Jzsef Gerlach,18,NA,NA,Hungary,HUN,1956 Summer,1956,Melbourne,NA,11,257,AUS
+Barry Holmes,21,165,63,Australia,AUS,1956 Summer,1956,Melbourne,NA,11,51,AUS
+Ryo Mabuchi,23,167,60,Japan,JPN,1956 Summer,1956,Melbourne,NA,11,395,AUS
+Gnther Otto Mund Borgs,NA,NA,NA,Chile,CHI,1956 Summer,1956,Melbourne,NA,11,162,AUS
+"Francis Thomas ""Frank"" Murphy",28,NA,NA,Australia,AUS,1956 Summer,1956,Melbourne,NA,11,133,AUS
+"William C. ""Bill"" Patrick",24,NA,NA,Canada,CAN,1956 Summer,1956,Melbourne,NA,11,470,AUS
+Ferenc Sik,23,NA,NA,Hungary,HUN,1956 Summer,1956,Melbourne,NA,11,128,AUS
+Peter David Tarsey,19,NA,NA,Great Britain,GBR,1956 Summer,1956,Melbourne,NA,11,353,AUS
+William Tully,NA,NA,NA,Australia,AUS,1956 Summer,1956,Melbourne,NA,11,476,AUS
+Helge Allan Arthur Vasenius (-Wasenius),29,NA,NA,Finland,FIN,1956 Summer,1956,Melbourne,NA,11,191,AUS
+Roy Walsh,20,NA,NA,Great Britain,GBR,1956 Summer,1956,Melbourne,NA,11,392,AUS
+Brian Eric Phelps,16,168,67,Great Britain,GBR,1960 Summer,1960,Roma,Bronze,12,56,ITA
+"Robert David ""Bob"" Webster",21,175,63,United States,USA,1960 Summer,1960,Roma,Gold,12,379,ITA
+Gary Milburn Tobian,25,183,73,United States,USA,1960 Summer,1960,Roma,Silver,12,146,ITA
+Tom Bauer,27,175,79,Czechoslovakia,TCH,1960 Summer,1960,Roma,NA,12,442,ITA
+John Candler,20,168,65,Great Britain,GBR,1960 Summer,1960,Roma,NA,12,233,ITA
+Jzsef Dra,19,171,54,Hungary,HUN,1960 Summer,1960,Roma,NA,12,256,ITA
+Fritz Enskat,21,175,72,Germany,GER,1960 Summer,1960,Roma,NA,12,143,ITA
+Gennady Aleksandrovich Galkin,26,168,68,Soviet Union,URS,1960 Summer,1960,Roma,NA,12,147,ITA
+Juan lvaro Jos Gaxiola Robles,23,171,61,Mexico,MEX,1960 Summer,1960,Roma,NA,12,253,ITA
+Moustafa Hassan,NA,NA,NA,United Arab Republic,UAR,1960 Summer,1960,Roma,NA,12,329,ITA
+Pekka Kalevi Heinonen,20,184,70,Finland,FIN,1960 Summer,1960,Roma,NA,12,351,ITA
+Barry Holmes,25,165,63,Australia,AUS,1960 Summer,1960,Roma,NA,12,51,ITA
+Shunsuke Kaneto,20,154,50,Japan,JPN,1960 Summer,1960,Roma,NA,12,410,ITA
+Jnos Konkoly,20,171,65,Hungary,HUN,1960 Summer,1960,Roma,NA,12,225,ITA
+Jerzy Kowalewski,16,172,68,Poland,POL,1960 Summer,1960,Roma,NA,12,220,ITA
+Lee Pil-Jung,23,169,53,South Korea,KOR,1960 Summer,1960,Roma,NA,12,287,ITA
+Gran Carl Oscar Lundqvist,19,175,75,Sweden,SWE,1960 Summer,1960,Roma,NA,12,168,ITA
+Ryo Mabuchi,27,167,60,Japan,JPN,1960 Summer,1960,Roma,NA,12,395,ITA
+Roberto Madrigal Garca,19,170,65,Mexico,MEX,1960 Summer,1960,Roma,NA,12,381,ITA
+"Ernest ""Ernie"" Meissner",23,176,74,Canada,CAN,1960 Summer,1960,Roma,NA,12,116,ITA
+Ahmed H. Moharran,NA,NA,NA,United Arab Republic,UAR,1960 Summer,1960,Roma,NA,12,8,ITA
+Kurt Mrkwicka,23,179,74,Austria,AUT,1960 Summer,1960,Roma,NA,12,282,ITA
+Toivo Sture hman,27,165,65,Sweden,SWE,1960 Summer,1960,Roma,NA,12,441,ITA
+Fabio Pajella,21,167,60,Italy,ITA,1960 Summer,1960,Roma,NA,12,125,ITA
+Henri Rouquet,18,170,67,France,FRA,1960 Summer,1960,Roma,NA,12,194,ITA
+Antonio Sbordone,28,170,65,Italy,ITA,1960 Summer,1960,Roma,NA,12,42,ITA
+Rolf Sperling,20,165,65,Germany,GER,1960 Summer,1960,Roma,NA,12,386,ITA
+Anatoly Sysoyev,23,167,60,Soviet Union,URS,1960 Summer,1960,Roma,NA,12,30,ITA
+"Thomas Eugen ""Tom"" Gompf",25,180,75,United States,USA,1964 Summer,1964,Tokyo,Bronze,13,428,JPN
+"Robert David ""Bob"" Webster",25,175,63,United States,USA,1964 Summer,1964,Tokyo,Gold,13,379,JPN
+Klaus Dibiasi,17,180,74,Italy,ITA,1964 Summer,1964,Tokyo,Silver,13,275,JPN
+"Jerome Herbert ""Jerry"" Anderson",32,169,70,Puerto Rico,PUR,1964 Summer,1964,Tokyo,NA,13,219,JPN
+Yosuke Arimitsu,20,166,57,Japan,JPN,1964 Summer,1964,Tokyo,NA,13,487,JPN
+Franco Giorgio Cagnotto,17,163,60,Italy,ITA,1964 Summer,1964,Tokyo,NA,13,135,JPN
+"Thomas Edward ""Tom"" Dinsley",23,166,64,Canada,CAN,1964 Summer,1964,Tokyo,NA,13,427,JPN
+Jzsef Dra,23,171,54,Hungary,HUN,1964 Summer,1964,Tokyo,NA,13,256,JPN
+Juan lvaro Jos Gaxiola Robles,27,171,61,Mexico,MEX,1964 Summer,1964,Tokyo,NA,13,253,JPN
+Diego Henao,17,170,68,Colombia,COL,1964 Summer,1964,Tokyo,NA,13,93,JPN
+Jo Chang-Je,21,168,64,South Korea,KOR,1964 Summer,1964,Tokyo,NA,13,227,JPN
+Shunsuke Kaneto,24,154,50,Japan,JPN,1964 Summer,1964,Tokyo,NA,13,410,JPN
+"Anthony Michael ""Tony"" Kitcher",23,175,74,Great Britain,GBR,1964 Summer,1964,Tokyo,NA,13,40,JPN
+Klaus Konzorr,24,169,67,Germany,GER,1964 Summer,1964,Tokyo,NA,13,276,JPN
+Igor Lobanov,18,167,60,Soviet Union,URS,1964 Summer,1964,Tokyo,NA,13,203,JPN
+Roberto Madrigal Garca,23,170,65,Mexico,MEX,1964 Summer,1964,Tokyo,NA,13,381,JPN
+Kurt Mrkwicka,27,179,74,Austria,AUT,1964 Summer,1964,Tokyo,NA,13,282,JPN
+Luis Nio de Rivera,18,177,64,Mexico,MEX,1964 Summer,1964,Tokyo,NA,13,303,JPN
+Toshio Otsubo,21,169,63,Japan,JPN,1964 Summer,1964,Tokyo,NA,13,449,JPN
+Viktor Palagin,19,163,59,Soviet Union,URS,1964 Summer,1964,Tokyo,NA,13,456,JPN
+Brian Eric Phelps,20,168,67,Great Britain,GBR,1964 Summer,1964,Tokyo,NA,13,56,JPN
+Viktor Pogozhev,23,163,61,Soviet Union,URS,1964 Summer,1964,Tokyo,NA,13,457,JPN
+"Terence ""Terry"" Rossiter",20,170,75,Zimbabwe,ZIM,1964 Summer,1964,Tokyo,NA,13,426,JPN
+Sohan Singh,28,164,61,India,IND,1964 Summer,1964,Tokyo,NA,13,415,JPN
+Song Jae-Ung,19,170,68,South Korea,KOR,1964 Summer,1964,Tokyo,NA,13,416,JPN
+Rolf Sperling,24,165,65,Germany,GER,1964 Summer,1964,Tokyo,NA,13,386,JPN
+Sren Svejstrup,26,179,77,Denmark,DEN,1964 Summer,1964,Tokyo,NA,13,418,JPN
+"Louis Vincent ""Lou"" Vitucci",23,175,66,United States,USA,1964 Summer,1964,Tokyo,NA,13,295,JPN
+Gerd Vlker,22,167,67,Germany,GER,1964 Summer,1964,Tokyo,NA,13,154,JPN
+William Ralph Wood,18,160,58,Great Britain,GBR,1964 Summer,1964,Tokyo,NA,13,474,JPN
+"Edwin Frank ""Win"" Young",21,175,63,United States,USA,1968 Summer,1968,Mexico City,Bronze,14,103,MEX
+Klaus Dibiasi,21,180,74,Italy,ITA,1968 Summer,1968,Mexico City,Gold,14,275,MEX
+Juan lvaro Jos Gaxiola Robles,31,171,61,Mexico,MEX,1968 Summer,1968,Mexico City,Silver,14,253,MEX
+Waguih Rauf Aboul Seoud,22,NA,NA,Egypt,EGY,1968 Summer,1968,Mexico City,NA,14,464,MEX
+"Jerome Herbert ""Jerry"" Anderson",36,169,70,Puerto Rico,PUR,1968 Summer,1968,Mexico City,NA,14,219,MEX
+Tord Gran Andersson,26,183,70,Sweden,SWE,1968 Summer,1968,Mexico City,NA,14,448,MEX
+Yosuke Arimitsu,24,166,57,Japan,JPN,1968 Summer,1968,Mexico City,NA,14,487,MEX
+Hctor Bas,17,163,63,Puerto Rico,PUR,1968 Summer,1968,Mexico City,NA,14,186,MEX
+Robin Baskerville,18,177,76,Great Britain,GBR,1968 Summer,1968,Mexico City,NA,14,383,MEX
+Franco Giorgio Cagnotto,21,163,60,Italy,ITA,1968 Summer,1968,Mexico City,NA,14,135,MEX
+"Robert ""Bob"" Eaton",16,168,59,Canada,CAN,1968 Summer,1968,Mexico City,NA,14,377,MEX
+"Richard Walter ""Rick"" Gilbert",25,169,66,United States,USA,1968 Summer,1968,Mexico City,NA,14,373,MEX
+Diego Henao,21,170,68,Colombia,COL,1968 Summer,1968,Mexico City,NA,14,93,MEX
+Klaus Konzorr,28,169,67,West Germany,FRG,1968 Summer,1968,Mexico City,NA,14,276,MEX
+Jerzy Kowalewski,24,172,68,Poland,POL,1968 Summer,1968,Mexico City,NA,14,220,MEX
+Lothar Matthes,21,173,67,East Germany,GDR,1968 Summer,1968,Mexico City,NA,14,293,MEX
+Wodzimierz Mejsak,23,165,55,Poland,POL,1968 Summer,1968,Mexico City,NA,14,478,MEX
+Alberto Moreno Yera,18,171,75,Cuba,CUB,1968 Summer,1968,Mexico City,NA,14,15,MEX
+Luis Nio de Rivera,22,177,64,Mexico,MEX,1968 Summer,1968,Mexico City,NA,14,303,MEX
+Toshio Otsubo,25,169,63,Japan,JPN,1968 Summer,1968,Mexico City,NA,14,449,MEX
+Viktor Pogozhev,27,163,61,Soviet Union,URS,1968 Summer,1968,Mexico City,NA,14,457,MEX
+Jos Luis Ponce Carratala,19,180,76,Cuba,CUB,1968 Summer,1968,Mexico City,NA,14,249,MEX
+David Priestley,22,170,67,Great Britain,GBR,1968 Summer,1968,Mexico City,NA,14,91,MEX
+Jakub Puchow,20,179,71,Poland,POL,1968 Summer,1968,Mexico City,NA,14,210,MEX
+Jos de Jess Robinson Gonzlez,23,178,68,Mexico,MEX,1968 Summer,1968,Mexico City,NA,14,244,MEX
+John Keith Russell,20,188,73,United States,USA,1968 Summer,1968,Mexico City,NA,14,236,MEX
+Mikhail Safonov,21,178,78,Soviet Union,URS,1968 Summer,1968,Mexico City,NA,14,322,MEX
+Karlheinz Schwemmer,25,171,69,West Germany,FRG,1968 Summer,1968,Mexico City,NA,14,263,MEX
+Song Jae-Ung,23,170,68,South Korea,KOR,1968 Summer,1968,Mexico City,NA,14,416,MEX
+Rolf Sperling,28,165,65,East Germany,GDR,1968 Summer,1968,Mexico City,NA,14,386,MEX
+Kenneth Sully,17,176,70,Canada,CAN,1968 Summer,1968,Mexico City,NA,14,270,MEX
+Vladimir Alekseyevich Vasin,21,175,73,Soviet Union,URS,1968 Summer,1968,Mexico City,NA,14,460,MEX
+"Donald Douglas ""Don"" Wagstaff",19,170,68,Australia,AUS,1968 Summer,1968,Mexico City,NA,14,101,MEX
+Bernd Wucherpfennig,27,177,68,West Germany,FRG,1968 Summer,1968,Mexico City,NA,14,53,MEX
+Junji Yuasa,24,172,64,Japan,JPN,1968 Summer,1968,Mexico City,NA,14,255,MEX
+Franco Giorgio Cagnotto,25,163,60,Italy,ITA,1972 Summer,1972,Munich,Bronze,15,135,GER
+Klaus Dibiasi,24,180,74,Italy,ITA,1972 Summer,1972,Munich,Gold,15,275,GER
+"Richard Anthony ""Dick"" Rydze",22,170,63,United States,USA,1972 Summer,1972,Munich,Silver,15,368,GER
+Hctor Bas,21,163,63,Puerto Rico,PUR,1972 Summer,1972,Munich,NA,15,186,GER
+Porfirio Becerril,17,178,66,Mexico,MEX,1972 Summer,1972,Munich,NA,15,356,GER
+Scott Cranham,17,168,61,Canada,CAN,1972 Summer,1972,Munich,NA,15,404,GER
+Jacques Deschouwer,26,173,67,France,FRA,1972 Summer,1972,Munich,NA,15,209,GER
+Seain Frank Dufficy,19,167,68,Great Britain,GBR,1972 Summer,1972,Munich,NA,15,406,GER
+"Richard Douglas ""Rick"" Earley",28,170,63,United States,USA,1972 Summer,1972,Munich,NA,15,371,GER
+"Michael Holman ""Mike"" Finneran",23,178,73,United States,USA,1972 Summer,1972,Munich,NA,15,317,GER
+"Ronald George ""Ron"" Friesen",23,178,71,Canada,CAN,1972 Summer,1972,Munich,NA,15,390,GER
+Ion Ganea,27,178,78,Romania,ROU,1972 Summer,1972,Munich,NA,15,205,GER
+Aleksandr Afanasyevich Gendrikson,17,172,59,Soviet Union,URS,1972 Summer,1972,Munich,NA,15,19,GER
+Andrew Michael Gill,24,175,80,Great Britain,GBR,1972 Summer,1972,Munich,NA,15,34,GER
+Carlos Armando Girn Gutirrez,17,174,75,Mexico,MEX,1972 Summer,1972,Munich,NA,15,65,GER
+"Kenneth ""Ken"" Grove",19,174,68,Australia,AUS,1972 Summer,1972,Munich,NA,15,269,GER
+Davit Hambardzumyan,16,175,74,Soviet Union,URS,1972 Summer,1972,Munich,NA,15,92,GER
+Jorge Head Ladeveze,23,166,60,Spain,ESP,1972 Summer,1972,Munich,NA,15,241,GER
+Diego Henao,25,170,68,Colombia,COL,1972 Summer,1972,Munich,NA,15,93,GER
+Falk Hoffmann,19,173,65,East Germany,GDR,1972 Summer,1972,Munich,NA,15,126,GER
+Vladimir Kapirulin,18,NA,NA,Soviet Union,URS,1972 Summer,1972,Munich,NA,15,461,GER
+Klaus Konzorr,31,169,67,West Germany,FRG,1972 Summer,1972,Munich,NA,15,276,GER
+Rudolf Kruspel,21,169,65,Austria,AUT,1972 Summer,1972,Munich,NA,15,394,GER
+Lothar Matthes,25,173,67,East Germany,GDR,1972 Summer,1972,Munich,NA,15,293,GER
+Jakub Puchow,24,179,71,Poland,POL,1972 Summer,1972,Munich,NA,15,210,GER
+Wolfram Ristau,18,172,68,East Germany,GDR,1972 Summer,1972,Munich,NA,15,479,GER
+Jos de Jess Robinson Gonzlez,27,178,68,Mexico,MEX,1972 Summer,1972,Munich,NA,15,244,GER
+Sandro Rossi,26,169,62,Switzerland,SUI,1972 Summer,1972,Munich,NA,15,401,GER
+Karlheinz Schwemmer,29,171,69,West Germany,FRG,1972 Summer,1972,Munich,NA,15,263,GER
+"Nikola ""Niki"" Stajkovic",13,181,78,Austria,AUT,1972 Summer,1972,Munich,NA,15,334,GER
+Kenneth Sully,21,176,70,Canada,CAN,1972 Summer,1972,Munich,NA,15,270,GER
+"Donald Douglas ""Don"" Wagstaff",23,170,68,Australia,AUS,1972 Summer,1972,Munich,NA,15,101,GER
+Brian Albert Wetheridge,19,155,57,Great Britain,GBR,1972 Summer,1972,Munich,NA,15,55,GER
+Bernd Wucherpfennig,31,177,68,West Germany,FRG,1972 Summer,1972,Munich,NA,15,53,GER
+Junji Yuasa,27,172,64,Japan,JPN,1972 Summer,1972,Munich,NA,15,255,GER
+Vladimir Petrovich Aleynik,23,184,74,Soviet Union,URS,1976 Summer,1976,Montreal,Bronze,16,462,CAN
+Klaus Dibiasi,28,180,74,Italy,ITA,1976 Summer,1976,Montreal,Gold,16,275,CAN
+"Gregory Efthimios ""Greg"" Louganis",16,175,73,United States,USA,1976 Summer,1976,Montreal,Silver,16,169,CAN
+"Kenneth ""Ken"" Armstrong",22,NA,NA,Canada,CAN,1976 Summer,1976,Montreal,NA,16,268,CAN
+Milton Jorge Machado Braga,22,166,62,Brazil,BRA,1976 Summer,1976,Montreal,NA,16,323,CAN
+Martyn Brown,23,176,71,Great Britain,GBR,1976 Summer,1976,Montreal,NA,16,309,CAN
+Scott Cranham,21,168,61,Canada,CAN,1976 Summer,1976,Montreal,NA,16,404,CAN
+Claudio De Miro,19,NA,NA,Italy,ITA,1976 Summer,1976,Montreal,NA,16,75,CAN
+Dieter Drr,19,167,61,West Germany,FRG,1976 Summer,1976,Montreal,NA,16,95,CAN
+"Stephen Neil ""Steve"" Foley",19,182,78,Australia,AUS,1976 Summer,1976,Montreal,NA,16,422,CAN
+Carlos Armando Girn Gutirrez,21,174,75,Mexico,MEX,1976 Summer,1976,Montreal,NA,16,65,CAN
+Glen Grout,34,NA,NA,Canada,CAN,1976 Summer,1976,Montreal,NA,16,160,CAN
+Davit Hambardzumyan,20,175,74,Soviet Union,URS,1976 Summer,1976,Montreal,NA,16,92,CAN
+Falk Hoffmann,23,173,65,East Germany,GDR,1976 Summer,1976,Montreal,NA,16,126,CAN
+"Patrick Timothy ""Tim"" Moore",22,165,62,United States,USA,1976 Summer,1976,Montreal,NA,16,349,CAN
+Sergey Vasilyevich Nemtsanov,17,168,56,Soviet Union,URS,1976 Summer,1976,Montreal,NA,16,409,CAN
+Yoshino Nishide,21,NA,NA,Japan,JPN,1976 Summer,1976,Montreal,NA,16,486,CAN
+"Nikola ""Niki"" Stajkovic",17,181,78,Austria,AUT,1976 Summer,1976,Montreal,NA,16,334,CAN
+Nelson Surez,19,NA,NA,Ecuador,ECU,1976 Summer,1976,Montreal,NA,16,330,CAN
+Jol Suty,16,167,62,France,FRA,1976 Summer,1976,Montreal,NA,16,239,CAN
+Frank Taubert,20,172,70,East Germany,GDR,1976 Summer,1976,Montreal,NA,16,138,CAN
+Ricardo Velarde,22,NA,NA,Mexico,MEX,1976 Summer,1976,Montreal,NA,16,367,CAN
+Kent Douglas Vosler,20,165,61,United States,USA,1976 Summer,1976,Montreal,NA,16,271,CAN
+"Donald Douglas ""Don"" Wagstaff",26,170,68,Australia,AUS,1976 Summer,1976,Montreal,NA,16,101,CAN
+Dieter Waskow,19,168,55,East Germany,GDR,1976 Summer,1976,Montreal,NA,16,96,CAN
+Davit Hambardzumyan,24,175,74,Soviet Union,URS,1980 Summer,1980,Moskva,Bronze,17,92,RUS
+Falk Hoffmann,27,173,65,East Germany,GDR,1980 Summer,1980,Moskva,Gold,17,126,RUS
+Vladimir Petrovich Aleynik,27,184,74,Soviet Union,URS,1980 Summer,1980,Moskva,Silver,17,462,RUS
+"Alexandru Adrian ""Alex"" Bagiu",NA,167,68,Romania,ROU,1980 Summer,1980,Moskva,NA,17,25,RUS
+Milton Jorge Machado Braga,26,166,62,Brazil,BRA,1980 Summer,1980,Moskva,NA,17,323,RUS
+Martyn Brown,27,176,71,Great Britain,GBR,1980 Summer,1980,Moskva,NA,17,309,RUS
+"Stephen Neil ""Steve"" Foley",23,182,78,Australia,AUS,1980 Summer,1980,Moskva,NA,17,422,RUS
+Petar Georgiev,19,173,66,Bulgaria,BUL,1980 Summer,1980,Moskva,NA,17,352,RUS
+Carlos Armando Girn Gutirrez,25,174,75,Mexico,MEX,1980 Summer,1980,Moskva,NA,17,65,RUS
+"Kenneth ""Ken"" Grove",27,174,68,Austria,AUT,1980 Summer,1980,Moskva,NA,17,269,RUS
+Csar Augusto Jimenez,20,168,64,Dominican Republic,DOM,1980 Summer,1980,Moskva,NA,17,80,RUS
+Thomas Knuths,21,177,67,East Germany,GDR,1980 Summer,1980,Moskva,NA,17,435,RUS
+Abdullah Abdulrazaq Mayouf,20,NA,NA,Kuwait,KUW,1980 Summer,1980,Moskva,NA,17,3,RUS
+Kroly Nmedi,20,176,63,Hungary,HUN,1980 Summer,1980,Moskva,NA,17,279,RUS
+Sergey Vasilyevich Nemtsanov,21,168,56,Soviet Union,URS,1980 Summer,1980,Moskva,NA,17,409,RUS
+David Neale Parrington,24,186,91,Zimbabwe,ZIM,1980 Summer,1980,Moskva,NA,17,89,RUS
+Radoslav Radev,20,172,65,Bulgaria,BUL,1980 Summer,1980,Moskva,NA,17,359,RUS
+Francisco Javier Rueda Amezquita,21,178,70,Mexico,MEX,1980 Summer,1980,Moskva,NA,17,132,RUS
+"Christopher ""Chris"" Snode",21,173,72,Great Britain,GBR,1980 Summer,1980,Moskva,NA,17,71,RUS
+Salvador Sobrino,21,175,70,Mexico,MEX,1980 Summer,1980,Moskva,NA,17,397,RUS
+"Nikola ""Niki"" Stajkovic",21,181,78,Austria,AUT,1980 Summer,1980,Moskva,NA,17,334,RUS
+Claus Bernth Thomsen,21,174,69,Denmark,DEN,1980 Summer,1980,Moskva,NA,17,76,RUS
+Dieter Waskow,23,168,55,East Germany,GDR,1980 Summer,1980,Moskva,NA,17,96,RUS
+Li Kongzheng,25,164,58,China,CHN,1984 Summer,1984,Los Angeles,Bronze,18,291,USA
+"Gregory Efthimios ""Greg"" Louganis",24,175,73,United States,USA,1984 Summer,1984,Los Angeles,Gold,18,169,USA
+Bruce D. Kimball,21,172,62,United States,USA,1984 Summer,1984,Los Angeles,Silver,18,57,USA
+Abdullah Abuqrais,25,163,65,Kuwait,KUW,1984 Summer,1984,Los Angeles,NA,18,4,USA
+David Peter Bdard,18,170,73,Canada,CAN,1984 Summer,1984,Los Angeles,NA,18,90,USA
+Said Daw,24,173,71,Egypt,EGY,1984 Summer,1984,Los Angeles,NA,18,396,USA
+Luis Diguez Daz-Valero,17,174,69,Spain,ESP,1984 Summer,1984,Los Angeles,NA,18,302,USA
+Dieter Drr,27,167,61,West Germany,FRG,1984 Summer,1984,Los Angeles,NA,18,95,USA
+"Stephen Neil ""Steve"" Foley",27,182,78,Australia,AUS,1984 Summer,1984,Los Angeles,NA,18,422,USA
+Amro Hassan,16,173,64,Egypt,EGY,1984 Summer,1984,Los Angeles,NA,18,28,USA
+Csar Henderson,NA,NA,NA,Dominican Republic,DOM,1984 Summer,1984,Los Angeles,NA,18,81,USA
+Albin Killat,23,179,69,West Germany,FRG,1984 Summer,1984,Los Angeles,NA,18,18,USA
+"Andrew ""Andy"" Kwan",21,176,66,Hong Kong,HKG,1984 Summer,1984,Los Angeles,NA,18,33,USA
+Tom Lemaire,24,185,72,Belgium,BEL,1984 Summer,1984,Los Angeles,NA,18,444,USA
+"Robert ""Bob"" Morgan",17,174,72,Great Britain,GBR,1984 Summer,1984,Los Angeles,NA,18,378,USA
+Masashi Nakashima,22,170,59,Japan,JPN,1984 Summer,1984,Los Angeles,NA,18,310,USA
+Park Jong-Ryong,22,165,62,South Korea,KOR,1984 Summer,1984,Los Angeles,NA,18,346,USA
+Domenico Rinaldi,25,170,65,Italy,ITA,1984 Summer,1984,Los Angeles,NA,18,99,USA
+Jos Luis Rocha,18,165,65,Mexico,MEX,1984 Summer,1984,Los Angeles,NA,18,250,USA
+"Marcus ""Mark"" Rourke",15,170,72,Canada,CAN,1984 Summer,1984,Los Angeles,NA,18,305,USA
+"Christopher ""Chris"" Snode",25,173,72,Great Britain,GBR,1984 Summer,1984,Los Angeles,NA,18,71,USA
+Alaeddin Soueidan,13,148,37,Syria,SYR,1984 Summer,1984,Los Angeles,NA,18,10,USA
+Tong Hui,21,160,45,China,CHN,1984 Summer,1984,Los Angeles,NA,18,445,USA
+Jon Grunde Vegard,26,188,82,Norway,NOR,1984 Summer,1984,Los Angeles,NA,18,240,USA
+Isao Yamagishi,17,172,65,Japan,JPN,1984 Summer,1984,Los Angeles,NA,18,206,USA
+Miguel Angel Zavala,23,173,64,Mexico,MEX,1984 Summer,1984,Los Angeles,NA,18,320,USA
+Jess Mena Campos,20,166,65,Mexico,MEX,1988 Summer,1988,Seoul,Bronze,19,223,KOR
+"Gregory Efthimios ""Greg"" Louganis",28,175,73,United States,USA,1988 Summer,1988,Seoul,Gold,19,169,KOR
+Xiong Ni,14,166,55,China,CHN,1988 Summer,1988,Seoul,Silver,19,482,KOR
+Jeffrey John Arbon,20,NA,NA,Great Britain,GBR,1988 Summer,1988,Seoul,NA,19,216,KOR
+Graeme Lachlan Banks,19,175,75,Australia,AUS,1988 Summer,1988,Seoul,NA,19,167,KOR
+David Peter Bdard,22,170,73,Canada,CAN,1988 Summer,1988,Seoul,NA,19,90,KOR
+Oscar Bertone,20,NA,NA,Italy,ITA,1988 Summer,1988,Seoul,NA,19,340,KOR
+Giorgi Chogovadze,19,178,68,Soviet Union,URS,1988 Summer,1988,Seoul,NA,19,158,KOR
+Steffen Haage,23,165,63,East Germany,GDR,1988 Summer,1988,Seoul,NA,19,421,KOR
+Jan Hempel,17,168,62,East Germany,GDR,1988 Summer,1988,Seoul,NA,19,212,KOR
+"Jeffrey ""Jeff"" Hirst",24,170,67,Canada,CAN,1988 Summer,1988,Seoul,NA,19,215,KOR
+Patrick S. Jeffrey,23,168,68,United States,USA,1988 Summer,1988,Seoul,NA,19,348,KOR
+Keita Kaneto,21,174,68,Japan,JPN,1988 Summer,1988,Seoul,NA,19,267,KOR
+Albin Killat,27,179,69,West Germany,FRG,1988 Summer,1988,Seoul,NA,19,18,KOR
+Lee Seon-Gi,23,NA,NA,South Korea,KOR,1988 Summer,1988,Seoul,NA,19,288,KOR
+Tom Lemaire,28,185,72,Belgium,BEL,1988 Summer,1988,Seoul,NA,19,444,KOR
+Li Kongzheng,29,164,58,China,CHN,1988 Summer,1988,Seoul,NA,19,291,KOR
+"Wilfried ""Willi"" Meyer",23,168,63,West Germany,FRG,1988 Summer,1988,Seoul,NA,19,468,KOR
+Jorge Mondragn Vzquez,25,167,64,Mexico,MEX,1988 Summer,1988,Seoul,NA,19,242,KOR
+"Robert ""Bob"" Morgan",21,174,72,Great Britain,GBR,1988 Summer,1988,Seoul,NA,19,378,KOR
+Frdric Pierre,19,172,66,France,FRA,1988 Summer,1988,Seoul,NA,19,141,KOR
+Emilio Ratia Vidal,20,178,74,Spain,ESP,1988 Summer,1988,Seoul,NA,19,108,KOR
+Domenico Rinaldi,29,170,65,Italy,ITA,1988 Summer,1988,Seoul,NA,19,99,KOR
+Craig William Rogerson,23,168,63,Australia,AUS,1988 Summer,1988,Seoul,NA,19,79,KOR
+Vladimir Aleksandrovich Timoshinin,18,168,68,Soviet Union,URS,1988 Summer,1988,Seoul,NA,19,459,KOR
+Isao Yamagishi,22,172,65,Japan,JPN,1988 Summer,1988,Seoul,NA,19,206,KOR
+Xiong Ni,18,166,55,China,CHN,1992 Summer,1992,Barcelona,Bronze,20,482,ESP
+Sun Shuwei,16,155,45,China,CHN,1992 Summer,1992,Barcelona,Gold,20,424,ESP
+Scott Richard Donie,23,175,77,United States,USA,1992 Summer,1992,Barcelona,Silver,20,405,ESP
+Alberto Enrique Acosta Palma,19,NA,NA,Mexico,MEX,1992 Summer,1992,Barcelona,NA,20,14,ESP
+Rafael lvarez Serrano,20,171,68,Spain,ESP,1992 Summer,1992,Barcelona,NA,20,360,ESP
+Gabriel Cozmin Chereche,14,173,65,Romania,ROU,1992 Summer,1992,Barcelona,NA,20,145,ESP
+Giorgi Chogovadze,23,178,68,Unified Team,EUN,1992 Summer,1992,Barcelona,NA,20,158,ESP
+Alessandro De Botton,21,NA,NA,Italy,ITA,1992 Summer,1992,Barcelona,NA,20,23,ESP
+Dario di Fazio,25,NA,NA,Venezuela,VEN,1992 Summer,1992,Barcelona,NA,20,85,ESP
+Bruno Michel Fournier,25,165,63,Canada,CAN,1992 Summer,1992,Barcelona,NA,20,59,ESP
+William T. Hayes,24,NA,NA,Canada,CAN,1992 Summer,1992,Barcelona,NA,20,475,ESP
+Jan Hempel,20,168,62,Germany,GER,1992 Summer,1992,Barcelona,NA,20,212,ESP
+Keita Kaneto,25,174,68,Japan,JPN,1992 Summer,1992,Barcelona,NA,20,267,ESP
+Grzegorz Kozdraski,16,160,48,Poland,POL,1992 Summer,1992,Barcelona,NA,20,170,ESP
+Michael Khne,21,183,78,Germany,GER,1992 Summer,1992,Barcelona,NA,20,318,ESP
+Jess Mena Campos,24,166,65,Mexico,MEX,1992 Summer,1992,Barcelona,NA,20,223,ESP
+"Robert ""Bob"" Morgan",25,174,72,Great Britain,GBR,1992 Summer,1992,Barcelona,NA,20,378,ESP
+Michael Andrew Murphy,18,178,77,Australia,AUS,1992 Summer,1992,Barcelona,NA,20,316,ESP
+Frdric Pierre,23,172,66,France,FRA,1992 Summer,1992,Barcelona,NA,20,141,ESP
+Craig William Rogerson,27,168,63,Australia,AUS,1992 Summer,1992,Barcelona,NA,20,79,ESP
+Dmitry Ivanovich Sautin,18,172,65,Unified Team,EUN,1992 Summer,1992,Barcelona,NA,20,97,ESP
+"Matthew Aaron ""Matt"" Scoggin",28,178,73,United States,USA,1992 Summer,1992,Barcelona,NA,20,313,ESP
+Isao Yamagishi,25,172,65,Japan,JPN,1992 Summer,1992,Barcelona,NA,20,206,ESP
+Xiao Hailiang,19,165,60,China,CHN,1996 Summer,1996,Atlanta,Bronze,21,481,USA
+Dmitry Ivanovich Sautin,22,172,65,Russia,RUS,1996 Summer,1996,Atlanta,Gold,21,97,USA
+Jan Hempel,24,168,62,Germany,GER,1996 Summer,1996,Atlanta,Silver,21,212,USA
+Alberto Enrique Acosta Palma,23,NA,NA,Mexico,MEX,1996 Summer,1996,Atlanta,NA,21,14,USA
+Damir Akhmetbekov,21,170,70,Kazakhstan,KAZ,1996 Summer,1996,Atlanta,NA,21,82,USA
+Abdul Al-Matrouk,23,NA,NA,Kuwait,KUW,1996 Summer,1996,Atlanta,NA,21,2,USA
+Hovhannes Avtandilyan,18,170,55,Armenia,ARM,1996 Summer,1996,Atlanta,NA,21,199,USA
+Emin Hafis Cbrayilov,18,173,58,Azerbaijan,AZE,1996 Summer,1996,Atlanta,NA,21,110,USA
+Gabriel Cozmin Chereche,18,173,65,Romania,ROU,1996 Summer,1996,Atlanta,NA,21,145,USA
+Choe Hyong-Gil,19,159,54,North Korea,PRK,1996 Summer,1996,Atlanta,NA,21,70,USA
+Chuan Hung-Ping,18,175,70,Chinese Taipei,TPE,1996 Summer,1996,Atlanta,NA,21,73,USA
+Dario di Fazio,29,NA,NA,Venezuela,VEN,1996 Summer,1996,Atlanta,NA,21,85,USA
+Richard Frece,20,178,73,Austria,AUT,1996 Summer,1996,Atlanta,NA,21,372,USA
+Gocha Gakharia,22,174,66,Georgia,GEO,1996 Summer,1996,Atlanta,NA,21,163,USA
+Gwon Gyeong-Min,14,165,60,South Korea,KOR,1996 Summer,1996,Atlanta,NA,21,178,USA
+Tony Iglesias,23,NA,NA,Bolivia,BOL,1996 Summer,1996,Atlanta,NA,21,447,USA
+Patrick S. Jeffrey,31,168,68,United States,USA,1996 Summer,1996,Atlanta,NA,21,348,USA
+Keita Kaneto,29,174,68,Japan,JPN,1996 Summer,1996,Atlanta,NA,21,267,USA
+Sergey Ivanovich Kudrevich,28,NA,NA,Belarus,BLR,1996 Summer,1996,Atlanta,NA,21,408,USA
+Michael Khne,25,183,78,Germany,GER,1996 Summer,1996,Atlanta,NA,21,318,USA
+Andrey Viktorovich Kvochinsky,27,NA,NA,Belarus,BLR,1996 Summer,1996,Atlanta,NA,21,36,USA
+"Anthony Jasen ""Tony"" Lawson",24,168,63,Australia,AUS,1996 Summer,1996,Atlanta,NA,21,39,USA
+"Robert ""Bob"" Morgan",29,174,72,Great Britain,GBR,1996 Summer,1996,Atlanta,NA,21,378,USA
+Samat Muratov,20,NA,NA,Kazakhstan,KAZ,1996 Summer,1996,Atlanta,NA,21,398,USA
+Ng Sui,15,NA,NA,Hong Kong,HKG,1996 Summer,1996,Atlanta,NA,21,331,USA
+Daniel Pavn Pavn,23,177,70,Spain,ESP,1996 Summer,1996,Atlanta,NA,21,83,USA
+Suchart Pichi,17,164,60,Thailand,THA,1996 Summer,1996,Atlanta,NA,21,423,USA
+David J. Pichler,27,183,77,United States,USA,1996 Summer,1996,Atlanta,NA,21,88,USA
+Fernando Fabricio Platas lvarez,23,164,60,Mexico,MEX,1996 Summer,1996,Atlanta,NA,21,129,USA
+Johan Gustav Jimmy Sjdin,18,NA,NA,Sweden,SWE,1996 Summer,1996,Atlanta,NA,21,231,USA
+Leon Roy Taylor,18,178,74,Great Britain,GBR,1996 Summer,1996,Atlanta,NA,21,289,USA
+Ken Terauchi,15,170,68,Japan,JPN,1996 Summer,1996,Atlanta,NA,21,272,USA
+Tian Liang,16,172,60,China,CHN,1996 Summer,1996,Atlanta,NA,21,437,USA
+Vladimir Aleksandrovich Timoshinin,26,168,68,Russia,RUS,1996 Summer,1996,Atlanta,NA,21,459,USA
+Roman Mykhailovych Volodkov,22,175,68,Ukraine,UKR,1996 Summer,1996,Atlanta,NA,21,388,USA
+Vukan Vuleti,23,NA,NA,Serbia and Montenegro,SCG,1996 Summer,1996,Atlanta,NA,21,463,USA
+Oleh Yanchenko,17,NA,NA,Ukraine,UKR,1996 Summer,1996,Atlanta,NA,21,336,USA
+Dmitry Ivanovich Sautin,26,172,65,Russia,RUS,2000 Summer,2000,Sydney,Bronze,22,97,AUS
+Tian Liang,21,172,60,China,CHN,2000 Summer,2000,Sydney,Gold,22,437,AUS
+Hu Jia,17,170,58,China,CHN,2000 Summer,2000,Sydney,Silver,22,201,AUS
+Jess Iory Aball Martnez,26,167,65,Cuba,CUB,2000 Summer,2000,Sydney,NA,22,222,AUS
+Damir Akhmetbekov,25,170,70,Kazakhstan,KAZ,2000 Summer,2000,Sydney,NA,22,82,AUS
+Hovhannes Avtandilyan,22,170,55,Armenia,ARM,2000 Summer,2000,Sydney,NA,22,199,AUS
+Mohamed Azreen Bahari,16,168,55,Malaysia,MAS,2000 Summer,2000,Sydney,NA,22,326,AUS
+Emin Hafis Cbrayilov,22,173,58,Azerbaijan,AZE,2000 Summer,2000,Sydney,NA,22,110,AUS
+Gabriel Cozmin Chereche,22,173,65,Romania,ROU,2000 Summer,2000,Sydney,NA,22,145,AUS
+Choe Hyong-Gil,24,159,54,North Korea,PRK,2000 Summer,2000,Sydney,NA,22,70,AUS
+Alexandre Despatie,15,173,76,Canada,CAN,2000 Summer,2000,Sydney,NA,22,24,AUS
+Cassius Ricardo Duran,21,174,73,Brazil,BRA,2000 Summer,2000,Sydney,NA,22,67,AUS
+Gilles Emptoz-Lacote,22,165,58,France,FRA,2000 Summer,2000,Sydney,NA,22,157,AUS
+Jos Antonio Guerra Oliva,21,166,60,Cuba,CUB,2000 Summer,2000,Sydney,NA,22,243,AUS
+Aleksey Gurman,22,174,67,Kazakhstan,KAZ,2000 Summer,2000,Sydney,NA,22,22,AUS
+Andrs Hajnal,18,172,62,Hungary,HUN,2000 Summer,2000,Sydney,NA,22,37,AUS
+Mathew Glen Helm,19,170,62,Australia,AUS,2000 Summer,2000,Sydney,NA,22,312,AUS
+Jan Hempel,29,168,62,Germany,GER,2000 Summer,2000,Sydney,NA,22,212,AUS
+Jo Dae-Don,16,163,55,South Korea,KOR,2000 Summer,2000,Sydney,NA,22,228,AUS
+Christopher Kalec,20,165,70,Canada,CAN,2000 Summer,2000,Sydney,NA,22,72,AUS
+Igor Vladimirovich Lukashin,21,171,70,Russia,RUS,2000 Summer,2000,Sydney,NA,22,204,AUS
+Massimiliano Mazzucchi,19,170,62,Italy,ITA,2000 Summer,2000,Sydney,NA,22,311,AUS
+Heiko Meyer,23,160,57,Germany,GER,2000 Summer,2000,Sydney,NA,22,188,AUS
+Mohamed Nasrullah,18,160,51,Indonesia,INA,2000 Summer,2000,Sydney,NA,22,328,AUS
+Robert Frederick Newbery,21,174,70,Australia,AUS,2000 Summer,2000,Sydney,NA,22,380,AUS
+Pak Yong-Ryong,19,166,60,North Korea,PRK,2000 Summer,2000,Sydney,NA,22,344,AUS
+Jos Francisco Prez Anguiano,24,163,53,Mexico,MEX,2000 Summer,2000,Sydney,NA,22,248,AUS
+Suchart Pichi,21,164,60,Thailand,THA,2000 Summer,2000,Sydney,NA,22,423,AUS
+David J. Pichler,32,183,77,United States,USA,2000 Summer,2000,Sydney,NA,22,88,AUS
+Eduardo Rueda Pedroza,27,167,56,Mexico,MEX,2000 Summer,2000,Sydney,NA,22,102,AUS
+Mark Ruiz,21,175,66,United States,USA,2000 Summer,2000,Sydney,NA,22,306,AUS
+Abel Snchez Vargas,28,168,64,Peru,PER,2000 Summer,2000,Sydney,NA,22,5,AUS
+Rubn Santos Bravo,23,167,62,Spain,ESP,2000 Summer,2000,Sydney,NA,22,393,AUS
+Oleksandr Skrypnyk,21,171,63,Ukraine,UKR,2000 Summer,2000,Sydney,NA,22,338,AUS
+Leon Roy Taylor,22,178,74,Great Britain,GBR,2000 Summer,2000,Sydney,NA,22,289,AUS
+Ken Terauchi,20,170,68,Japan,JPN,2000 Summer,2000,Sydney,NA,22,272,AUS
+Juan Guillermo Urn Salazar,17,168,65,Colombia,COL,2000 Summer,2000,Sydney,NA,22,252,AUS
+Luis Alberto Villarroel Vera,19,172,73,Venezuela,VEN,2000 Summer,2000,Sydney,NA,22,301,AUS
+Roman Mykhailovych Volodkov,27,175,68,Ukraine,UKR,2000 Summer,2000,Sydney,NA,22,388,AUS
+Peter Graham Waterfield,19,167,65,Great Britain,GBR,2000 Summer,2000,Sydney,NA,22,354,AUS
+Yeoh Ken Nee,17,170,58,Malaysia,MAS,2000 Summer,2000,Sydney,NA,22,483,AUS
+Yu Chang-Jun,19,170,60,South Korea,KOR,2000 Summer,2000,Sydney,NA,22,489,AUS
+Tian Liang,24,172,60,China,CHN,2004 Summer,2004,Athina,Bronze,23,437,GRE
+Hu Jia,21,170,58,China,CHN,2004 Summer,2004,Athina,Gold,23,201,GRE
+Mathew Glen Helm,23,170,62,Australia,AUS,2004 Summer,2004,Athina,Silver,23,312,GRE
+Tony Adam,18,169,61,Germany,GER,2004 Summer,2004,Athina,NA,23,446,GRE
+Choe Hyong-Gil,27,159,54,North Korea,PRK,2004 Summer,2004,Athina,NA,23,70,GRE
+Jean-Romain Delaloye,23,171,64,Switzerland,SUI,2004 Summer,2004,Athina,NA,23,214,GRE
+Francesco Dell'Uomo,17,169,62,Italy,ITA,2004 Summer,2004,Athina,NA,23,131,GRE
+Alexandre Despatie,19,173,76,Canada,CAN,2004 Summer,2004,Athina,NA,23,24,GRE
+Dmitry Mikhaylovich Dobroskok,20,167,57,Russia,RUS,2004 Summer,2004,Athina,NA,23,98,GRE
+Cassius Ricardo Duran,25,174,73,Brazil,BRA,2004 Summer,2004,Athina,NA,23,67,GRE
+Erick Fornaris lvarez,25,170,69,Cuba,CUB,2004 Summer,2004,Athina,NA,23,112,GRE
+Gleb Sergeyevich Galperin,21,175,68,Russia,RUS,2004 Summer,2004,Athina,NA,23,159,GRE
+Caesar Garcia,22,180,77,United States,USA,2004 Summer,2004,Athina,NA,23,61,GRE
+Giannis Gavrilidis,22,176,74,Greece,GRE,2004 Summer,2004,Athina,NA,23,156,GRE
+Jos Antonio Guerra Oliva,25,166,60,Cuba,CUB,2004 Summer,2004,Athina,NA,23,243,GRE
+Andrs Hajnal,22,172,62,Hungary,HUN,2004 Summer,2004,Athina,NA,23,37,GRE
+Christopher Kalec,24,165,70,Canada,CAN,2004 Summer,2004,Athina,NA,23,72,GRE
+Bryan Nickson Lomas,14,154,47,Malaysia,MAS,2004 Summer,2004,Athina,NA,23,60,GRE
+Andrey Sergeyevich Mamontov,23,170,67,Belarus,BLR,2004 Summer,2004,Athina,NA,23,35,GRE
+Massimiliano Mazzucchi,23,170,62,Italy,ITA,2004 Summer,2004,Athina,NA,23,311,GRE
+Heiko Meyer,27,160,57,Germany,GER,2004 Summer,2004,Athina,NA,23,188,GRE
+Robert Frederick Newbery,25,174,70,Australia,AUS,2004 Summer,2004,Athina,NA,23,380,GRE
+Rommel Agmed Pacheco Manrufo,18,167,65,Mexico,MEX,2004 Summer,2004,Athina,NA,23,389,GRE
+Pak Yong-Ryong,23,166,60,North Korea,PRK,2004 Summer,2004,Athina,NA,23,344,GRE
+Hugo Pellicer Parisi,20,173,68,Brazil,BRA,2004 Summer,2004,Athina,NA,23,200,GRE
+Kyle Prandi,25,170,63,United States,USA,2004 Summer,2004,Athina,NA,23,283,GRE
+Leon Roy Taylor,26,178,74,Great Britain,GBR,2004 Summer,2004,Athina,NA,23,289,GRE
+Sotirios Trakas,17,170,62,Greece,GRE,2004 Summer,2004,Athina,NA,23,417,GRE
+Juan Guillermo Urn Salazar,21,168,65,Colombia,COL,2004 Summer,2004,Athina,NA,23,252,GRE
+Aleksandr Viktorovich Varlamov,25,169,67,Belarus,BLR,2004 Summer,2004,Athina,NA,23,21,GRE
+Roman Mykhailovych Volodkov,30,175,68,Ukraine,UKR,2004 Summer,2004,Athina,NA,23,388,GRE
+Peter Graham Waterfield,23,167,65,Great Britain,GBR,2004 Summer,2004,Athina,NA,23,354,GRE
+Anton Serhiyovych Zakharov,18,176,74,Ukraine,UKR,2004 Summer,2004,Athina,NA,23,43,GRE
+Gleb Sergeyevich Galperin,25,175,68,Russia,RUS,2008 Summer,2008,Beijing,Bronze,24,159,CHN
+"Matthew John ""Matt"" Mitcham",20,174,67,Australia,AUS,2008 Summer,2008,Beijing,Gold,24,314,CHN
+Zhou Luxin,20,158,48,China,CHN,2008 Summer,2008,Beijing,Silver,24,491,CHN
+Jeinkler Ernesto Aguirre Manso,18,165,57,Cuba,CUB,2008 Summer,2008,Beijing,NA,24,217,CHN
+David Alasdair Boudia,19,175,73,United States,USA,2008 Summer,2008,Beijing,NA,24,86,CHN
+"Thomas Robert ""Tom"" Daley",14,177,74,Great Britain,GBR,2008 Summer,2008,Beijing,NA,24,436,CHN
+Francesco Dell'Uomo,21,169,62,Italy,ITA,2008 Summer,2008,Beijing,NA,24,131,CHN
+Cassius Ricardo Duran,29,174,73,Brazil,BRA,2008 Summer,2008,Beijing,NA,24,67,CHN
+Rexel Ryan Fabriga,22,160,60,Philippines,PHI,2008 Summer,2008,Beijing,NA,24,366,CHN
+Thomas Finchum,18,185,68,United States,USA,2008 Summer,2008,Beijing,NA,24,429,CHN
+Jos Antonio Guerra Oliva,28,166,60,Cuba,CUB,2008 Summer,2008,Beijing,NA,24,243,CHN
+Patrick Hausding,19,180,77,Germany,GER,2008 Summer,2008,Beijing,NA,24,347,CHN
+Mathew Glen Helm,27,170,62,Australia,AUS,2008 Summer,2008,Beijing,NA,24,312,CHN
+Huo Liang,18,155,50,China,CHN,2008 Summer,2008,Beijing,NA,24,202,CHN
+Vadim Aleksandrovich Kaptur,21,174,67,Belarus,BLR,2008 Summer,2008,Beijing,NA,24,452,CHN
+Kim Chon-Man,20,165,59,North Korea,PRK,2008 Summer,2008,Beijing,NA,24,274,CHN
+Sascha Klein,22,173,71,Germany,GER,2008 Summer,2008,Beijing,NA,24,403,CHN
+Bryan Nickson Lomas,18,154,47,Malaysia,MAS,2008 Summer,2008,Beijing,NA,24,60,CHN
+Riley McCormick,16,172,66,Canada,CAN,2008 Summer,2008,Beijing,NA,24,375,CHN
+Kostiantyn Serhiyovych Miliaiev,20,173,65,Ukraine,UKR,2008 Summer,2008,Beijing,NA,24,278,CHN
+Rommel Agmed Pacheco Manrufo,22,167,65,Mexico,MEX,2008 Summer,2008,Beijing,NA,24,389,CHN
+Hugo Pellicer Parisi,24,173,68,Brazil,BRA,2008 Summer,2008,Beijing,NA,24,200,CHN
+Constantin Popovici,19,170,63,Romania,ROU,2008 Summer,2008,Beijing,NA,24,78,CHN
+Reuben Daniel Ross,22,175,73,Canada,CAN,2008 Summer,2008,Beijing,NA,24,365,CHN
+Germn Sal Snchez Snchez,16,165,50,Mexico,MEX,2008 Summer,2008,Beijing,NA,24,155,CHN
+Juan Guillermo Urn Salazar,25,168,65,Colombia,COL,2008 Summer,2008,Beijing,NA,24,252,CHN
+Aleksandr Viktorovich Varlamov,29,169,67,Belarus,BLR,2008 Summer,2008,Beijing,NA,24,21,CHN
+Oleg Aleksandrovich Vikulov,21,160,56,Russia,RUS,2008 Summer,2008,Beijing,NA,24,335,CHN
+Peter Graham Waterfield,27,167,65,Great Britain,GBR,2008 Summer,2008,Beijing,NA,24,354,CHN
+Anton Serhiyovych Zakharov,22,176,74,Ukraine,UKR,2008 Summer,2008,Beijing,NA,24,43,CHN
+"Thomas Robert ""Tom"" Daley",18,177,74,Great Britain,GBR,2012 Summer,2012,London,Bronze,25,436,GBR
+David Alasdair Boudia,23,175,73,United States,USA,2012 Summer,2012,London,Gold,25,86,GBR
+Qiu Bo,19,165,58,China,CHN,2012 Summer,2012,London,Silver,25,358,GBR
+Jeinkler Ernesto Aguirre Manso,22,165,57,Cuba,CUB,2012 Summer,2012,London,NA,25,217,GBR
+Oleksandr Igorovych Bondar,18,172,63,Ukraine,UKR,2012 Summer,2012,London,NA,25,337,GBR
+Andrea Chiarabini,17,179,70,Italy,ITA,2012 Summer,2012,London,NA,25,32,GBR
+"James ""Jimmy"" Connor",17,183,68,Australia,AUS,2012 Summer,2012,London,NA,25,211,GBR
+Francesco Dell'Uomo,25,169,62,Italy,ITA,2012 Summer,2012,London,NA,25,131,GBR
+Stefan Christofer Eskilsson,23,173,62,Sweden,SWE,2012 Summer,2012,London,NA,25,420,GBR
+Gleb Sergeyevich Galperin,29,175,68,Russia,RUS,2012 Summer,2012,London,NA,25,159,GBR
+Ivn Alejandro Garca Navarro,18,165,55,Mexico,MEX,2012 Summer,2012,London,NA,25,207,GBR
+Amund Nordal Gismervik,21,183,NA,Norway,NOR,2012 Summer,2012,London,NA,25,29,GBR
+Timofey Dmitriyevich Gordeychik,26,171,63,Belarus,BLR,2012 Summer,2012,London,NA,25,439,GBR
+Jos Antonio Guerra Oliva,32,166,60,Cuba,CUB,2012 Summer,2012,London,NA,25,243,GBR
+Vadim Aleksandrovich Kaptur,25,174,67,Belarus,BLR,2012 Summer,2012,London,NA,25,452,GBR
+Sascha Klein,26,173,71,Germany,GER,2012 Summer,2012,London,NA,25,403,GBR
+Lin Yue,21,163,53,China,CHN,2012 Summer,2012,London,NA,25,292,GBR
+Bryan Nickson Lomas,22,154,47,Malaysia,MAS,2012 Summer,2012,London,NA,25,60,GBR
+Riley McCormick,20,172,66,Canada,CAN,2012 Summer,2012,London,NA,25,375,GBR
+"Nicholas Montgomery ""Nick"" McCrory",20,178,74,United States,USA,2012 Summer,2012,London,NA,25,332,GBR
+Viktor Eduardovich Minibayev,21,173,63,Russia,RUS,2012 Summer,2012,London,NA,25,455,GBR
+"Matthew John ""Matt"" Mitcham",24,174,67,Australia,AUS,2012 Summer,2012,London,NA,25,314,GBR
+Vctor Hugo Ortega Serna,24,172,67,Colombia,COL,2012 Summer,2012,London,NA,25,454,GBR
+Hugo Pellicer Parisi,27,173,68,Brazil,BRA,2012 Summer,2012,London,NA,25,200,GBR
+Park Ji-Ho,20,165,59,South Korea,KOR,2012 Summer,2012,London,NA,25,345,GBR
+Ri Hyun-Ju,16,155,45,North Korea,PRK,2012 Summer,2012,London,NA,25,374,GBR
+Germn Sal Snchez Snchez,20,165,50,Mexico,MEX,2012 Summer,2012,London,NA,25,155,GBR
+Eric Sehn,27,175,70,Canada,CAN,2012 Summer,2012,London,NA,25,114,GBR
+Sebastin Villa Castaeda,20,164,54,Colombia,COL,2012 Summer,2012,London,NA,25,407,GBR
+Peter Graham Waterfield,31,167,65,Great Britain,GBR,2012 Summer,2012,London,NA,25,354,GBR
+Martin Wolfram,20,164,55,Germany,GER,2012 Summer,2012,London,NA,25,308,GBR
+Anton Serhiyovych Zakharov,26,176,74,Ukraine,UKR,2012 Summer,2012,London,NA,25,43,GBR
+David Alasdair Boudia,27,175,73,United States,USA,2016 Summer,2016,Rio de Janeiro,Bronze,26,86,BRA
+Chen Aisen,20,168,60,China,CHN,2016 Summer,2016,Rio de Janeiro,Gold,26,69,BRA
+Germn Sal Snchez Snchez,24,165,50,Mexico,MEX,2016 Summer,2016,Rio de Janeiro,Silver,26,155,BRA
+Benjamin Auffret,21,166,54,France,FRA,2016 Summer,2016,Rio de Janeiro,NA,26,52,BRA
+Domonic Bedggood,21,163,64,Australia,AUS,2016 Summer,2016,Rio de Janeiro,NA,26,100,BRA
+Maxim Bouchard,25,174,71,Canada,CAN,2016 Summer,2016,Rio de Janeiro,NA,26,315,BRA
+"James ""Jimmy"" Connor",21,183,68,Australia,AUS,2016 Summer,2016,Rio de Janeiro,NA,26,211,BRA
+"Thomas Robert ""Tom"" Daley",22,177,74,Great Britain,GBR,2016 Summer,2016,Rio de Janeiro,NA,26,436,BRA
+Ivn Alejandro Garca Navarro,22,165,55,Mexico,MEX,2016 Summer,2016,Rio de Janeiro,NA,26,207,BRA
+Steele Alexander Johnson,20,188,80,United States,USA,2016 Summer,2016,Rio de Janeiro,NA,26,419,BRA
+Vadim Aleksandrovich Kaptur,29,174,67,Belarus,BLR,2016 Summer,2016,Rio de Janeiro,NA,26,452,BRA
+Sascha Klein,30,173,71,Germany,GER,2016 Summer,2016,Rio de Janeiro,NA,26,403,BRA
+Yevgeny Aleksandrovich Korolyov,25,169,69,Belarus,BLR,2016 Summer,2016,Rio de Janeiro,NA,26,484,BRA
+Jess Ricardo Liranzo Gratero,20,174,60,Venezuela,VEN,2016 Summer,2016,Rio de Janeiro,NA,26,224,BRA
+Viktor Eduardovich Minibayev,25,173,63,Russia,RUS,2016 Summer,2016,Rio de Janeiro,NA,26,455,BRA
+Mohab Mohymen Ishak El-Kordy,19,172,68,Egypt,EGY,2016 Summer,2016,Rio de Janeiro,NA,26,324,BRA
+Ooi Tze Liang,22,170,68,Malaysia,MAS,2016 Summer,2016,Rio de Janeiro,NA,26,339,BRA
+Vctor Hugo Ortega Serna,28,172,67,Colombia,COL,2016 Summer,2016,Rio de Janeiro,NA,26,454,BRA
+Robert Alexis Pez Rodrguez,22,160,60,Venezuela,VEN,2016 Summer,2016,Rio de Janeiro,NA,26,376,BRA
+Hugo Pellicer Parisi,32,173,68,Brazil,BRA,2016 Summer,2016,Rio de Janeiro,NA,26,200,BRA
+Qiu Bo,23,165,58,China,CHN,2016 Summer,2016,Rio de Janeiro,NA,26,358,BRA
+Rafael Roberto Quintero Daz,22,180,68,Puerto Rico,PUR,2016 Summer,2016,Rio de Janeiro,NA,26,361,BRA
+Vincent Riendeau,19,178,68,Canada,CAN,2016 Summer,2016,Rio de Janeiro,NA,26,458,BRA
+Nikita Dmitriyevich Shleykher,18,168,66,Russia,RUS,2016 Summer,2016,Rio de Janeiro,NA,26,333,BRA
+Maicol Verzotto,28,172,68,Italy,ITA,2016 Summer,2016,Rio de Janeiro,NA,26,304,BRA
+Sebastin Villa Castaeda,24,164,54,Colombia,COL,2016 Summer,2016,Rio de Janeiro,NA,26,407,BRA
+Martin Wolfram,24,164,55,Germany,GER,2016 Summer,2016,Rio de Janeiro,NA,26,308,BRA
+Woo Ha-Ram,18,168,58,South Korea,KOR,2016 Summer,2016,Rio de Janeiro,NA,26,480,BRA
