@@ -54,7 +54,7 @@ fitdat <- diving \%>\%
   mutate(weight=ifelse(Finish <= 3,1,0)) \%>\%
   mutate(cut_age=cut(coalesce(Age,22.0),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) \%>\%
   mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) \%>\%
-  mutate(home_advantage=NOC==HOME_NOC)
+  mutate(home_advantage=NOC==HOST_NOC)
 
 harsm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId)
 
