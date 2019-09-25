@@ -40,6 +40,10 @@ library(microbenchmark)
 #[![BAD CRAN](http://www.r-pkg.org/badges/version/ohenery)](http://cran.rstudio.com/package=ohenery) 
 #[![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
 #[![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
+
+# I just CRAN't
+# [![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
+# [![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
 ```
 
 # ohenery
@@ -47,8 +51,6 @@ library(microbenchmark)
 [![Build Status](https://travis-ci.org/shabbychef/ohenery.png)](https://travis-ci.org/shabbychef/ohenery)
 [![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/ohenery?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/ohenery)](https://cran.r-project.org/package=ohenery)
-[![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
-[![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
 ![RCpp](https://img.shields.io/badge/RCpp-inside-blue.svg)
 
 Performs softmax regression for ordered outcomes under the [Harville](http://dx.doi.org/10.1080/01621459.1973.10482425)
@@ -357,3 +359,37 @@ make the gammas relative to the value 1,
 which would make it easier to reject the Harville
 model from the print summary.)
 
+### Diving
+
+The package is bundled with a dataset of 100 years of Olympic Men's
+Platform Diving Records, originally sourced by Randi Griffin
+and delivered on 
+[kaggle](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results).
+
+Here we convert the medal records into finishing places of 1, 2, 3 and 4 (no
+medal), add weights for the fitting,
+make a factor variable for age, factor the NOC (country) of the athlete.
+Because Platform Diving is a subjective competition, based on scores from
+judges, we investigate whether there is a 'home field advantage'
+by creating a Boolean variable indicating whether the athlete is representing
+the host nation.
+
+We then fit a Henery model to the data. Note that the gamma terms come
+out very close to one, indicating the Harville model would be sufficient.
+The home field advantage appears real in this analysis, though modest.
+
+
+```{r diving_fits,eval=TRUE,echo=TRUE}
+data(diving)
+fitdat <- diving %>%
+  mutate(Finish=case_when(grepl('Gold',Medal)   ~ 1,
+                          grepl('Silver',Medal) ~ 2,
+                          grepl('Bronze',Medal) ~ 3,
+                          TRUE ~ 4)) %>%
+  mutate(weight=ifelse(Finish <= 3,1,0)) %>%
+  mutate(cut_age=cut(coalesce(Age,22.0),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) %>%
+  mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) %>%
+  mutate(home_advantage=NOC==HOST_NOC)
+
+hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
+```

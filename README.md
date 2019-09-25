@@ -5,8 +5,6 @@
 [![Build Status](https://travis-ci.org/shabbychef/ohenery.png)](https://travis-ci.org/shabbychef/ohenery)
 [![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/ohenery?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/ohenery)](https://cran.r-project.org/package=ohenery)
-[![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
-[![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
 ![RCpp](https://img.shields.io/badge/RCpp-inside-blue.svg)
 
 Performs softmax regression for ordered outcomes under the [Harville](http://dx.doi.org/10.1080/01621459.1973.10482425)
@@ -406,3 +404,64 @@ make the gammas relative to the value 1,
 which would make it easier to reject the Harville
 model from the print summary.)
 
+### Diving
+
+The package is bundled with a dataset of 100 years of Olympic Men's
+Platform Diving Records, originally sourced by Randi Griffin
+and delivered on 
+[kaggle](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results).
+
+Here we convert the medal records into finishing places of 1, 2, 3 and 4 (no
+medal), add weights for the fitting,
+make a factor variable for age, factor the NOC (country) of the athlete.
+Because Platform Diving is a subjective competition, based on scores from
+judges, we investigate whether there is a 'home field advantage'
+by creating a Boolean variable indicating whether the athlete is representing
+the host nation.
+
+We then fit a Henery model to the data. Note that the gamma terms come
+out very close to one, indicating the Harville model would be sufficient.
+The home field advantage appears real in this analysis, though modest.
+
+
+
+```r
+data(diving)
+fitdat <- diving %>%
+  mutate(Finish=case_when(grepl('Gold',Medal)   ~ 1,
+                          grepl('Silver',Medal) ~ 2,
+                          grepl('Bronze',Medal) ~ 3,
+                          TRUE ~ 4)) %>%
+  mutate(weight=ifelse(Finish <= 3,1,0)) %>%
+  mutate(cut_age=cut(coalesce(Age,22.0),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) %>%
+  mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) %>%
+  mutate(home_advantage=NOC==HOST_NOC)
+
+hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 74 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -1907 
+## 12  free parameters
+## Estimates:
+##                    Estimate Std. error t value Pr(> t)    
+## cut_age(19.5,21.5]   0.0303     0.1402    0.22 0.82864    
+## cut_age(21.5,22.5]  -0.7276     0.1758   -4.14 3.5e-05 ***
+## cut_age(22.5,25.5]   0.0950     0.1270    0.75 0.45408    
+## cut_age(25.5,99]    -0.1838     0.1377   -1.33 0.18197    
+## countryGBR          -0.6727     0.2693   -2.50 0.01249 *  
+## countryGER           1.0776     0.1662    6.48 8.9e-11 ***
+## countryMEX           0.7159     0.1589    4.50 6.6e-06 ***
+## countrySWE           0.6205     0.1853    3.35 0.00081 ***
+## countryUSA           2.3202     0.1534   15.12 < 2e-16 ***
+## home_advantageTRUE   0.5790     0.1377    4.20 2.6e-05 ***
+## gamma2               1.0054     0.0956   10.52 < 2e-16 ***
+## gamma3               0.9674     0.0993    9.75 < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
