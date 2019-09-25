@@ -14,7 +14,7 @@ License: LGPL-3
 Title: Modeling of Ordinal Random Variables via Softmax Regression
 BugReports: https://github.com/shabbychef/PKG_NAME()/issues
 Description: Supports the modeling of ordinal random variables, 
-    like the outcomes of races, via softmax regression,
+    like the outcomes of races, via Softmax regression,
     under the Harville <doi:10.1080/01621459.1973.10482425> and
     Henery <doi:10.1111/j.2517-6161.1981.tb01153.x> models.
 Depends: 
