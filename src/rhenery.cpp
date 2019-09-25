@@ -49,7 +49,7 @@ int pick_winner(NumericVector probs,int max_el) {
 		if (retval < max_el) {
 			cumprob += probs[retval];
 		} else {
-			break;
+			break; // # nocov
 		}
 	}
 	return retval;
