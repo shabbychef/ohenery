@@ -84,18 +84,18 @@ library(dplyr)
 data(best_picture)
 
 best_picture \%>\% 
-	group_by(nominated_for_BestDirector) \%>\% 
-	summarize(propwin=mean(winner)) \%>\% 
-	ungroup()
+  group_by(nominated_for_BestDirector) \%>\% 
+  summarize(propwin=mean(winner)) \%>\% 
+  ungroup()
 best_picture \%>\% 
-	group_by(nominated_for_BestActor) \%>\% 
-	summarize(propwin=mean(winner)) \%>\% 
-	ungroup()
+  group_by(nominated_for_BestActor) \%>\% 
+  summarize(propwin=mean(winner)) \%>\% 
+  ungroup()
 # hmmmm.
 best_picture \%>\% 
-	group_by(nominated_for_BestActress) \%>\% 
-	summarize(propwin=mean(winner)) \%>\% 
-ungroup()
+  group_by(nominated_for_BestActress) \%>\% 
+  summarize(propwin=mean(winner)) \%>\% 
+ ungroup()
 
 }
 \author{

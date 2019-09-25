@@ -62,7 +62,7 @@ data(race_data)
 Three weeks of horse race data from tracks worldwide.
 }
 \note{
-the author makes no guarantees regarding correctness of this data.
+The author makes no guarantees regarding correctness of this data.
 }
 \examples{
 
@@ -71,29 +71,29 @@ data(race_data)
 
 # compute win bet efficiency
 efficiency <- race_data \%>\%
-	group_by(EventId) \%>\%
-		mutate(ImpliedOdds=WN_pool / sum(WN_pool,na.rm=TRUE)) \%>\%
-	ungroup() \%>\%
-	mutate(OddsBucket=cut(ImpliedOdds,c(0,0.05,seq(0.1,1,by=0.10)),include.lowest=TRUE)) \%>\%
-	group_by(OddsBucket) \%>\%
-		summarize(PropWin=mean(as.numeric(coalesce(Finish==1,FALSE)),na.rm=TRUE),
-							MedImpl=median(ImpliedOdds,na.rm=TRUE),
-							nObs=n()) \%>\%
-	ungroup()
+  group_by(EventId) \%>\%
+    mutate(ImpliedOdds=WN_pool / sum(WN_pool,na.rm=TRUE)) \%>\%
+  ungroup() \%>\%
+  mutate(OddsBucket=cut(ImpliedOdds,c(0,0.05,seq(0.1,1,by=0.10)),include.lowest=TRUE)) \%>\%
+  group_by(OddsBucket) \%>\%
+    summarize(PropWin=mean(as.numeric(coalesce(Finish==1,FALSE)),na.rm=TRUE),
+              MedImpl=median(ImpliedOdds,na.rm=TRUE),
+              nObs=n()) \%>\%
+  ungroup()
 
 \dontrun{
 library(ggplot2)
 library(scales)
 efficiency \%>\%
-	ggplot(aes(MedImpl,PropWin,size=nObs)) + 
-	geom_point() + 
-	scale_x_sqrt(labels=scales::percent) + 
-	scale_y_sqrt(labels=scales::percent) + 
-	geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
-	labs(title='actual win probability versus implied win probability',
-			 size='# horses',
-			 x='implied win probability',
-			 y='observed win probability')
+  ggplot(aes(MedImpl,PropWin,size=nObs)) + 
+  geom_point() + 
+  scale_x_sqrt(labels=scales::percent) + 
+  scale_y_sqrt(labels=scales::percent) + 
+  geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
+  labs(title='actual win probability versus implied win probability',
+       size='# horses',
+       x='implied win probability',
+       y='observed win probability')
 }
 
 }

@@ -102,18 +102,18 @@
 #' data(best_picture)
 #'
 #' best_picture %>% 
-#' 	group_by(nominated_for_BestDirector) %>% 
-#' 	summarize(propwin=mean(winner)) %>% 
-#' 	ungroup()
+#'   group_by(nominated_for_BestDirector) %>% 
+#'   summarize(propwin=mean(winner)) %>% 
+#'   ungroup()
 #' best_picture %>% 
-#' 	group_by(nominated_for_BestActor) %>% 
-#' 	summarize(propwin=mean(winner)) %>% 
-#' 	ungroup()
+#'   group_by(nominated_for_BestActor) %>% 
+#'   summarize(propwin=mean(winner)) %>% 
+#'   ungroup()
 #' # hmmmm.
 #' best_picture %>% 
-#' 	group_by(nominated_for_BestActress) %>% 
-#' 	summarize(propwin=mean(winner)) %>% 
-#'	ungroup()
+#'   group_by(nominated_for_BestActress) %>% 
+#'   summarize(propwin=mean(winner)) %>% 
+#'  ungroup()
 #'
 "best_picture"
 
@@ -171,7 +171,7 @@
 #' @source 
 #' Data were sourced from the web. Don't ask.
 #' @template etc
-#' @note the author makes no guarantees regarding correctness of this data.
+#' @note The author makes no guarantees regarding correctness of this data.
 #' @name race_data
 #' @rdname race_data
 #' @docType data
@@ -183,32 +183,89 @@
 #'
 #' # compute win bet efficiency
 #' efficiency <- race_data %>%
-#' 	group_by(EventId) %>%
-#' 		mutate(ImpliedOdds=WN_pool / sum(WN_pool,na.rm=TRUE)) %>%
-#' 	ungroup() %>%
-#' 	mutate(OddsBucket=cut(ImpliedOdds,c(0,0.05,seq(0.1,1,by=0.10)),include.lowest=TRUE)) %>%
-#' 	group_by(OddsBucket) %>%
-#' 		summarize(PropWin=mean(as.numeric(coalesce(Finish==1,FALSE)),na.rm=TRUE),
-#' 							MedImpl=median(ImpliedOdds,na.rm=TRUE),
-#' 							nObs=n()) %>%
-#' 	ungroup()
+#'   group_by(EventId) %>%
+#'     mutate(ImpliedOdds=WN_pool / sum(WN_pool,na.rm=TRUE)) %>%
+#'   ungroup() %>%
+#'   mutate(OddsBucket=cut(ImpliedOdds,c(0,0.05,seq(0.1,1,by=0.10)),include.lowest=TRUE)) %>%
+#'   group_by(OddsBucket) %>%
+#'     summarize(PropWin=mean(as.numeric(coalesce(Finish==1,FALSE)),na.rm=TRUE),
+#'               MedImpl=median(ImpliedOdds,na.rm=TRUE),
+#'               nObs=n()) %>%
+#'   ungroup()
 #' 
 #' \dontrun{
 #' library(ggplot2)
 #' library(scales)
 #' efficiency %>%
-#' 	ggplot(aes(MedImpl,PropWin,size=nObs)) + 
-#' 	geom_point() + 
-#' 	scale_x_sqrt(labels=scales::percent) + 
-#' 	scale_y_sqrt(labels=scales::percent) + 
-#' 	geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
-#' 	labs(title='actual win probability versus implied win probability',
-#' 			 size='# horses',
-#' 			 x='implied win probability',
-#' 			 y='observed win probability')
+#'   ggplot(aes(MedImpl,PropWin,size=nObs)) + 
+#'   geom_point() + 
+#'   scale_x_sqrt(labels=scales::percent) + 
+#'   scale_y_sqrt(labels=scales::percent) + 
+#'   geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
+#'   labs(title='actual win probability versus implied win probability',
+#'        size='# horses',
+#'        x='implied win probability',
+#'        y='observed win probability')
 #' }
 #'
 "race_data"
+
+#' @title Olympic Diving Data
+#' @description One hundred years of Men's Olympic Platform Diving records.
+#' @usage data(diving)
+#' @format A \code{data.frame} object with 695 observations and 13 columns. 
+#' 
+#' The columns are defined as follows:
+#' \describe{
+#' \item{\code{Name}}{The participant's name.}
+#' \item{\code{Age}}{The age of the participant at the time of the Olympics. Some values missing.}
+#' \item{\code{Height}}{The height of the participant at the time of the Olympics, in centimeters. Many values missing.}
+#' \item{\code{Weight}}{The height of the participant at the time of the Olympics, in kilograms. Many values missing.}
+#' \item{\code{Team}}{The string name of the team (country) which the participant represented.}
+#' \item{\code{NOC}}{The string name of the National Olympic Committee which the participant represented. This is a three character code.}
+#' \item{\code{Games}}{The string name of the Olympic games, including a year.}
+#' \item{\code{Year}}{The integer year of the Olympics. These range from 1906
+#' through 2016.}
+#' \item{\code{City}}{The string name of the host city.}
+#' \item{\code{Medal}}{A string of \dQuote{Gold}, \dQuote{Silver},
+#' \dQuote{Bronze} or \code{NA}.}
+#' \item{\code{EventId}}{A unique integer ID for each Olympics.}
+#' \item{\code{AthleteId}}{A unique integer ID for each participant.}
+#' \item{\code{HOST_NOC}}{The string name of the National Olympic Committee of the nation hosting the Olympics. This is a three character code.}
+#' }
+#'
+#' @source 
+#' Data were collected by Randi Griffin from the website
+#' \dQuote{sports-reference.com}, and staged on Kaggle at
+#' \url{https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results}.
+#' 
+#' @template etc
+#' @note The author makes no guarantees regarding correctness of this data.
+#' @note Please attribute this data to the upstream harvester.
+#' @name diving 
+#' @rdname diving 
+#' @docType data
+#' @keywords data
+#' @examples
+#'
+#' library(dplyr)
+#' library(forcats)
+#' data(diving)
+#'
+#' fitdat <- diving %>%
+#'   mutate(Finish=case_when(grepl('Gold',Medal)   ~ 1,
+#'                           grepl('Silver',Medal) ~ 2,
+#'                           grepl('Bronze',Medal) ~ 3,
+#'                           TRUE ~ 4)) %>%
+#'   mutate(weight=ifelse(Finish <= 3,1,0)) %>%
+#'   mutate(cut_age=cut(coalesce(Age,22L),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) %>%
+#'   mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) %>%
+#'   mutate(home_advantage=NOC==HOME_NOC)
+#' 
+#' mod0 <- harsm(Finish ~ cut_age + country + home_advantage,data=indat,weights=weight,group=EventId)
+#' print(mod0)
+#'
+"diving"
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
