@@ -258,12 +258,11 @@
 #'                           grepl('Bronze',Medal) ~ 3,
 #'                           TRUE ~ 4)) %>%
 #'   mutate(weight=ifelse(Finish <= 3,1,0)) %>%
-#'   mutate(cut_age=cut(coalesce(Age,22L),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) %>%
+#'   mutate(cut_age=cut(coalesce(Age,22.0),c(12,19.5,21.5,22.5,25.5,99),include.lowest=TRUE)) %>%
 #'   mutate(country=forcats::fct_relevel(forcats::fct_lump(factor(NOC),n=5),'Other')) %>%
 #'   mutate(home_advantage=NOC==HOME_NOC)
 #' 
-#' mod0 <- harsm(Finish ~ cut_age + country + home_advantage,data=indat,weights=weight,group=EventId)
-#' print(mod0)
+#' harsm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId)
 #'
 "diving"
 
