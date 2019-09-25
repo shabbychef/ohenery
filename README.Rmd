@@ -380,6 +380,7 @@ The home field advantage appears real in this analysis, though modest.
 
 
 ```{r diving_fits,eval=TRUE,echo=TRUE}
+library(forcats)
 data(diving)
 fitdat <- diving %>%
   mutate(Finish=case_when(grepl('Gold',Medal)   ~ 1,

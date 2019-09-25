@@ -30,6 +30,7 @@ LinkingTo: Rcpp
 Suggests: 
     rlang,
     tidyr,
+    forcats,
     microbenchmark,
     testthat, 
     numDeriv,
