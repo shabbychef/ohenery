@@ -82,18 +82,18 @@ efficiency <- race_data \%>\%
   ungroup()
 
 \donttest{
-library(ggplot2)
-library(scales)
-efficiency \%>\%
-  ggplot(aes(MedImpl,PropWin,size=nObs)) + 
-  geom_point() + 
-  scale_x_sqrt(labels=scales::percent) + 
-  scale_y_sqrt(labels=scales::percent) + 
-  geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
-  labs(title='actual win probability versus implied win probability',
-       size='# horses',
-       x='implied win probability',
-       y='observed win probability')
+if (require('ggplot2') && require('scales')) {
+  efficiency \%>\%
+    ggplot(aes(MedImpl,PropWin,size=nObs)) + 
+    geom_point() + 
+    scale_x_sqrt(labels=percent) + 
+    scale_y_sqrt(labels=percent) + 
+    geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
+    labs(title='actual win probability versus implied win probability',
+         size='# horses',
+         x='implied win probability',
+         y='observed win probability')
+ }
 }
 
 }

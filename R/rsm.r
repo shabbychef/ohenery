@@ -167,18 +167,19 @@
 #'                 sum(attr(fooey2,'gradient') * dib)
 #'               })
 #' 
-#' library(ggplot2)
+#' if (require('ggplot2')) {
 #' bestx <- xvl[which.max(rsu)]
-#' ph <- data.frame(x=xvl,lik=rsu,grd=drv) %>%
-#'   ggplot(aes(x=x,y=lik)) + 
-#'   geom_point() + 
-#'   geom_line(aes(y=grd/200)) +
-#'   geom_vline(xintercept=bestx,linetype=2,alpha=0.5) + 
-#'   geom_hline(yintercept=0,linetype=2,alpha=0.5)
-#' print(ph)
+#'   ph <- data.frame(x=xvl,lik=rsu,grd=drv) %>%
+#'     ggplot(aes(x=x,y=lik)) + 
+#'     geom_point() + 
+#'     geom_line(aes(y=grd/200)) +
+#'     geom_vline(xintercept=bestx,linetype=2,alpha=0.5) + 
+#'     geom_hline(yintercept=0,linetype=2,alpha=0.5)
+#'   print(ph)
+#' }
 #' }
 #'
-#' if (require(dplyr) && require(knitr)) {
+#' if (require('dplyr') && require('knitr')) {
 #' # expect this to be very small, almost always 1
 #' set.seed(1234)
 #' simdraw <- replicate(10000,{

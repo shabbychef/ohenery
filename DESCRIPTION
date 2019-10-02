@@ -29,6 +29,8 @@ Suggests:
     microbenchmark,
     testthat, 
     numDeriv,
+    ggplot2,
+    scales,
     knitr
 Encoding: UTF-8
 URL: https://github.com/shabbychef/ohenery

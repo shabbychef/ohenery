@@ -34,6 +34,8 @@ Suggests:
     microbenchmark,
     testthat, 
     numDeriv,
+    ggplot2,
+    scales,
     knitr
 dnl https://github.com/r-lib/devtools/issues/1776
 Encoding: UTF-8
