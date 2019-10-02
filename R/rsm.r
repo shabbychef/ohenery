@@ -148,7 +148,7 @@
 #' y <- rsm(eta,g=g)
 #' 
 #' idx <- order(g,y,decreasing=TRUE) - 1
-#' fooey <- harsmlik(g,idx,eta,X)
+#' fooey <- harsmlik(g,idx,eta,deleta=X)
 #' set.seed(3493)
 #' dib <- rnorm(length(beta))
 #' xvl <- seq(-0.01,0.01,length.out=301)
@@ -156,14 +156,14 @@
 #'               function(del) {
 #'                 beta1 <- beta + del * dib
 #'                 eta1 <- X %*% beta1
-#'                 fooey2 <- harsmlik(g,idx,eta1,X)
+#'                 fooey2 <- harsmlik(g,idx,eta1,deleta=X)
 #'                 as.numeric(fooey2) - as.numeric(fooey)
 #'               })
 #' drv <- sapply(xvl,
 #'               function(del) {
 #'                 beta1 <- beta + del * dib
 #'                 eta1 <- X %*% beta1
-#'                 fooey2 <- harsmlik(g,idx,eta1,X)
+#'                 fooey2 <- harsmlik(g,idx,eta1,deleta=X)
 #'                 sum(attr(fooey2,'gradient') * dib)
 #'               })
 #' 
