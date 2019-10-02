@@ -167,8 +167,8 @@
 #'                 sum(attr(fooey2,'gradient') * dib)
 #'               })
 #' 
-#' if (require('ggplot2')) {
-#' bestx <- xvl[which.max(rsu)]
+#' if (require('ggplot2') && require('dplyr')) {
+#'   bestx <- xvl[which.max(rsu)]
 #'   ph <- data.frame(x=xvl,lik=rsu,grd=drv) %>%
 #'     ggplot(aes(x=x,y=lik)) + 
 #'     geom_point() + 
@@ -180,25 +180,25 @@
 #' }
 #'
 #' if (require('dplyr') && require('knitr')) {
-#' # expect this to be very small, almost always 1
-#' set.seed(1234)
-#' simdraw <- replicate(10000,{
-#'   rsm(eta=c(100,rnorm(7)))[1]
-#' })
+#'   # expect this to be very small, almost always 1
+#'   set.seed(1234)
+#'   simdraw <- replicate(10000,{
+#'     rsm(eta=c(100,rnorm(7)))[1]
+#'   })
 #' 
-#' as.data.frame(table(simdraw)) %>%
-#'   mutate(prob=Freq / sum(Freq)) %>%
-#'   knitr::kable()
+#'   as.data.frame(table(simdraw)) %>%
+#'     mutate(prob=Freq / sum(Freq)) %>%
+#'     knitr::kable()
 #' 
-#' # expect this to be uniform on 2 through 8
-#' set.seed(1234)
-#' simdraw <- replicate(10000,{
-#'   rsm(eta=c(100,rnorm(7)))[2]
-#' })
+#'   # expect this to be uniform on 2 through 8
+#'   set.seed(1234)
+#'   simdraw <- replicate(10000,{
+#'     rsm(eta=c(100,rnorm(7)))[2]
+#'   })
 #' 
-#' as.data.frame(table(simdraw)) %>%
-#'   mutate(prob=Freq / sum(Freq)) %>%
-#'   knitr::kable()
+#'   as.data.frame(table(simdraw)) %>%
+#'     mutate(prob=Freq / sum(Freq)) %>%
+#'     knitr::kable()
 #' }
 #'
 #' @importFrom dplyr group_by mutate ungroup 
