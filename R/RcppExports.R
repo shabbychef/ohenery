@@ -51,7 +51,7 @@
 #' emp <- rowMeans(replicate(200,rhenery(mu=mus,gamma=rep(1,length(mus)-1)))) 
 #' (emp - erank(mus)) / emp
 #'
-#' \dontrun{
+#' \donttest{
 #' if (require(microbenchmark)) {
 #'   p10 <- 1:10 / sum(1:10)
 #'   p16 <- 1:16 / sum(1:16)
@@ -204,7 +204,7 @@ rhenery <- function(mu, gamma = NULL) {
 #' foores <- hensmlik(g,idx,eta,gamma=c(0.9,0.8,1),wt=wt)
 #'
 #' # check the value of the gradient by numerical approximation
-#' \dontrun{
+#' \donttest{
 #'  nfeat <- 8
 #'  set.seed(321)
 #'  g <- ceiling(seq(0.1,1000,by=0.1))

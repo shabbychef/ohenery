@@ -193,7 +193,7 @@
 #'               nObs=n()) %>%
 #'   ungroup()
 #' 
-#' \dontrun{
+#' \donttest{
 #' library(ggplot2)
 #' library(scales)
 #' efficiency %>%

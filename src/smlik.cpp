@@ -132,7 +132,7 @@ using namespace Rcpp;
 //' foores <- hensmlik(g,idx,eta,gamma=c(0.9,0.8,1),wt=wt)
 //'
 //' # check the value of the gradient by numerical approximation
-//' \dontrun{
+//' \donttest{
 //'  nfeat <- 8
 //'  set.seed(321)
 //'  g <- ceiling(seq(0.1,1000,by=0.1))
