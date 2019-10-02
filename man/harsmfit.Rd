@@ -61,7 +61,7 @@ then conditional on these fixed odds.
 
 Weighted estimation is supported.
 
-The code relies on the likelihood function of \code{\link{smlik}},
+The code relies on the likelihood function of \code{\link{harsmlik}},
 and MLE code from \code{\link[maxLik]{maxLik}}.
 }
 \examples{
@@ -85,7 +85,7 @@ Journal of the American Statistical Association 68, no. 342 (1973): 312-316.
 \url{http://dx.doi.org/10.1080/01621459.1973.10482425}
 }
 \seealso{
-the likelihood function, \code{\link{smlik}}, and the
+the likelihood function, \code{\link{harsmlik}}, and the
 expected rank function (the inverse link), \code{\link{erank}}.
 }
 \author{

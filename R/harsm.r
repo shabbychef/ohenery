@@ -69,7 +69,7 @@ globalVariables(c('dumb_rank','.'))
 #'
 #' Weighted estimation is supported.
 #'
-#' The code relies on the likelihood function of \code{\link{smlik}},
+#' The code relies on the likelihood function of \code{\link{harsmlik}},
 #' and MLE code from \code{\link[maxLik]{maxLik}}.
 #'
 #' @param y a vector of the ranked outcomes within each group. Only
@@ -93,7 +93,7 @@ globalVariables(c('dumb_rank','.'))
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
 #' @keywords fitting
-#' @seealso the likelihood function, \code{\link{smlik}}, and the
+#' @seealso the likelihood function, \code{\link{harsmlik}}, and the
 #' expected rank function (the inverse link), \code{\link{erank}}.
 #' @template etc
 #' @template ref-harville
@@ -219,7 +219,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 #' @return An object of class \code{harsm}, but also of \code{maxLik} with the
 #' fit.
 #' @keywords fitting
-#' @seealso \code{\link{harsmfit}}, \code{\link{smlik}}.
+#' @seealso \code{\link{harsmfit}}, \code{\link{harsmlik}}.
 #'
 #' @examples 
 #'

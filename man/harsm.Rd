@@ -6,7 +6,8 @@
 \alias{print.harsm}
 \title{Friendly interface to softmax regression under Harville model.}
 \usage{
-harsm(formula, data, group = NULL, weights = NULL, na.action = na.omit)
+harsm(formula, data, group = NULL, weights = NULL,
+  na.action = na.omit)
 
 \method{vcov}{harsm}(object, ...)
 
@@ -141,7 +142,7 @@ harsm(fmla,data=df,group=year,weights=weight)
 
 }
 \seealso{
-\code{\link{harsmfit}}, \code{\link{smlik}}.
+\code{\link{harsmfit}}, \code{\link{harsmlik}}.
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

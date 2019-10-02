@@ -8,8 +8,8 @@
 \usage{
 as.linodds(object, formula, beta)
 
-\method{predict}{linodds}(object, newdata, type = c("eta", "mu", "erank"),
-  na.action = na.pass, group = NULL, ...)
+\method{predict}{linodds}(object, newdata, type = c("eta", "mu",
+  "erank"), na.action = na.pass, group = NULL, ...)
 
 \method{coef}{linodds}(object, ...)
 }
