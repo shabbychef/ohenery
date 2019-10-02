@@ -96,7 +96,7 @@ set.seed(1414)
 y2 <- rev(rsm(mu=rev(mu),gamma=c(1,1,1)))
 y1 - y2
 
-\dontrun{
+\donttest{
 nfeat <- 5
 set.seed(1234)
 g <- ceiling(seq(0.1,1000,by=0.1))

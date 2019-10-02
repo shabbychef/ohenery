@@ -6,8 +6,7 @@
 \alias{print.harsm}
 \title{Friendly interface to softmax regression under Harville model.}
 \usage{
-harsm(formula, data, group = NULL, weights = NULL,
-  na.action = na.omit)
+harsm(formula, data, group = NULL, weights = NULL, na.action = na.omit)
 
 \method{vcov}{harsm}(object, ...)
 
