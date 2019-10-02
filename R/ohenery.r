@@ -110,7 +110,7 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\ohenery}{\CRANpkg{ohenery}}
 #'
-#' @section \ohenery{} Initial Version 0.1.0 (2018-09-25) :
+#' @section \ohenery{} Initial Version 0.1.0 (2018-10-01) :
 #' \itemize{
 #' \item first CRAN release.
 #' }
