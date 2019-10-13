@@ -103,8 +103,6 @@ using namespace Rcpp;
 //' to the scalar number, called \code{gradient} giving the derivative.
 //' For the Henery model we also include a term of \code{gradgamma} which is
 //' the gradient of the log likelihood with respect to the gamma vector.
-//' The output also has an attribute called \code{totwt} which is the
-//' sum of the weights encourntered?
 //' @examples
 //' # a garbage example
 //' set.seed(12345)
@@ -198,15 +196,12 @@ NumericVector harsmlik(IntegerVector g,
 	double loglik = 0;
 	double summu = mu[jjj];
 	double thiswt;
-	double totwt;
-	if (!has_wt) { totwt = idx.length(); } else { totwt = 0.0; }  // init
 
 	for (int iii=1;iii < idx.length();iii++) {
 		jjj = idx[iii];
 		if (has_wt) {
 			thiswt = wt_val[jjj];
 			if (thiswt < 0) { stop("negative weight encountered; try again"); }
-			totwt += thiswt;
 		}
 		thisgrp = g[jjj];
 		if (thisgrp == prevgrp) {
@@ -236,7 +231,6 @@ NumericVector harsmlik(IntegerVector g,
 
 	NumericVector out = NumericVector::create(loglik);
 	if (has_deriv) { out.attr("gradient") = gradi; }
-	out.attr("totwt") = totwt;
 
 	return out;
 }
@@ -301,10 +295,6 @@ NumericVector hensmlik(IntegerVector g,
 	double loglik = 0;
 	double summu = mu[jjj];
 	double thiswt = 1.0;
-
-	double totwt;
-	if (!has_wt) { totwt = idx.length(); } else { totwt = 0.0; }  // init
-
 	// the index, in iii space, of the last place entry in this group
 	int botidx = 0;
 	// the total # of entries in this group
@@ -325,7 +315,6 @@ NumericVector hensmlik(IntegerVector g,
 		if (has_wt) {
 			thiswt = wt_val[jjj];
 			if (thiswt < 0) { stop("negative weight encountered; try again"); }
-			totwt += thiswt;
 		}
 		thisgrp = g[jjj];
 		if (thisgrp == prevgrp) {
@@ -370,7 +359,6 @@ NumericVector hensmlik(IntegerVector g,
 		out.attr("gradient") = gradi; 
 		out.attr("gradgamma") = dgamma;
 	}
-	out.attr("totwt") = totwt;
 	return out;
 }
 
