@@ -172,9 +172,9 @@ intensive. (File an issue if this is important.)
 
 ```r
 prd <- best_picture %>%
-	mutate(prd_erank=as.numeric(predict(osmod,newdata=.,group=year,type='erank',na.action=na.pass))) %>%
-	mutate(prd_eta=as.numeric(predict(osmod,newdata=.,group=year,type='eta'))) %>%
-	mutate(prd_mu=as.numeric(predict(osmod,newdata=.,group=year,type='mu'))) 
+  mutate(prd_erank=as.numeric(predict(osmod,newdata=.,group=year,type='erank',na.action=na.pass))) %>%
+  mutate(prd_eta=as.numeric(predict(osmod,newdata=.,group=year,type='eta'))) %>%
+  mutate(prd_mu=as.numeric(predict(osmod,newdata=.,group=year,type='mu'))) 
 ```
 
 ### Horse Racing
@@ -366,7 +366,7 @@ df <- race_data %>%
   ungroup() %>%
   dplyr::filter(big_field) %>%
   dplyr::filter(!is.na(eta0)) %>%
-	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE)) %>%
+  mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE)) %>%
   mutate(bettype=factor(case_when(mu0 < 0.025 ~ 'LONGSHOT',
                                   mu0 > 0.50  ~ 'SURESHOT',
                                   TRUE        ~ 'VANILLA'))) 
@@ -468,3 +468,117 @@ hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,gro
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
 ```
+
+## Confirming Inference
+
+The regression coefficients are fit by Maximum Likelihood Estimation,
+and the `maxLik` package does the 'heavy lifting' of estimating
+the variance-covariance of the coefficients.
+However, it is not clear _a priori_ that these error estimates
+are accurate, since the individual outcomes in a given event
+are not independent: it could be that the machinery for
+computing the Fisher Information matrix is inaccurate.
+In fact, the help from `maxLik` warns that this is on the user.
+This is especially concerning when the logistic fits are
+used in situations where not all finishes are observed,
+and one uses zero weights to avoid affecting the fits.
+
+Here we will try to establish empirically that
+the inference is actually correct.
+
+### Against Logistic Regression
+
+As the Harville model generalizes logistic regression,
+we should be able to run a logistic regression problem
+through the `harsm` function. Here we do that,
+testing data with exactly two participants per event.
+The key observation is that the usual logistic regression
+should be equivalent to the Harville form, but with
+independent variables equal to the _difference_ in
+independent variables for the two participants.
+We find that the coefficients and variance-covariance
+matrix are nearly identical. 
+We believe the differences are due to convergence
+criteria in the MLE fit.
+
+
+```r
+library(dplyr)
+nevent <- 10000
+set.seed(1234)
+adf <- data_frame(eventnum=floor(seq(1,nevent + 0.7,by=0.5))) %>%
+  mutate(x=rnorm(n()),
+         program_num=rep(c(1,2),nevent),
+         intercept=as.numeric(program_num==1),
+         eta=1.5 * x + 0.3 * intercept,
+         place=ohenery::rsm(eta,g=eventnum))
+
+# Harville model
+modh <- harsm(place ~ intercept + x,data=adf,group=eventnum)
+
+# the collapsed data.frame for glm
+ddf <- adf %>%
+  arrange(eventnum,program_num) %>%
+  group_by(eventnum) %>%
+    summarize(resu=as.numeric(first(place)==1),
+              delx=first(x) - last(x),
+              deli=first(intercept) - last(intercept)) %>%
+  ungroup()
+
+# glm logistic fit
+modg <- glm(resu ~ delx + 1,data=ddf,family=binomial(link='logit'))
+
+all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+print(coef(modh))
+```
+
+```
+## intercept         x 
+##      0.34      1.49
+```
+
+```r
+print(coef(modg))
+```
+
+```
+## (Intercept)        delx 
+##        0.34        1.49
+```
+
+```r
+print(vcov(modh))
+```
+
+```
+##         [,1]    [,2]
+## [1,] 0.00071 0.00012
+## [2,] 0.00012 0.00091
+```
+
+```r
+print(vcov(modg))
+```
+
+```
+##             (Intercept)    delx
+## (Intercept)     0.00071 0.00012
+## delx            0.00012 0.00091
+```
+
+

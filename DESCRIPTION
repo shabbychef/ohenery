@@ -43,3 +43,4 @@ Collate:
     'RcppExports.R'
     'rsm.r'
     'utils.r'
+RoxygenNote: 6.1.1
