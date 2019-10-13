@@ -62,15 +62,20 @@ setOldClass('hensm')
 	if (is.integer(g)) { group <- g } else { group <- match(g,unique(g)) }
 
 	idx <- order(g,y,decreasing=TRUE) - 1
+	covadj <- .mean_wt(g=g,idx=idx,wt=wt)
 	rv <- maxLik(logLik=.hensmlik,grad=.hensmgrad,hess=NULL,
 							 start=theta0,method=method,
 							 group=group,idx=idx,X=X,wt=wt,eta0=eta0)
+
+	# adjust it! 
+	rv$varcovar <- covadj * vcov(rv)
 	retv <- list(mle=rv,
 							 beta=rv$estimate[1:k],
 							 coefficients=rv,
 							 gammas=rv$estimate[(k+1):length(theta0)],
 							 gamma2=rv$estimate[k+1],
 							 estimate=rv$estimate,  # sigh
+							 covadj=covadj,
 							 wt=wt,
 							 g=g,
 							 y=y,
