@@ -438,6 +438,34 @@ test_that("harsmfit bits",{#FOLDUP
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
 
 })#UNFOLD
+test_that("harsm vs logistic",{#FOLDUP
+	# travis only?
+	#skip_on_cran()
+	library(dplyr)
+	nop <- 5000
+	set.seed(1234)
+	adf <- data_frame(eventnum=floor(seq(1,nop + 0.7,by=0.5))) %>%
+		mutate(x=rnorm(n())) %>%
+		mutate(program_num=rep(c(1,2),nop)) %>%
+		mutate(intercept=as.numeric(program_num==1)) %>%
+		mutate(eta=1.5 * x + 0.3 * intercept) %>%
+		mutate(place=ohenery::rsm(eta,g=eventnum))
+
+	expect_error(modo <- harsm(place ~ intercept + x,data=adf,group=eventnum),NA)
+
+	ddf <- adf %>%
+		arrange(eventnum,program_num) %>%
+		group_by(eventnum) %>%
+			summarize(resu=as.numeric(first(place)==1),
+								delx=first(x) - last(x),
+								deli=first(intercept) - last(intercept)) %>%
+		ungroup()
+
+	modg <- glm(resu ~ delx + 1,data=ddf,family=binomial(link='logit'))
+
+	expect_equal(as.numeric(coef(modo)),as.numeric(coef(modg)),tolerance=1e-3)
+	expect_equal(as.numeric(vcov(modo)),as.numeric(vcov(modg)),tolerance=1e-5)
+})#UNFOLD
 test_that("harsmfit prediction",{#FOLDUP
 	# travis only?
 	#skip_on_cran()
