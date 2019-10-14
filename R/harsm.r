@@ -116,7 +116,7 @@ globalVariables(c('dumb_rank','.'))
 #' modw <- harsmfit(y=y,g=g,X=X,wt=1 + as.numeric(y < 6))
 #' summary(modw)
 #' @export
-harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
+harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 										 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 #2FIX: allow beta0 input.

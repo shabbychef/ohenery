@@ -4,7 +4,7 @@
 \alias{harsmfit}
 \title{Experts only softmax regression under Harville model.}
 \usage{
-harsmfit(y, g, X, wt = NULL, eta0 = NULL, normalize_wt = TRUE,
+harsmfit(y, g, X, wt = NULL, eta0 = NULL, normalize_wt = FALSE,
   method = c("BFGS", "NR", "CG", "NM"))
 }
 \arguments{

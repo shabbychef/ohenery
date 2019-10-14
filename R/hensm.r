@@ -47,7 +47,7 @@ setOldClass('hensm')
 #2FIX: why isn't there a experts version of this one?
 #  @param ngamma  the number of gammas to model; we model
 #        \eqn{\gamma_2} through \eqn{\gamma_n}.
-.hmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
+.hmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 									 ngamma=4,  method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 	stopifnot(ngamma >= 2)
