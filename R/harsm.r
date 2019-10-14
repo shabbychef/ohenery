@@ -126,17 +126,12 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=TRUE,
 	if (is.integer(g)) { grp <- g } else { grp <- match(g,unique(g)) }
 
 	idx <- order(g,y,decreasing=TRUE) - 1
-	covadj <- .mean_wt(g=g,idx=idx,wt=wt)
 	rv <- maxLik(logLik=.harsmlik,grad=.harsmgrad,hess=NULL,
 							 start=beta0,method=method,
 							 grp=grp,idx=idx,X=X,wt=wt,eta0=eta0)
-
-	# adjust it! 
-	rv$varcovar <- covadj * vcov(rv)
 	retv <- list(mle=rv,
 							 coefficients=rv$estimate,
 							 estimate=rv$estimate,  # sigh
-							 covadj=covadj,
 							 wt=wt,
 							 g=g,
 							 y=y,

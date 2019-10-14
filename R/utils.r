@@ -199,23 +199,5 @@ harsm_invlink <- function(eta, mu=smax(eta,g), g=NULL) {
 	rv$retv
 }
 
-globalVariables(c('mywt','totrow'))
-
-# adjust for missing weights ... 
-# 1. sum all the weights.
-# 2. if all weights are non-zero except
-#    the last place finish, add 1.
-# 3. divide by length(g)
-.mean_wt <- function(g,idx,wt=NULL) {
-	if (is.null(wt)) { return(1)  }
-	twt <- data_frame(g=g,idx=idx,wt=wt) %>%
-		arrange(g,idx) %>%
-		group_by(g) %>%
-			dplyr::summarize(mywt=sum(wt) + as.numeric((last(wt)==0) & (sum(wt > 0) == (n()-1))),
-											 totrow=n()) %>%
-		ungroup() 
-	return (sum(twt$mywt) / sum(twt$totrow))
-}
-
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
