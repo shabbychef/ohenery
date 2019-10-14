@@ -135,19 +135,19 @@ print(osmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 65 iterations
+## BFGS maximization, 59 iterations
 ## Return code 0: successful convergence 
-## Log-Likelihood: -548 
+## Log-Likelihood: -92 
 ## 7  free parameters
 ## Estimates:
 ##                                   Estimate Std. error t value Pr(> t)    
-## nominated_for_BestDirectorTRUE      3.2361     0.3389    9.55 < 2e-16 ***
-## nominated_for_BestActorTRUE         1.0068     0.1292    7.79 6.6e-15 ***
-## nominated_for_BestActressTRUE       0.0448     0.1425    0.31  0.7532    
-## nominated_for_BestFilmEditingTRUE   1.9634     0.1638   11.99 < 2e-16 ***
-## Drama                              -0.6598     0.2475   -2.67  0.0077 ** 
-## Romance                             0.5441     0.3983    1.37  0.1719    
-## Comedy                              1.3100     0.4143    3.16  0.0016 ** 
+## nominated_for_BestDirectorTRUE       3.294      0.850    3.88 0.00011 ***
+## nominated_for_BestActorTRUE          1.003      0.316    3.18 0.00149 ** 
+## nominated_for_BestActressTRUE        0.048      0.348    0.14 0.89048    
+## nominated_for_BestFilmEditingTRUE    1.949      0.399    4.88   1e-06 ***
+## Drama                               -0.659      0.605   -1.09 0.27580    
+## Romance                              0.521      0.974    0.53 0.59291    
+## Comedy                               1.317      1.013    1.30 0.19333    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -273,15 +273,15 @@ print(effmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 31 iterations
+## BFGS maximization, 44 iterations
 ## Return code 0: successful convergence 
-## Log-Likelihood: -56868 
+## Log-Likelihood: -6862 
 ## 3  free parameters
 ## Estimates:
 ##                      Estimate Std. error t value Pr(> t)    
-## eta0:bettypeLONGSHOT  1.26078    0.03397    37.1  <2e-16 ***
-## eta0:bettypeSURESHOT  1.18968    0.01450    82.1  <2e-16 ***
-## eta0:bettypeVANILLA   1.11580    0.00894   124.8  <2e-16 ***
+## eta0:bettypeLONGSHOT   1.2602     0.0977    12.9  <2e-16 ***
+## eta0:bettypeSURESHOT   1.1896     0.0417    28.5  <2e-16 ***
+## eta0:bettypeVANILLA    1.1158     0.0257    43.4  <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -323,14 +323,14 @@ print(offmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 22 iterations
+## BFGS maximization, 25 iterations
 ## Return code 0: successful convergence 
-## Log-Likelihood: -56952 
+## Log-Likelihood: -6872 
 ## 2  free parameters
 ## Estimates:
 ##                 Estimate Std. error t value Pr(> t)    
-## bettypeSURESHOT   0.8165     0.0522   15.65  <2e-16 ***
-## bettypeVANILLA    0.4369     0.0438    9.97  <2e-16 ***
+## bettypeSURESHOT    0.816      0.150    5.43 5.5e-08 ***
+## bettypeVANILLA     0.437      0.126    3.46 0.00054 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -379,20 +379,20 @@ print(bigmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 74 iterations
+## BFGS maximization, 57 iterations
 ## Return code 0: successful convergence 
-## Log-Likelihood: -59188 
+## Log-Likelihood: -21720 
 ## 8  free parameters
 ## Estimates:
 ##                      Estimate Std. error t value Pr(> t)    
-## fac_age(3,5]           0.2022     0.0422    4.79 1.7e-06 ***
-## fac_age(5,7]           0.1702     0.0481    3.54  0.0004 ***
-## fac_age(7,Inf]         0.1529     0.0514    2.98  0.0029 ** 
-## eta0:bettypeLONGSHOT   1.5192     0.0388   39.12 < 2e-16 ***
-## eta0:bettypeSURESHOT   1.1094     0.0223   49.84 < 2e-16 ***
-## eta0:bettypeVANILLA    1.1107     0.0140   79.34 < 2e-16 ***
-## gamma2                 0.7053     0.0130   54.21 < 2e-16 ***
-## gamma3                 0.5275     0.0116   45.61 < 2e-16 ***
+## fac_age(3,5]           0.2024     0.0697    2.90  0.0037 ** 
+## fac_age(5,7]           0.1704     0.0794    2.14  0.0320 *  
+## fac_age(7,Inf]         0.1531     0.0848    1.80  0.0711 .  
+## eta0:bettypeLONGSHOT   1.5191     0.0641   23.70  <2e-16 ***
+## eta0:bettypeSURESHOT   1.1096     0.0367   30.19  <2e-16 ***
+## eta0:bettypeVANILLA    1.1107     0.0231   48.06  <2e-16 ***
+## gamma2                 0.7053     0.0215   32.84  <2e-16 ***
+## gamma3                 0.5274     0.0191   27.63  <2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -446,24 +446,24 @@ hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,gro
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 74 iterations
+## BFGS maximization, 43 iterations
 ## Return code 0: successful convergence 
-## Log-Likelihood: -1907 
+## Log-Likelihood: -214 
 ## 12  free parameters
 ## Estimates:
 ##                    Estimate Std. error t value Pr(> t)    
-## cut_age(19.5,21.5]   0.0303     0.1402    0.22 0.82864    
-## cut_age(21.5,22.5]  -0.7276     0.1758   -4.14 3.5e-05 ***
-## cut_age(22.5,25.5]   0.0950     0.1270    0.75 0.45408    
-## cut_age(25.5,99]    -0.1838     0.1377   -1.33 0.18197    
-## countryGBR          -0.6727     0.2693   -2.50 0.01249 *  
-## countryGER           1.0776     0.1662    6.48 8.9e-11 ***
-## countryMEX           0.7159     0.1589    4.50 6.6e-06 ***
-## countrySWE           0.6205     0.1853    3.35 0.00081 ***
-## countryUSA           2.3202     0.1534   15.12 < 2e-16 ***
-## home_advantageTRUE   0.5790     0.1377    4.20 2.6e-05 ***
-## gamma2               1.0054     0.0956   10.52 < 2e-16 ***
-## gamma3               0.9674     0.0993    9.75 < 2e-16 ***
+## cut_age(19.5,21.5]   0.0303     0.4185    0.07 0.94227    
+## cut_age(21.5,22.5]  -0.7276     0.5249   -1.39 0.16565    
+## cut_age(22.5,25.5]   0.0950     0.3790    0.25 0.80199    
+## cut_age(25.5,99]    -0.1838     0.4111   -0.45 0.65474    
+## countryGBR          -0.6729     0.8039   -0.84 0.40258    
+## countryGER           1.0776     0.4960    2.17 0.02981 *  
+## countryMEX           0.7159     0.4744    1.51 0.13126    
+## countrySWE           0.6207     0.5530    1.12 0.26172    
+## countryUSA           2.3201     0.4579    5.07 4.1e-07 ***
+## home_advantageTRUE   0.5791     0.4112    1.41 0.15904    
+## gamma2               1.0054     0.2853    3.52 0.00042 ***
+## gamma3               0.9674     0.2963    3.26 0.00109 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -566,9 +566,9 @@ print(vcov(modh))
 ```
 
 ```
-##         [,1]    [,2]
-## [1,] 0.00071 0.00012
-## [2,] 0.00012 0.00091
+##           intercept       x
+## intercept   0.00071 0.00012
+## x           0.00012 0.00091
 ```
 
 ```r
