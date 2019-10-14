@@ -374,7 +374,7 @@ the host nation.
 
 We then fit a Henery model to the data. Note that the gamma terms come
 out very close to one, indicating the Harville model would be sufficient.
-The home field advantage appears real in this analysis, though modest.
+The home field advantage does not appear significant in this analysis.
 
 
 ```{r diving_fits,eval=TRUE,echo=TRUE}
@@ -460,4 +460,59 @@ print(vcov(modh))
 print(vcov(modg))
 ```
 
+### Weighted Observations
+
+We now examine whether inference is correct in the case when weights
+are used to denote that some finishes are not observed.
+The first release of this package defaulted to using 'normalized weights'
+in the Harville and Henery fits. I believe this leads to an
+inflated Fisher Information that then causes the estimated variance-covariance
+matrix to be too small. I am changing the default in version 0.2.0
+to fix this issue.
+
+Here I generate some data, and fit to the Harville model, 
+using weights to signify that we have only observed
+three of the 8 finishing places in each event.
+I compute the the estimate minus the true value, 
+divided by the estimated standard error. I repeat this
+process many times. 
+Asymptotically in sample size, this computed value should be a standard normal.
+I check by taking the standard deviation, and Q-Q plotting
+against standard normal. The results are consistent with correct inference.
+
+```{r wted_zsims,eval=TRUE,echo=TRUE}
+library(dplyr)
+nevent <- 5000
+# 3 of 8 observed values.
+wlim <- 3
+nfield <- 8
+beta <- 2
+library(future.apply)
+plan(multiprocess,workers=7)
+set.seed(1234)
+zvals <- future_replicate(500,{ 
+  adf <- data_frame(eventnum=sort(rep(seq_len(nevent),nfield))) %>%
+		mutate(x=rnorm(n()),
+					 program_num=rep(seq_len(nfield),nevent),
+					 eta=beta * x,
+					 place=ohenery::rsm(eta,g=eventnum),
+					 wts=as.numeric(place <= wlim))
+
+	modo <- ohenery::harsm(place ~ x,data=adf,group=eventnum,weights=wts) 
+	as.numeric(coef(modo) - beta) / as.numeric(sqrt(vcov(modo)))
+})
+plan(sequential)
+
+# this should be near 1
+sd(zvals) 
+
+# QQ plot it
+library(ggplot2)
+ph <- data_frame(zvals=zvals) %>%
+	ggplot(aes(sample=zvals)) +
+		stat_qq(alpha=0.4) +
+		geom_abline(linetype=2,color='red') + 
+		labs(title='putative z-values from Harville fits')
+print(ph)
+```
 
