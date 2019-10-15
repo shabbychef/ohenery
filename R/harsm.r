@@ -260,6 +260,39 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 #'
 #' harsm(fmla,data=df,group=year,weights=weight) 
 #'
+#' \donttest{
+#' # test against logistic regression
+#' if (require(dplyr)) {
+#' nevent <- 10000
+#' set.seed(1234)
+#' adf <- data_frame(eventnum=floor(seq(1,nevent + 0.7,by=0.5))) %>%
+#'   mutate(x=rnorm(n()),
+#'          program_num=rep(c(1,2),nevent),
+#'          intercept=as.numeric(program_num==1),
+#'          eta=1.5 * x + 0.3 * intercept,
+#'          place=ohenery::rsm(eta,g=eventnum))
+#' 
+#' # Harville model
+#' modh <- harsm(place ~ intercept + x,data=adf,group=eventnum)
+#' 
+#' # the collapsed data.frame for glm
+#' ddf <- adf %>%
+#'   arrange(eventnum,program_num) %>%
+#'   group_by(eventnum) %>%
+#'     summarize(resu=as.numeric(first(place)==1),
+#'               delx=first(x) - last(x),
+#'               deli=first(intercept) - last(intercept)) %>%
+#'   ungroup()
+#' 
+#' # glm logistic fit
+#' modg <- glm(resu ~ delx + 1,data=ddf,family=binomial(link='logit'))
+#' 
+#' all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
+#' all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
+#' }
+#'
+#' }
+#'
 #' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights
 #' @template note-ties
 #' @template note-weights
