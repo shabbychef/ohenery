@@ -87,6 +87,15 @@ does not always give positive R-squareds,
 and the statistic is otherwise hard to interpret.
 }
 \note{
+Since version 0.1.0 of this package, the
+normalization of weights used in this function
+have changed under the hood. This is to
+give correct inference in the case where
+zero weights are used to signify finishing
+places were not observed. If in doubt,
+please confirm inference by simulations,
+taking as example the simulations in the README.
+
 This regression may give odd results when the outcomes are tied,
 imposing an arbitrary order on the tied outcomes.
 Moreover, no warning may be issued in this case.

@@ -117,6 +117,7 @@ setOldClass('hensm')
 #' fit.
 #' @keywords fitting
 #' @seealso \code{\link{harsm}}, \code{\link{smlik}}.
+#' @template note-normalization
 #'
 #' @examples 
 #'

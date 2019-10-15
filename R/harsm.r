@@ -89,7 +89,9 @@ globalVariables(c('dumb_rank','.'))
 #' given.
 #' Must be the same length as \code{y}.
 #' @param normalize_wt  if \code{TRUE}, we renormalize \code{wt}, if given,
-#' to have mean value 1.
+#' to have mean value 1. Note that the default value has changed
+#' since version 0.1.0 of this package. Moreover, non-normalized
+#' weights can lead to incorrect inference. Use with caution.
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
 #' @keywords fitting
@@ -220,6 +222,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 #' fit.
 #' @keywords fitting
 #' @seealso \code{\link{harsmfit}}, \code{\link{harsmlik}}.
+#' @template note-normalization
 #'
 #' @examples 
 #'

@@ -9,6 +9,14 @@ News for package \sQuote{ohenery}
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\ohenery}{\CRANpkg{ohenery}}
 }
+\section{\ohenery{} Initial Version 0.1.1 (2018-10-14) }{
+
+\itemize{
+\item Change default in harsm and hensm to use unnormalized weights,
+correcting inference when not all finishes are observed.
+}
+}
+
 \section{\ohenery{} Initial Version 0.1.0 (2018-10-01) }{
 
 \itemize{

@@ -67,6 +67,14 @@ The regression is then not asked to make distinctions between the
 tied runners-up.
 }
 
+\section{Breaking Changes}{
+
+
+This package is a work in progress. Expect breaking changes.
+Please file any bug reports or issues at
+\url{https://github.com/shabbychef/ohenery/issues}.
+}
+
 \section{Legal Mumbo Jumbo}{
 
 

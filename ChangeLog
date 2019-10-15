@@ -1,4 +1,9 @@
 
+2019-10-14 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.1 on CRAN
+* Change default in harsm and hensm to use unnormalized weights,
+correcting inference when not all finishes are observed.
+
 2019-10-01 Steven E. Pav <shabbychef@gmail.com>
 * 0.1.0 on CRAN
 
