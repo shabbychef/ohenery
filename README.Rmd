@@ -528,12 +528,12 @@ library(magrittr)
 library(ohenery)
 
 rdata <- readr::read_csv('nodist/runs.csv',col_types=cols(race_id = col_double(),
-																													result = col_double(),
-																													horse_country = col_character(),
-																													horse_type = col_character(),
-																													horse_gear = col_character(),
-																													.default = col_double()
-																													))
+                                                          result = col_double(),
+                                                          horse_country = col_character(),
+                                                          horse_type = col_character(),
+                                                          horse_gear = col_character(),
+                                                          .default = col_double()
+                                                          ))
 
 # transform to get the implied probability
 rdata %<>%
