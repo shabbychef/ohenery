@@ -516,3 +516,87 @@ ph <- data_frame(zvals=zvals) %>%
 print(ph)
 ```
 
+## Hong Kong Racing Data
+
+Here we analyze the Kaggle [Hong Kong Racing Data](https://www.kaggle.com/gdaley/hkracing/data),
+as an example. First load the data and perform some transformations:
+
+```{r hk_load,eval=TRUE,echo=TRUE}
+library(readr)
+library(dplyr)
+library(magrittr)
+library(ohenery)
+
+rdata <- readr::read_csv('nodist/runs.csv',col_types=cols(race_id = col_double(),
+																													result = col_double(),
+																													horse_country = col_character(),
+																													horse_type = col_character(),
+																													horse_gear = col_character(),
+																													.default = col_double()
+																													))
+
+# transform to get the implied probability
+rdata %<>%
+  filter(!is.na(result)) %>%
+  mutate(imp_prob=1/as.numeric(win_odds)) %>%
+  group_by(race_id) %>%
+    mutate(imp_prob = imp_prob / sum(imp_prob,na.rm=TRUE)) %>%
+  ungroup() %>%
+  filter(!is.na(imp_prob))
+```
+
+Now confirm that the implied probability is positive associated with the win
+'hazard' under Harville and Henery models:
+
+```{r hk_fit1,eval=TRUE,echo=TRUE,dependson=c('hk_load')}
+ha_mod0 <- harsm(result ~ imp_prob,data=rdata,group=race_id)
+print(ha_mod0)
+he_mod0 <- hensm(result ~ imp_prob,data=rdata,group=race_id)
+print(he_mod0)
+```
+
+Under both models we see a statistically significant association with the
+implied win probability. The Henery model includes gamma coefficients which are
+not one. (I suspect the default null in the print statement should be changed.)
+
+Now we look for 'inefficiencies'. 
+These would be features which have statistically significant association with
+win odds, _even when taking implied probability into account_. 
+Here we fit a few such models:
+
+```{r hk_fit2,eval=TRUE,echo=TRUE,dependson=c('hk_load')}
+# country of origin?
+he_mod1 <- hensm(result ~ imp_prob + horse_country,data=rdata,group=race_id)
+print(he_mod1)
+
+# 'type', meaning sex+
+he_mod2 <- hensm(result ~ imp_prob + horse_type,data=rdata,group=race_id)
+print(he_mod2)
+
+# age, which we bucket.
+rdata %<>%
+	mutate(age_bucket=cut(horse_age,c(0,2,3,6,Inf)))
+he_mod3 <- hensm(result ~ imp_prob + age_bucket,data=rdata,group=race_id)
+print(he_mod3)
+
+# is the implied win prob from place odds any good?
+rdata %<>%
+  mutate(imp_po_prob=1/as.numeric(place_odds)) %>%
+  group_by(race_id) %>%
+    mutate(imp_po_prob = imp_po_prob / sum(imp_po_prob,na.rm=TRUE)) %>%
+  ungroup() %>%
+  filter(!is.na(imp_po_prob))
+# this is a very very weird result.
+he_mod4 <- hensm(result ~ imp_prob + imp_po_prob,data=rdata,group=race_id)
+print(he_mod4)
+# check again under Harville:
+ha_mod4 <- harsm(result ~ imp_prob + imp_po_prob,data=rdata,group=race_id)
+print(ha_mod4)
+
+# hmm, what is this rating thing? take a log.
+he_mod5 <- hensm(result ~ imp_prob + imp_po_prob + I(log(horse_rating)),data=rdata,group=race_id)
+print(he_mod5)
+
+```
+
+

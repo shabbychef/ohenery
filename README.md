@@ -646,3 +646,275 @@ print(ph)
 
 <img src="tools/figure/wted_zsims-1.png" title="plot of chunk wted_zsims" alt="plot of chunk wted_zsims" width="700px" height="600px" />
 
+## Hong Kong Racing Data
+
+Here we analyze the Kaggle [Hong Kong Racing Data](https://www.kaggle.com/gdaley/hkracing/data),
+as an example. First load the data and perform some transformations:
+
+
+```r
+library(readr)
+library(dplyr)
+library(magrittr)
+library(ohenery)
+
+rdata <- readr::read_csv('nodist/runs.csv',col_types=cols(race_id = col_double(),
+																													result = col_double(),
+																													horse_country = col_character(),
+																													horse_type = col_character(),
+																													horse_gear = col_character(),
+																													.default = col_double()
+																													))
+
+# transform to get the implied probability
+rdata %<>%
+  filter(!is.na(result)) %>%
+  mutate(imp_prob=1/as.numeric(win_odds)) %>%
+  group_by(race_id) %>%
+    mutate(imp_prob = imp_prob / sum(imp_prob,na.rm=TRUE)) %>%
+  ungroup() %>%
+  filter(!is.na(imp_prob))
+```
+
+Now confirm that the implied probability is positive associated with the win
+'hazard' under Harville and Henery models:
+
+
+```r
+ha_mod0 <- harsm(result ~ imp_prob,data=rdata,group=race_id)
+print(ha_mod0)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 28 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -128414 
+## 1  free parameters
+## Estimates:
+##          Estimate Std. error t value Pr(> t)    
+## imp_prob   6.4512     0.0515     125  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+##    R2: 0.2 
+## --------------------------------------------
+```
+
+```r
+he_mod0 <- hensm(result ~ imp_prob,data=rdata,group=race_id)
+print(he_mod0)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 66 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -128240 
+## 4  free parameters
+## Estimates:
+##          Estimate Std. error t value Pr(> t)    
+## imp_prob   7.7644     0.1103    70.4  <2e-16 ***
+## gamma2     0.9284     0.0210    44.3  <2e-16 ***
+## gamma3     0.8628     0.0220    39.3  <2e-16 ***
+## gamma4     0.7072     0.0139    50.8  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+Under both models we see a statistically significant association with the
+implied win probability. The Henery model includes gamma coefficients which are
+not one. (I suspect the default null in the print statement should be changed.)
+
+Now we look for 'inefficiencies'. 
+These would be features which have statistically significant association with
+win odds, _even when taking implied probability into account_. 
+Here we fit a few such models:
+
+
+```r
+# country of origin?
+he_mod1 <- hensm(result ~ imp_prob + horse_country,data=rdata,group=race_id)
+print(he_mod1)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 104 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -128197 
+## 19  free parameters
+## Estimates:
+##                  Estimate Std. error t value Pr(> t)    
+## imp_prob           7.7595     0.1105   70.25 < 2e-16 ***
+## horse_countryAUS   0.4949     0.1434    3.45 0.00056 ***
+## horse_countryBRZ  -0.0413     0.4040   -0.10 0.91864    
+## horse_countryCAN  -0.0344     0.2242   -0.15 0.87812    
+## horse_countryFR    0.3991     0.1497    2.67 0.00769 ** 
+## horse_countryGB    0.5425     0.1445    3.75 0.00017 ***
+## horse_countryGER   0.4575     0.1639    2.79 0.00525 ** 
+## horse_countryGR    0.4493     0.3009    1.49 0.13537    
+## horse_countryIRE   0.5217     0.1440    3.62 0.00029 ***
+## horse_countryITY   0.4286     0.2362    1.81 0.06962 .  
+## horse_countryJPN   0.3894     0.2197    1.77 0.07626 .  
+## horse_countryNZ    0.5165     0.1434    3.60 0.00032 ***
+## horse_countrySAF   0.5369     0.1547    3.47 0.00052 ***
+## horse_countrySPA -10.0213    26.0973   -0.38 0.70098    
+## horse_countryUSA   0.3533     0.1463    2.41 0.01574 *  
+## horse_countryZIM  -0.0869     0.5130   -0.17 0.86554    
+## gamma2             0.9296     0.0210   44.30 < 2e-16 ***
+## gamma3             0.8639     0.0220   39.31 < 2e-16 ***
+## gamma4             0.7061     0.0139   50.75 < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+```r
+# 'type', meaning sex+
+he_mod2 <- hensm(result ~ imp_prob + horse_type,data=rdata,group=race_id)
+print(he_mod2)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 78 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -128223 
+## 12  free parameters
+## Estimates:
+##                   Estimate Std. error t value Pr(> t)    
+## imp_prob            7.7637     0.1103   70.36  <2e-16 ***
+## horse_typeColt     -0.3224     0.0986   -3.27  0.0011 ** 
+## horse_typeFilly    -0.3226     0.2486   -1.30  0.1945    
+## horse_typeGelding   0.0439     0.0344    1.28  0.2018    
+## horse_typeGrey     -0.3331     0.4051   -0.82  0.4110    
+## horse_typeHorse     0.0751     0.0577    1.30  0.1932    
+## horse_typeMare      0.0769     0.1036    0.74  0.4581    
+## horse_typeRig       0.1868     0.1261    1.48  0.1385    
+## horse_typeRoan      0.1653     0.2168    0.76  0.4458    
+## gamma2              0.9289     0.0210   44.28  <2e-16 ***
+## gamma3              0.8632     0.0220   39.27  <2e-16 ***
+## gamma4              0.7080     0.0139   50.81  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+```r
+# age, which we bucket.
+rdata %<>%
+	mutate(age_bucket=cut(horse_age,c(0,2,3,6,Inf)))
+he_mod3 <- hensm(result ~ imp_prob + age_bucket,data=rdata,group=race_id)
+print(he_mod3)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 89 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -128044 
+## 7  free parameters
+## Estimates:
+##                   Estimate Std. error t value Pr(> t)    
+## imp_prob            7.8359     0.1112   70.49 < 2e-16 ***
+## age_bucket(2,3]     0.1582     0.0379    4.17 3.0e-05 ***
+## age_bucket(3,6]     0.4890     0.0400   12.22 < 2e-16 ***
+## age_bucket(6,Inf]   0.4847     0.0601    8.06 7.5e-16 ***
+## gamma2              0.9244     0.0208   44.38 < 2e-16 ***
+## gamma3              0.8596     0.0217   39.52 < 2e-16 ***
+## gamma4              0.7027     0.0137   51.11 < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+```r
+# is the implied win prob from place odds any good?
+rdata %<>%
+  mutate(imp_po_prob=1/as.numeric(place_odds)) %>%
+  group_by(race_id) %>%
+    mutate(imp_po_prob = imp_po_prob / sum(imp_po_prob,na.rm=TRUE)) %>%
+  ungroup() %>%
+  filter(!is.na(imp_po_prob))
+# this is a very very weird result.
+he_mod4 <- hensm(result ~ imp_prob + imp_po_prob,data=rdata,group=race_id)
+print(he_mod4)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 78 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -120239 
+## 5  free parameters
+## Estimates:
+##             Estimate Std. error t value Pr(> t)    
+## imp_prob     -2.2223     0.1891   -11.8  <2e-16 ***
+## imp_po_prob  18.2191     0.3815    47.8  <2e-16 ***
+## gamma2        0.8588     0.0193    44.5  <2e-16 ***
+## gamma3        0.7469     0.0184    40.6  <2e-16 ***
+## gamma4        0.5416     0.0103    52.4  <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+```r
+# check again under Harville:
+ha_mod4 <- harsm(result ~ imp_prob + imp_po_prob,data=rdata,group=race_id)
+print(ha_mod4)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 16 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -120797 
+## 2  free parameters
+## Estimates:
+##             Estimate Std. error t value Pr(> t)    
+## imp_prob      -0.951      0.144   -6.62 3.5e-11 ***
+## imp_po_prob   11.452      0.203   56.28 < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+##    R2: 0.25 
+## --------------------------------------------
+```
+
+```r
+# hmm, what is this rating thing? take a log.
+he_mod5 <- hensm(result ~ imp_prob + imp_po_prob + I(log(horse_rating)),data=rdata,group=race_id)
+print(he_mod5)
+```
+
+```
+## --------------------------------------------
+## Maximum Likelihood estimation
+## BFGS maximization, 84 iterations
+## Return code 0: successful convergence 
+## Log-Likelihood: -120225 
+## 6  free parameters
+## Estimates:
+##                      Estimate Std. error t value Pr(> t)    
+## imp_prob              -2.2153     0.1891  -11.72 < 2e-16 ***
+## imp_po_prob           18.2334     0.3814   47.81 < 2e-16 ***
+## I(log(horse_rating))  -0.3226     0.0602   -5.36 8.2e-08 ***
+## gamma2                 0.8598     0.0193   44.51 < 2e-16 ***
+## gamma3                 0.7476     0.0184   40.62 < 2e-16 ***
+## gamma4                 0.5417     0.0103   52.44 < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## --------------------------------------------
+```
+
+

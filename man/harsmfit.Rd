@@ -4,8 +4,15 @@
 \alias{harsmfit}
 \title{Experts only softmax regression under Harville model.}
 \usage{
-harsmfit(y, g, X, wt = NULL, eta0 = NULL, normalize_wt = FALSE,
-  method = c("BFGS", "NR", "CG", "NM"))
+harsmfit(
+  y,
+  g,
+  X,
+  wt = NULL,
+  eta0 = NULL,
+  normalize_wt = FALSE,
+  method = c("BFGS", "NR", "CG", "NM")
+)
 }
 \arguments{
 \item{y}{a vector of the ranked outcomes within each group. Only

@@ -4,8 +4,8 @@ Authors@R: c(person(c("Steven", "E."), "Pav",
     role=c("aut","cre"),
     email="shabbychef@gmail.com",
     comment = c(ORCID = "0000-0002-4197-6195")))
-Version: 0.1.1
-Date: 2019-10-14
+Version: 0.1.1.100
+Date: 2019-10-15
 License: LGPL-3
 Title: Modeling of Ordinal Random Variables via Softmax Regression
 BugReports: https://github.com/shabbychef/ohenery/issues
@@ -43,4 +43,4 @@ Collate:
     'RcppExports.R'
     'rsm.r'
     'utils.r'
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
