@@ -2,7 +2,7 @@
 
 # ohenery
 
-[![Build Status](https://travis-ci.org/shabbychef/ohenery.png)](https://travis-ci.org/shabbychef/ohenery)
+[![Build Status](https://github.com/shabbychef/ohenery/workflows/R-CMD-check/badge.svg)](https://github.com/shabbychef/ohenery/actions)
 [![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/ohenery?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/ohenery)](https://cran.r-project.org/package=ohenery)
 [![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
