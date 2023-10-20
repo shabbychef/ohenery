@@ -4,7 +4,8 @@
 \name{diving}
 \alias{diving}
 \title{Olympic Diving Data}
-\format{A \code{data.frame} object with 695 observations and 13 columns. 
+\format{
+A \code{data.frame} object with 695 observations and 13 columns. 
 
 The columns are defined as follows:
 \describe{
@@ -23,7 +24,8 @@ through 2016.}
 \item{\code{EventId}}{A unique integer ID for each Olympics.}
 \item{\code{AthleteId}}{A unique integer ID for each participant.}
 \item{\code{HOST_NOC}}{The string name of the National Olympic Committee of the nation hosting the Olympics. This is a three character code.}
-}}
+}
+}
 \source{
 Data were collected by Randi Griffin from the website
 \dQuote{sports-reference.com}, and staged on Kaggle at

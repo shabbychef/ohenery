@@ -4,7 +4,8 @@
 \name{best_picture}
 \alias{best_picture}
 \title{Oscar Award Best Picture Data}
-\format{A \code{data.frame} object with 484 observations and 19 columns. 
+\format{
+A \code{data.frame} object with 484 observations and 19 columns. 
 The columns are defined as follows:
 \describe{
  \item{\code{year}}{The integer year of the nomination. These span from 1934 through 2014. Note that the
@@ -60,7 +61,8 @@ The columns are defined as follows:
  \dQuote{Sport}, \dQuote{Sci Fi},  \dQuote{Film-Noir},
  \dQuote{Animation}, and \dQuote{Horror} divided
  by the total count of genres tagged for the film.}
-}}
+}
+}
 \source{
 Awards data were sourced from Wikipedia, while genre data were
 sourced from IMDb.

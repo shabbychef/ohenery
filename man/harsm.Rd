@@ -6,15 +6,14 @@
 \alias{print.harsm}
 \title{Friendly interface to softmax regression under Harville model.}
 \usage{
-harsm(formula, data, group = NULL, weights = NULL,
-  na.action = na.omit)
+harsm(formula, data, group = NULL, weights = NULL, na.action = na.omit)
 
 \method{vcov}{harsm}(object, ...)
 
 \method{print}{harsm}(x, ...)
 }
 \arguments{
-\item{formula}{an object of class \code{"\link{formula}"} (or one that
+\item{formula}{an object of class \code{"\link[stats]{formula}"} (or one that
     can be coerced to that class): a symbolic description of the
     model to be fitted.  The details of model specification are given
     under \sQuote{Details}.}
@@ -40,7 +39,7 @@ groups, weights, etc.}
 
 \item{object}{an object of class \code{harsm}.}
 
-\item{...}{additional arguments to be passed to the low level
+\item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
 
 \item{x}{logicals.  If \code{TRUE} the corresponding

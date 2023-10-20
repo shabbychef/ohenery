@@ -3,7 +3,6 @@
 \docType{package}
 \name{ohenery}
 \alias{ohenery}
-\alias{ohenery-package}
 \title{The 'ohenery' package.}
 \description{
 Modeling of ordinal outcomes via the softmax function under

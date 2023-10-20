@@ -6,15 +6,21 @@
 \alias{print.hensm}
 \title{Friendly interface to softmax regression under Henery model.}
 \usage{
-hensm(formula, data, group = NULL, weights = NULL, ngamma = 4,
-  na.action = na.omit)
+hensm(
+  formula,
+  data,
+  group = NULL,
+  weights = NULL,
+  ngamma = 4,
+  na.action = na.omit
+)
 
 \method{vcov}{hensm}(object, ...)
 
 \method{print}{hensm}(x, ...)
 }
 \arguments{
-\item{formula}{an object of class \code{"\link{formula}"} (or one that
+\item{formula}{an object of class \code{"\link[stats]{formula}"} (or one that
     can be coerced to that class): a symbolic description of the
     model to be fitted.  The details of model specification are given
     under \sQuote{Details}.}
@@ -42,7 +48,7 @@ for none.}
 
 \item{object}{an object of class \code{hensm}.}
 
-\item{...}{additional arguments to be passed to the low level
+\item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
 
 \item{x}{logicals.  If \code{TRUE} the corresponding

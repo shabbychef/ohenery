@@ -4,8 +4,15 @@
 \alias{harsmfit}
 \title{Experts only softmax regression under Harville model.}
 \usage{
-harsmfit(y, g, X, wt = NULL, eta0 = NULL, normalize_wt = FALSE,
-  method = c("BFGS", "NR", "CG", "NM"))
+harsmfit(
+  y,
+  g,
+  X,
+  wt = NULL,
+  eta0 = NULL,
+  normalize_wt = FALSE,
+  method = c("BFGS", "NR", "CG", "NM")
+)
 }
 \arguments{
 \item{y}{a vector of the ranked outcomes within each group. Only
@@ -43,7 +50,14 @@ weights can lead to incorrect inference. Use with caution.}
    "CG" (for Conjugate Gradients), 
    or "NM" (for Nelder-Mead).  
    Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
-   If missing, a suitable method is selected automatically.}
+   The default method is "NR" for unconstrained problems, and "NM" or
+   "BFGS" for constrained problems, depending on if the \code{grad}
+   argument was provided.  "BHHH" is a good alternative given the
+   likelihood is returned observation-wise (see \code{\link[maxLik]{maxBHHH}}).
+
+   Note that stochastic gradient ascent (SGA) is currently not supported
+   as this method seems to be rarely used for maximum likelihood estimation.
+ }
 }
 \value{
 An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
