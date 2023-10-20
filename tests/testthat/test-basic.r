@@ -444,7 +444,7 @@ test_that("harsm vs logistic",{#FOLDUP
 	library(dplyr)
 	nop <- 5000
 	set.seed(1234)
-	adf <- data_frame(eventnum=floor(seq(1,nop + 0.7,by=0.5))) %>%
+	adf <- data.frame(eventnum=floor(seq(1,nop + 0.7,by=0.5))) %>%
 		mutate(x=rnorm(n())) %>%
 		mutate(program_num=rep(c(1,2),nop)) %>%
 		mutate(intercept=as.numeric(program_num==1)) %>%
