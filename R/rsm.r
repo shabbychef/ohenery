@@ -25,31 +25,31 @@
 
 # putting in the sort_order makes it somewhat stable wrt probabilities.
 .rsm_one <- function(mu,gamma=NULL,sort_order=TRUE) {
-  #if (is.null(gamma)) {
-    #ng <- length(mu)
-    #y <- sample(1:ng,ng,mu=mu)
-    #places <- rep(NA,ng)
-    #places[y] <- 1:ng
-  #}
-  if (sort_order) {
-    mux <- sort(mu,index.return=TRUE)
-    mu <- mux$x
-  }
-  if (is.null(gamma)) {
-    places <- rhenery(mu=mu)
-  } else {
-    # this is inefficient and should move into rhenery?
-    if (length(gamma) < length(mu) - 1) {
-      gamma <- c(gamma,rep(gamma[length(gamma)],length(mu)-1-length(gamma)))
-    } else if (length(gamma) > length(mu) - 1) {
-      gamma <- gamma[1:(length(mu)-1)]
-    }
-    places <- rhenery(mu=mu,gamma=gamma)
-  }
-  if (sort_order) {
-    places[mux$ix] <- places
-  }
-  places
+	#if (is.null(gamma)) {
+	#ng <- length(mu)
+	#y <- sample(1:ng,ng,mu=mu)
+	#places <- rep(NA,ng)
+	#places[y] <- 1:ng
+	#}
+	if (sort_order) {
+		mux <- sort(mu,index.return=TRUE)
+		mu <- mux$x
+	}
+	if (is.null(gamma)) {
+		places <- rhenery(mu=mu)
+	} else {
+		# this is inefficient and should move into rhenery?
+		if (length(gamma) < length(mu) - 1) {
+			gamma <- c(gamma,rep(gamma[length(gamma)],length(mu)-1-length(gamma)))
+		} else if (length(gamma) > length(mu) - 1) {
+			gamma <- gamma[1:(length(mu)-1)]
+		}
+		places <- rhenery(mu=mu,gamma=gamma)
+	}
+	if (sort_order) {
+		places[mux$ix] <- places
+	}
+	places
 }
 #' @title Generate variates from a softmax distribution.
 #'
@@ -206,20 +206,20 @@
 #' @template etc
 #' @export
 rsm <- function(eta, g=NULL, mu=NULL, gamma=NULL) {
-  if (is.null(g) || (all(g==g[1]))) { 
-    if (missing(mu)) { mu <- smax(eta) }
-    return(.rsm_one(mu,gamma))
-  }
-  stopifnot(missing(mu) && (length(g)==length(eta)) || (length(g)==length(mu)))
-  if (missing(mu)) {
-    mu <- smax(eta,g=g)
-  }
-  rv <- data.frame(g=g,mu=mu,rowid=seq_along(g)) %>%
-    group_by(g) %>%
-      mutate(retv=.rsm_one(mu,gamma)) %>%
-    ungroup() %>%
-    arrange(rowid)
-  rv$retv
+	if (is.null(g) || (all(g==g[1]))) { 
+		if (missing(mu)) { mu <- smax(eta) }
+		return(.rsm_one(mu,gamma))
+	}
+	stopifnot(missing(mu) && (length(g)==length(eta)) || (length(g)==length(mu)))
+	if (missing(mu)) {
+		mu <- smax(eta,g=g)
+	}
+	rv <- data.frame(g=g,mu=mu,rowid=seq_along(g)) %>%
+		group_by(g) %>%
+		mutate(retv=.rsm_one(mu,gamma)) %>%
+		ungroup() %>%
+		arrange(rowid)
+	rv$retv
 }
 
 #for vim modeline: (do not edit)

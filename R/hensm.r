@@ -168,23 +168,23 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,na.action=na.omi
 	# easily in a subfunction because of NSE whatever.
 
 	# https://stackoverflow.com/q/53827563/164611
-  mf <- match.call(expand.dots = FALSE)
-  #turn weights into symbol if character is passed
-  if (is.character(mf$weights)) mf$weights <- as.symbol(mf$weights)
-  if (is.character(mf$group)) mf$group <- as.symbol(mf$group)
-  m <- match(c("formula", "data", "weights", "group", "na.action"), names(mf), 0L)
-  mf <- mf[c(1L, m)]
-  mf$drop.unused.levels <- TRUE 
-  mf[[1L]] <- quote(stats::model.frame) 
-  mf <- eval(mf, parent.frame()) #evaluate call
+	mf <- match.call(expand.dots = FALSE)
+	#turn weights into symbol if character is passed
+	if (is.character(mf$weights)) mf$weights <- as.symbol(mf$weights)
+	if (is.character(mf$group)) mf$group <- as.symbol(mf$group)
+	m <- match(c("formula", "data", "weights", "group", "na.action"), names(mf), 0L)
+	mf <- mf[c(1L, m)]
+	mf$drop.unused.levels <- TRUE 
+	mf[[1L]] <- quote(stats::model.frame) 
+	mf <- eval(mf, parent.frame()) #evaluate call
 
 	Xs <- model.matrix(formula,mf)
 	# remove intercept!
 	if (colnames(Xs)[1] == '(Intercept)') { Xs <- Xs[,-1,drop=FALSE] }
 	y <- as.vector(model.response(mf))
-  group <- as.vector(model.extract(mf,'group'))
+	group <- as.vector(model.extract(mf,'group'))
 	eta0 <- model.offset(mf)
-  wt <- as.vector(model.weights(mf))
+	wt <- as.vector(model.weights(mf))
 
 	dat <- list(Xs=Xs,y=y,group=group,eta0=eta0,wt=wt)
 

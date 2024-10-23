@@ -121,7 +121,7 @@ globalVariables(c('dumb_rank','.'))
 harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 										 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
-#2FIX: allow beta0 input.
+	#2FIX: allow beta0 input.
 	beta0 <- array(0,ncol(X))
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
 	# turn g into integers?
@@ -155,10 +155,10 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 	} else {
 		ssdf$wt <- wt
 	}
-		
+
 	SStot <- ssdf %>%
 		group_by(g) %>%
-			mutate(dumb_rank=(1 + n())/2) %>%
+		mutate(dumb_rank=(1 + n())/2) %>%
 		ungroup() %>%
 		summarize(err=.wmse(dumb_rank,y,wt=wt)) %>%
 		{ .$err }
@@ -305,23 +305,23 @@ harsm <- function(formula,data,group=NULL,weights=NULL,na.action=na.omit) {
 	# easily in a subfunction because of NSE whatever.
 
 	# https://stackoverflow.com/q/53827563/164611
-  mf <- match.call(expand.dots = FALSE)
-  #turn weights into symbol if character is passed
-  if (is.character(mf$weights)) mf$weights <- as.symbol(mf$weights)
-  if (is.character(mf$group)) mf$group <- as.symbol(mf$group)
-  m <- match(c("formula", "data", "weights", "group", "na.action"), names(mf), 0L)
-  mf <- mf[c(1L, m)]
-  mf$drop.unused.levels <- TRUE 
-  mf[[1L]] <- quote(stats::model.frame) 
-  mf <- eval(mf, parent.frame()) #evaluate call
+	mf <- match.call(expand.dots = FALSE)
+	#turn weights into symbol if character is passed
+	if (is.character(mf$weights)) mf$weights <- as.symbol(mf$weights)
+	if (is.character(mf$group)) mf$group <- as.symbol(mf$group)
+	m <- match(c("formula", "data", "weights", "group", "na.action"), names(mf), 0L)
+	mf <- mf[c(1L, m)]
+	mf$drop.unused.levels <- TRUE 
+	mf[[1L]] <- quote(stats::model.frame) 
+	mf <- eval(mf, parent.frame()) #evaluate call
 
 	Xs <- model.matrix(formula,mf)
 	# remove intercept!
 	if (colnames(Xs)[1] == '(Intercept)') { Xs <- Xs[,-1,drop=FALSE] }
 	y <- as.vector(model.response(mf))
-  group <- as.vector(model.extract(mf,'group'))
+	group <- as.vector(model.extract(mf,'group'))
 	eta0 <- model.offset(mf)
-  wt <- as.vector(model.weights(mf))
+	wt <- as.vector(model.weights(mf))
 
 	dat <- list(Xs=Xs,y=y,group=group,eta0=eta0,wt=wt)
 
@@ -363,7 +363,6 @@ print.harsm <- function(x, ...) {
 
 	invisible(x)
 }
-
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
