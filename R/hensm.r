@@ -47,14 +47,19 @@ setOldClass('hensm')
 #2FIX: why isn't there a experts version of this one?
 #  @param ngamma  the number of gammas to model; we model
 #        \eqn{\gamma_2} through \eqn{\gamma_n}.
-.hmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
+.hmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, gamma0=NULL, normalize_wt=FALSE,
 									 ngamma=4,  method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
+	if (!is.null(gamma0)) {
+		ngamma <- length(gamma0)
+	} else {
+		gamma0 <- array(1,ngamma-1)
+	}
 	stopifnot(ngamma >= 2)
-#2FIX: allow beta0 input.
 	k <- ncol(X)
-	beta0 <- array(0,k)
-	gamma0 <- array(1,ngamma-1)
+	if (is.null(beta0)) {
+		beta0 <- array(0,k)
+	}
 	theta0 <- c(beta0,gamma0)
 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
