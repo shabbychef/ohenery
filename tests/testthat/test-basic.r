@@ -602,6 +602,21 @@ test_that("hensm bits",{#FOLDUP
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
 
+	# warm start!
+	expect_error(fitnum <- hensm(outcome ~ V1 + V2,data,group=race),NA)
+	expect_error(fitnum2 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum),NA)
+	# why are they not closer?
+	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitnum2)),tolerance=1e-3)
+
+	expect_error(fitnum3 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum,ngamma=3),NA)
+	expect_error(fitnum4 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum,ngamma=4),NA)
+	expect_error(fitnum2b <- hensm(outcome ~ V1,data,group=race,fit0=fitnum),NA)
+	expect_error(fitnum2c <- hensm(outcome ~ V1 + V3,data,group=race,fit0=fitnum),NA)
+
+	# warm start from harsm object.
+	expect_error(har_fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
+	expect_error(fitnum2 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=har_fitnum),NA)
+
 	#for (ttype in c('eta','mu','erank')) {
 		#expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
 		#expect_error(fuh <- predict(fitlet,newdata=data,type=ttype),NA)

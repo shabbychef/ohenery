@@ -12,6 +12,7 @@ hensm(
   group = NULL,
   weights = NULL,
   ngamma = 4,
+  fit0 = NULL,
   na.action = na.omit
 )
 
@@ -43,6 +44,17 @@ for none.}
 
 \item{ngamma}{The number of gammas to fit. Should be at least 2.}
 
+\item{fit0}{An optional object of class \code{hensm} or of \code{harsm} 
+with the initial fit estimates. 
+These will be used for \sQuote{warm start} of the estimation procedure. 
+A warm start should only speed up estimation, not change the ultimate results. 
+When there is mismatch between the coefficients in \code{fit0} and the model 
+being fit here, the missing coefficients are initialized as zero. 
+If \code{ngamma} is \code{NULL} and \code{fit0} is given, 
+we default to the number of gammas in the initial fit, otherwise
+we fill any missing gammas with 1.
+If a \code{harsm} object is given, then \code{ngamma} must be non-null.}
+
 \item{na.action}{How to deal with missing values in \code{y}, \code{g},
 \code{X}, \code{wt}, \code{eta0}.}
 
@@ -50,11 +62,6 @@ for none.}
 
 \item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
-
-\item{x}{logicals.  If \code{TRUE} the corresponding
-    components of the fit (the model frame, the model matrix, the
-    response, the QR decomposition) are returned.
-  }
 }
 \value{
 An object of class \code{hensm}, but also of \code{maxLik} with the
@@ -138,8 +145,14 @@ df <- race_data \%>\%
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)
 
 # look for age effect not captured by consensus odds.
-hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,ngamma=2)
-
+fit0 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,ngamma=2)
+# allow warm start.
+fit1 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=2)
+# allow warm start with more gammas.
+fit2 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=3)
+# warm start from harsm object
+fit0_har <- harsm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights)
+fit3 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,fit0=fit0_har,weights=weights)
 
 }
 \seealso{

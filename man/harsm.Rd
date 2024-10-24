@@ -41,11 +41,6 @@ groups, weights, etc.}
 
 \item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
-
-\item{x}{logicals.  If \code{TRUE} the corresponding
-    components of the fit (the model frame, the model matrix, the
-    response, the QR decomposition) are returned.
-  }
 }
 \value{
 An object of class \code{harsm}, but also of \code{maxLik} with the
