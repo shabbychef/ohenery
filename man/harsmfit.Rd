@@ -10,6 +10,7 @@ harsmfit(
   X,
   wt = NULL,
   eta0 = NULL,
+  beta0 = NULL,
   normalize_wt = FALSE,
   method = c("BFGS", "NR", "CG", "NM")
 )
@@ -35,6 +36,12 @@ the fit odds in odds space before the likelihood caclulation. If given,
 then when the model is used to predict, similar consensus odds must be
 given.
 Must be the same length as \code{y}.}
+
+\item{beta0}{an optional vector of the initial estimate of beta for
+\sQuote{warm start} of the estimation procedure.
+Must be the same length as number of columns in \code{X}.
+Should only affect the speed of the computation, not the results.
+Defaults to all zeroes.}
 
 \item{normalize_wt}{if \code{TRUE}, we renormalize \code{wt}, if given,
 to have mean value 1. Note that the default value has changed

@@ -437,6 +437,12 @@ test_that("harsmfit bits",{#FOLDUP
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
 
+	# warm start
+	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
+	expect_error(fitnum2 <- harsm(outcome ~ V1 + V2,data,group=race,fit0=fitnum),NA)
+	expect_error(fitnum3 <- harsm(outcome ~ V2,data,group=race,fit0=fitnum),NA)
+	expect_error(fitnum4 <- harsm(outcome ~ V2 + V3,data,group=race,fit0=fitnum),NA)
+	expect_error(fitnum5 <- harsm(outcome ~ V3 + V4,data,group=race,fit0=fitnum),NA)
 })#UNFOLD
 test_that("harsm vs logistic",{#FOLDUP
 	# travis only?

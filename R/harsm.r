@@ -88,10 +88,16 @@ globalVariables(c('dumb_rank','.'))
 #' then when the model is used to predict, similar consensus odds must be
 #' given.
 #' Must be the same length as \code{y}.
+#' @param beta0  an optional vector of the initial estimate of beta for
+#' \sQuote{warm start} of the estimation procedure.
+#' Must be the same length as number of columns in \code{X}.
+#' Should only affect the speed of the computation, not the results.
+#' Defaults to all zeroes.
 #' @param normalize_wt  if \code{TRUE}, we renormalize \code{wt}, if given,
 #' to have mean value 1. Note that the default value has changed
 #' since version 0.1.0 of this package. Moreover, non-normalized
 #' weights can lead to incorrect inference. Use with caution.
+#'
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
 #' @keywords fitting
@@ -118,11 +124,14 @@ globalVariables(c('dumb_rank','.'))
 #' modw <- harsmfit(y=y,g=g,X=X,wt=1 + as.numeric(y < 6))
 #' summary(modw)
 #' @export
-harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
+harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE,
 										 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
-	#2FIX: allow beta0 input.
-	beta0 <- array(0,ncol(X))
+	if (is.null(beta0)) {
+		beta0 <- array(0,ncol(X))
+	} else {
+		stopifnot(length(beta0)==ncol(X))
+	}
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
 	# turn g into integers?
 	if (is.integer(g)) { grp <- g } else { grp <- match(g,unique(g)) }
@@ -217,6 +226,12 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 #' @template param-group
 #' @param na.action  How to deal with missing values in the outcomes,
 #' groups, weights, etc.
+#' @param fit0    An optional object of class \code{harsm} or of \code{hensm} 
+#' with the initial fit estimates. 
+#' These will be used for \sQuote{warm start} of the estimation procedure. 
+#' A warm start should only speed up estimation, not change the ultimate results. 
+#' When there is mismatch between the coefficients in \code{fit0} and the model 
+#' being fit here, the missing coefficients are initialized as zero. 
 #' @template etc
 #' @return An object of class \code{harsm}, but also of \code{maxLik} with the
 #' fit.
@@ -257,8 +272,11 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 #' df$weight <- ifelse(df$winner,1,0)
 #'
 #' fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
+#' fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
 #'
-#' harsm(fmla,data=df,group=year,weights=weight) 
+#' # warm start is a thing:
+#' sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor 
+#' fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0) 
 #'
 #' \donttest{
 #' # test against logistic regression
@@ -293,13 +311,14 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, normalize_wt=FALSE,
 #'
 #' }
 #'
+#'
 #' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights
 #' @template note-ties
 #' @template note-weights
 #' @template param-weights
 #' @export
 #' @rdname harsm
-harsm <- function(formula,data,group=NULL,weights=NULL,na.action=na.omit) {
+harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,na.action=na.omit) {
 	substitute(formula)
 	# I find it highly offensive that this cannot be done reasonably
 	# easily in a subfunction because of NSE whatever.
@@ -325,8 +344,17 @@ harsm <- function(formula,data,group=NULL,weights=NULL,na.action=na.omit) {
 
 	dat <- list(Xs=Xs,y=y,group=group,eta0=eta0,wt=wt)
 
+	if (!is.null(fit0)) {
+		stopifnot(any(c("hensm","harsm") %in% class(fit0)))
+		feat_names <- colnames(dat$Xs)
+		beta0 <- rep(0,ncol(dat$Xs))
+		found <- feat_names %in% attr(fit0$beta,'names')
+		beta0[found] <- fit0$beta[feat_names[found]]
+	} else {
+		beta0 <- NULL
+	}
 	# call the fit function
-	retv <- harsmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, eta0=dat$eta0)
+	retv <- harsmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, eta0=dat$eta0, beta0=beta0)
 	names(retv$mle$estimate) <- colnames(dat$Xs)
 	names(retv$coefficients) <- colnames(dat$Xs)
 	retv <- as.linodds(retv, formula, beta=retv$coefficients)
@@ -350,6 +378,7 @@ vcov.harsm <- function(object, ...) {
 #' @export
 #' @importFrom stats printCoefmat
 #' @importFrom methods show
+#' @inheritParams base::print
 #' @rdname harsm
 #' @method print harsm
 print.harsm <- function(x, ...) {

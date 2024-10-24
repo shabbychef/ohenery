@@ -62,6 +62,8 @@ If a \code{harsm} object is given, then \code{ngamma} must be non-null.}
 
 \item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
+
+\item{x}{an object used to select a method.}
 }
 \value{
 An object of class \code{hensm}, but also of \code{maxLik} with the
@@ -145,14 +147,18 @@ df <- race_data \%>\%
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)
 
 # look for age effect not captured by consensus odds.
-fit0 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,ngamma=2)
+fmla <- Finish ~ offset(eta0) + fac_age
+fit0 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=2)
 # allow warm start.
-fit1 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=2)
+fit1 <- hensm(fmla,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=2)
 # allow warm start with more gammas.
-fit2 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=3)
+fit2 <- hensm(fmla,data=df,group=EventId,weights=weights,fit0=fit0,ngamma=3)
+# or a different formula
+fit3 <- hensm(update(fmla,~ . + PostPosition),data=df,group=EventId,weights=weights,fit0=fit0)
+
 # warm start from harsm object
-fit0_har <- harsm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,weights=weights)
-fit3 <- hensm(Finish ~ offset(eta0) + fac_age,data=df,group=EventId,fit0=fit0_har,weights=weights)
+fit0_har <- harsm(fmla,data=df,group=EventId,weights=weights)
+fit4 <- hensm(fmla,data=df,group=EventId,fit0=fit0_har,weights=weights)
 
 }
 \seealso{
