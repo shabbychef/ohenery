@@ -1,6 +1,6 @@
 # /usr/bin/r
 #
-# Copyright 2019-2019 Steven E. Pav. All Rights Reserved.
+# Copyright 2019-2024 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav 
 #
 # This file is part of ohenery.

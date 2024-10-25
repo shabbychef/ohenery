@@ -1,6 +1,6 @@
 # /usr/bin/r
 #
-# Copyright 2018-2019 Steven E. Pav. All Rights Reserved.
+# Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav 
 #
 # This file is part of ohenery.
@@ -19,7 +19,7 @@
 # along with ohenery.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Created: 2018.12.20
-# Copyright: Steven E. Pav, 2018-2019
+# Copyright: Steven E. Pav, 2018-2024
 # Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 

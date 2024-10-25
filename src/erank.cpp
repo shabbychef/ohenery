@@ -21,7 +21,7 @@
 	Hard to do as it is a big multivariate integration.
 
   Created: 2018.09.26
-  Copyright: Steven E. Pav, 2018-2019
+  Copyright: Steven E. Pav, 2018-2024
   Author: Steven E. Pav <shabbychef@gmail.com>
   Comments: Steven E. Pav
 */

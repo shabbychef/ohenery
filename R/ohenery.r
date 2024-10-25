@@ -1,4 +1,4 @@
-# Copyright 2018-2019 Steven E. Pav. All Rights Reserved.
+# Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav
 #
 # This file is part of ohenery.
@@ -17,7 +17,7 @@
 # along with ohenery.  If not, see <http://www.gnu.org/licenses/>.
 
 # Created: 2018-09-17
-# Copyright: Steven E. Pav, 2018-2019
+# Copyright: Steven E. Pav, 2018-2024
 # Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 
@@ -105,7 +105,7 @@
 #' 
 #' This package is maintained as a hobby. 
 #'
-NULL
+"_PACKAGE"
 
 #' @title News for package 'ohenery':
 #'
@@ -116,7 +116,12 @@ NULL
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\ohenery}{\CRANpkg{ohenery}}
 #'
-#' @section \ohenery{} Initial Version 0.1.1 (2018-10-14) :
+#' @section \ohenery{} Version 0.1.2 (2024-10-25) :
+#' \itemize{
+#' \item Allow warm start in harsm and hensm.
+#' }
+#'
+#' @section \ohenery{} Version 0.1.1 (2018-10-14) :
 #' \itemize{
 #' \item Change default in harsm and hensm to use unnormalized weights,
 #' correcting inference when not all finishes are observed.
