@@ -45,7 +45,7 @@ library(microbenchmark)
 # ohenery
 
 [![Build Status](https://github.com/shabbychef/ohenery/workflows/R-CMD-check/badge.svg)](https://github.com/shabbychef/ohenery/actions)
-[![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](http://codecov.io/github/shabbychef/ohenery?branch=master)
+[![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](https://app.codecov.io/github/shabbychef/ohenery?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/ohenery)](https://cran.r-project.org/package=ohenery)
 [![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
 [![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
@@ -106,7 +106,7 @@ For example, one might model the speed of each racer, or the number of
 votes each film garnered, or the total amount of rain each city experienced.
 Discarding this information in favor of modeling the binary outcome is
 likely to cause a loss of statistical power, and is 
-[generally discouraged](https://statmodeling.stat.columbia.edu/2014/02/25/basketball-stats-dont-model-probability-win-model-expected-score-differential/).
+[generally discouraged](https://statmodeling.stat.columbia.edu/2014/02/25/differential/).
 However, in some cases the continuous outcome is _not_ observed, as
 in the case of the Best Picture awards, or in horse racing where finishing
 times are often not available.
