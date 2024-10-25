@@ -5,8 +5,8 @@
 [![Build Status](https://github.com/shabbychef/ohenery/workflows/R-CMD-check/badge.svg)](https://github.com/shabbychef/ohenery/actions)
 [![codecov.io](http://codecov.io/github/shabbychef/ohenery/coverage.svg?branch=master)](https://app.codecov.io/github/shabbychef/ohenery?branch=master)
 [![CRAN](http://www.r-pkg.org/badges/version/ohenery)](https://cran.r-project.org/package=ohenery)
-[![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
-[![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](http://www.r-pkg.org/pkg/ohenery)
+[![Downloads](http://cranlogs.r-pkg.org/badges/ohenery?color=green)](https://www.r-pkg.org:443/pkg/ohenery)
+[![Total](http://cranlogs.r-pkg.org/badges/grand-total/ohenery?color=green)](https://www.r-pkg.org:443/pkg/ohenery)
 ![RCpp](https://img.shields.io/badge/RCpp-inside-blue.svg)
 
 Performs softmax regression for ordered outcomes under the [Harville](http://dx.doi.org/10.1080/01621459.1973.10482425)
