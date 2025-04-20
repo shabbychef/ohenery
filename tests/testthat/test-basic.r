@@ -508,6 +508,11 @@ test_that("harsmfit prediction",{#FOLDUP
 	expect_error(barfuh <- predict(fitnum,newdata=data,type=ttype,group='race'),NA)
 	expect_equal(fuhbar,barfuh,tolerance=1e-7)
 
+	# if predict data is missing some columns, should error
+	baddata <- data[c('race','V1')]
+	ttype <- 'eta'
+	expect_error(fuhbar <- predict(fitnum,newdata=baddata,type=ttype,group=race))
+
 	# deal with na actions
 	expect_error(fuh <- as.numeric(predict(fitlet,newdata=data,type='eta',group=letrace,na.action=na.pass)),NA)
 	expect_equal(length(fuh),nrow(data))
@@ -531,10 +536,6 @@ test_that("harsmfit prediction",{#FOLDUP
 	expect_error(fuh <- as.numeric(predict(fitlet,newdata=badata,type='eta',group=letrace,na.action=na.omit)),NA)
 	expect_equal(length(fuh),sum(!is.na(badata$V1)))
 	expect_true(all(!is.na(fuh)))
-
-
-
-
 })#UNFOLD
 test_that("hensm bits",{#FOLDUP
 	# travis only?
@@ -604,6 +605,11 @@ test_that("hensm bits",{#FOLDUP
 	expect_error(fitlet <- hensm(outcome ~ V1 + V2,data,group=letrace),NA)
 	expect_error(fitfac <- hensm(outcome ~ V1 + V2,data,group=facrace),NA)
 	expect_error(fitint <- hensm(outcome ~ V1 + V2,data,group=intrace),NA)
+	
+	# if predict data is missing some columns, should error
+	baddata <- data[c('race','V1')]
+	ttype <- 'eta'
+	expect_error(fuhbar <- predict(fitnum,newdata=baddata,type=ttype,group=race))
 
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
 	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
