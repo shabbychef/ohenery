@@ -116,6 +116,11 @@
 #' \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 #' \newcommand{\ohenery}{\CRANpkg{ohenery}}
 #'
+#' @section \ohenery{} Version 0.1.3 (2025-04-19) :
+#' \itemize{
+#' \item Fix issue with factor levels in predict. #8
+#' }
+#'
 #' @section \ohenery{} Version 0.1.2 (2024-10-25) :
 #' \itemize{
 #' \item Allow warm start in harsm and hensm.

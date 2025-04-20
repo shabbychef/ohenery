@@ -9,7 +9,7 @@
 
 VMAJOR 						 = 0
 VMINOR 						 = 1
-VPATCH  					 = 2
+VPATCH  					 = 3
 VDEV 							 =
 #VDEV 							 = .902
 PKG_NAME 					:= ohenery
