@@ -655,6 +655,51 @@ test_that("hensm consistency",{#FOLDUP
 	expect_equal(fitm$gammas[1:3],gammas[1:3],tolerance=0.03)
 	expect_equal(as.numeric(fitm$beta),beta,tolerance=0.03)
 })#UNFOLD
+test_that("predictions with factors",{#FOLDUP
+	# travis only?
+	#skip_on_cran()
+	nfeat <- 2
+	set.seed(1234)
+	g <- ceiling(seq(0.1,30,by=0.1))
+	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
+	beta <- rnorm(nfeat)
+	eta <- X %*% beta
+	y <- rsm(eta,g=g)
+	
+	# create a variable V3, which is a factor variable.
+	# in the training data is has values 'a':'q'; we build a model.
+	# in the test data we try data with values 'a':'m' and only those levels.
+	# and also test data with values 'a':'m' but levels 'a':'z'.
+	# In each case we should be able to call predict on the model.
+	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
+	data_AQ <- data
+	data_AQ$V3 <- factor(sample(letters[1:17],nrow(data_AQ),replace=TRUE))
+	data_AM <- data
+	data_AM$V3 <- factor(sample(letters[1:13],nrow(data_AM),replace=TRUE))
+	data_AMZ <- data_AM
+	data_AMZ$V3 <- factor(as.character(data_AMZ$V3),levels=letters)
+
+	expect_error(fitmod <- harsm(outcome ~ V1 + V3,data_AQ,group=race),NA)
+	expect_error(henmod <- hensm(outcome ~ V1 + V3,data_AQ,group=race),NA)
+	for (ttype in c('eta','mu','erank')) {
+		expect_error(fuh <- predict(fitmod,newdata=data_AQ,type=ttype),NA)
+		expect_error(fuh <- predict(fitmod,newdata=data_AQ,type=ttype,group=race),NA)
+
+		expect_error(fuh <- predict(fitmod,newdata=data_AM,type=ttype),NA)
+		expect_error(fuh <- predict(fitmod,newdata=data_AM,type=ttype,group=race),NA)
+		expect_error(fuh <- predict(fitmod,newdata=data_AMZ,type=ttype),NA)
+		expect_error(fuh <- predict(fitmod,newdata=data_AMZ,type=ttype,group=race),NA)
+
+		expect_error(fuh <- predict(henmod,newdata=data_AQ,type=ttype),NA)
+		expect_error(fuh <- predict(henmod,newdata=data_AQ,type=ttype,group=race),NA)
+
+		expect_error(fuh <- predict(henmod,newdata=data_AM,type=ttype),NA)
+		expect_error(fuh <- predict(henmod,newdata=data_AM,type=ttype,group=race),NA)
+		expect_error(fuh <- predict(henmod,newdata=data_AMZ,type=ttype),NA)
+		expect_error(fuh <- predict(henmod,newdata=data_AMZ,type=ttype,group=race),NA)
+	}
+
+})#UNFOLD
 #UNFOLD
 context("weighting")#FOLDUP
 test_that("harsmfit zero weights",{#FOLDUP
