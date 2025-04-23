@@ -4,7 +4,8 @@
 \name{race_data}
 \alias{race_data}
 \title{Horse Race Data}
-\format{A \code{data.frame} object with 36,418 observations and 19 columns. 
+\format{
+A \code{data.frame} object with 36,418 observations and 19 columns. 
 
 The columns are defined as follows:
 \describe{
@@ -51,7 +52,8 @@ this horse at post time.}
 this horse at post time.}
 \item{\code{Finish}}{The integer finishing position of the horse. A 1 means first place. We only collect values of 1, 2, and 3, while
 the remaining finishing places are unknown and left as \code{NA}.}
-}}
+}
+}
 \source{
 Data were sourced from the web. Don't ask.
 }

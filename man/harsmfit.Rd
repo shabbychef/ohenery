@@ -4,8 +4,16 @@
 \alias{harsmfit}
 \title{Experts only softmax regression under Harville model.}
 \usage{
-harsmfit(y, g, X, wt = NULL, eta0 = NULL, normalize_wt = FALSE,
-  method = c("BFGS", "NR", "CG", "NM"))
+harsmfit(
+  y,
+  g,
+  X,
+  wt = NULL,
+  eta0 = NULL,
+  beta0 = NULL,
+  normalize_wt = FALSE,
+  method = c("BFGS", "NR", "CG", "NM")
+)
 }
 \arguments{
 \item{y}{a vector of the ranked outcomes within each group. Only
@@ -29,6 +37,12 @@ then when the model is used to predict, similar consensus odds must be
 given.
 Must be the same length as \code{y}.}
 
+\item{beta0}{an optional vector of the initial estimate of beta for
+\sQuote{warm start} of the estimation procedure.
+Must be the same length as number of columns in \code{X}.
+Should only affect the speed of the computation, not the results.
+Defaults to all zeroes.}
+
 \item{normalize_wt}{if \code{TRUE}, we renormalize \code{wt}, if given,
 to have mean value 1. Note that the default value has changed
 since version 0.1.0 of this package. Moreover, non-normalized
@@ -43,7 +57,14 @@ weights can lead to incorrect inference. Use with caution.}
    "CG" (for Conjugate Gradients), 
    or "NM" (for Nelder-Mead).  
    Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
-   If missing, a suitable method is selected automatically.}
+   The default method is "NR" for unconstrained problems, and "NM" or
+   "BFGS" for constrained problems, depending on if the \code{grad}
+   argument was provided.  "BHHH" is a good alternative given the
+   likelihood is returned observation-wise (see \code{\link[maxLik]{maxBHHH}}).
+
+   Note that stochastic gradient ascent (SGA) is currently not supported
+   as this method seems to be rarely used for maximum likelihood estimation.
+ }
 }
 \value{
 An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
@@ -84,7 +105,7 @@ summary(modw)
 \references{
 Harville, D. A. "Assigning probabilities to the outcomes of multi-entry competitions." 
 Journal of the American Statistical Association 68, no. 342 (1973): 312-316.
-\url{http://dx.doi.org/10.1080/01621459.1973.10482425}
+\doi{10.1080/01621459.1973.10482425}
 }
 \seealso{
 the likelihood function, \code{\link{harsmlik}}, and the

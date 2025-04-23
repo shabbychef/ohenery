@@ -1,4 +1,12 @@
 
+2025-04-19 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.3 on CRAN
+* Fix issue with factor levels in predict. #8
+
+2024-10-25 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.2 on CRAN
+* Allow warm start in harsm and hensm.
+
 2019-10-14 Steven E. Pav <shabbychef@gmail.com>
 * 0.1.1 on CRAN
 * Change default in harsm and hensm to use unnormalized weights,

@@ -19,7 +19,7 @@
   softmax likelihood function with gradient attached.
 
   Created: 2018.09.23
-  Copyright: Steven E. Pav, 2018-2019
+  Copyright: Steven E. Pav, 2018-2024
   Author: Steven E. Pav <shabbychef@gmail.com>
   Comments: Steven E. Pav
 */

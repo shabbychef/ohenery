@@ -6,15 +6,21 @@
 \alias{print.harsm}
 \title{Friendly interface to softmax regression under Harville model.}
 \usage{
-harsm(formula, data, group = NULL, weights = NULL,
-  na.action = na.omit)
+harsm(
+  formula,
+  data,
+  group = NULL,
+  weights = NULL,
+  fit0 = NULL,
+  na.action = na.omit
+)
 
 \method{vcov}{harsm}(object, ...)
 
 \method{print}{harsm}(x, ...)
 }
 \arguments{
-\item{formula}{an object of class \code{"\link{formula}"} (or one that
+\item{formula}{an object of class \code{"\link[stats]{formula}"} (or one that
     can be coerced to that class): a symbolic description of the
     model to be fitted.  The details of model specification are given
     under \sQuote{Details}.}
@@ -35,18 +41,22 @@ weights in the \code{data} for use in the fitting process. The weights
 are attached to the outcomes, not the participant.  Set to \code{NULL}
 for none.}
 
+\item{fit0}{An optional object of class \code{harsm} or of \code{hensm} 
+with the initial fit estimates. 
+These will be used for \sQuote{warm start} of the estimation procedure. 
+A warm start should only speed up estimation, not change the ultimate results. 
+When there is mismatch between the coefficients in \code{fit0} and the model 
+being fit here, the missing coefficients are initialized as zero.}
+
 \item{na.action}{How to deal with missing values in the outcomes,
 groups, weights, etc.}
 
 \item{object}{an object of class \code{harsm}.}
 
-\item{...}{additional arguments to be passed to the low level
+\item{...}{For \code{lm()}: additional arguments to be passed to the low level
     regression fitting functions (see below).}
 
-\item{x}{logicals.  If \code{TRUE} the corresponding
-    components of the fit (the model frame, the model matrix, the
-    response, the QR decomposition) are returned.
-  }
+\item{x}{an object used to select a method.}
 }
 \value{
 An object of class \code{harsm}, but also of \code{maxLik} with the
@@ -150,8 +160,11 @@ df$place <- ifelse(df$winner,1,2)
 df$weight <- ifelse(df$winner,1,0)
 
 fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
+fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
 
-harsm(fmla,data=df,group=year,weights=weight) 
+# warm start is a thing:
+sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor 
+fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0) 
 
 \donttest{
 # test against logistic regression
@@ -185,6 +198,7 @@ all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
 }
 
 }
+
 
 }
 \seealso{

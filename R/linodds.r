@@ -1,6 +1,6 @@
 # /usr/bin/r
 #
-# Copyright 2018-2019 Steven E. Pav. All Rights Reserved.
+# Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav 
 #
 # This file is part of ohenery.
@@ -19,7 +19,7 @@
 # along with ohenery.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Created: 2018.10.18
-# Copyright: Steven E. Pav, 2018-2019
+# Copyright: Steven E. Pav, 2018-2024
 # Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 
@@ -99,11 +99,12 @@ predict.linodds <- function(object,newdata,type=c('eta','mu','erank'),na.action=
 
   m <- match(c("data", "group", "na.action"), names(mf), 0L)
   mf <- mf[c(1L, 1L, m)]
-  mf$drop.unused.levels <- TRUE 
+  mf$drop.unused.levels <- TRUE
+	# need this
+	# mf$xlev <- 
   mf[[1L]] <- quote(stats::model.frame) 
   mf[[2L]] <- Terms
   mf <- eval(mf, parent.frame()) #evaluate call
-
   Xs <- model.matrix(as.formula(Terms),mf)
   # remove intercept!
   if (colnames(Xs)[1] == '(Intercept)') { Xs <- Xs[,-1,drop=FALSE] }
@@ -112,9 +113,11 @@ predict.linodds <- function(object,newdata,type=c('eta','mu','erank'),na.action=
   wt <- as.vector(model.weights(mf))
 
   dat <- list(Xs=Xs,group=group,eta0=eta0,wt=wt)
-
-  # 2FIX: make sure the beta is in the right order???
-  eta <- as.numeric(dat$Xs %*% matrix(object$beta,ncol=1))
+	if (!all(colnames(dat$Xs) %in% names(object$beta))) {
+		stop("some levels in data unknown to fit model")
+	}
+  # 2FIX: we subset beta to the colnames, but are these promised to be in the right order?
+  eta <- as.numeric(dat$Xs %*% matrix(object$beta[colnames(dat$Xs)],ncol=1))
   # deal with offset
   if (!is.null(eta0)) {
     eta <- eta + eta0

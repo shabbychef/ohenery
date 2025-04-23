@@ -8,15 +8,21 @@
 \usage{
 as.linodds(object, formula, beta)
 
-\method{predict}{linodds}(object, newdata, type = c("eta", "mu",
-  "erank"), na.action = na.pass, group = NULL, ...)
+\method{predict}{linodds}(
+  object,
+  newdata,
+  type = c("eta", "mu", "erank"),
+  na.action = na.pass,
+  group = NULL,
+  ...
+)
 
 \method{coef}{linodds}(object, ...)
 }
 \arguments{
 \item{object}{some list-like object.}
 
-\item{formula}{an object of class \code{"\link{formula}"} (or one that
+\item{formula}{an object of class \code{"\link[stats]{formula}"} (or one that
     can be coerced to that class): a symbolic description of the
     model to be fitted.  The details of model specification are given
     under \sQuote{Details}.}
