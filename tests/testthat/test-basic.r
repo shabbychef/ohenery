@@ -537,6 +537,56 @@ test_that("harsmfit prediction",{#FOLDUP
 	expect_equal(length(fuh),sum(!is.na(badata$V1)))
 	expect_true(all(!is.na(fuh)))
 })#UNFOLD
+test_that("harsmfit regularization",{#FOLDUP
+	# travis only?
+	#skip_on_cran()
+	nfeat <- 5
+	set.seed(1234)
+	g <- ceiling(seq(0.1,100,by=0.1))
+	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
+	beta <- rnorm(nfeat)
+	eta <- X %*% beta
+	expect_error(y <- rsm(eta,g=g),NA)
+
+	# these should error out for having bad weights or powers or indices, etc.
+	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(-1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat))
+	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=0,reg_zero=0,reg_coef_idx=1:nfeat))
+	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=(1:nfeat)+2))
+	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=(1:nfeat)-2))
+
+	# smoke test.
+	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
+	expect_error(mod0r1 <- harsmfit(y=y,g=g,X=X,
+																	reg_wt=rep(2,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
+	expect_error(mod0r2 <- harsmfit(y=y,g=g,X=X,
+																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=0,reg_coef_idx=1:nfeat),NA)
+
+	# expect smaller coefficients for regularization terms.
+	expect_true(norm(coefficients(mod0),'2') > norm(coefficients(mod0r2),'2'))
+
+	# the zeroes should default to zero.
+	expect_error(mod0r2_alt <- harsmfit(y=y,g=g,X=X,
+																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=NULL,reg_coef_idx=1:nfeat),NA)
+	expect_equal(as.numeric(coefficients(mod0r2)),as.numeric(coefficients(mod0r2_alt)),tolerance=0.0001)
+
+	# can we drive a coefficient to zero via l1 regression?
+	expect_error(mod0r1_harsh <- harsmfit(y=y,g=g,X=X,
+																	reg_wt=rep(200,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
+	expect_true(min(abs(coefficients(mod0r1_harsh))) < 1e-7)
+
+	# now the pretty frontend
+	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
+
+	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
+	expect_error(fitmr1 <- harsm(fmla,group=race,data=data,
+																	reg_wt=rep(2,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
+	expect_error(fitmr2 <- harsm(fmla,group=race,data=data,
+																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=0,reg_coef_idx=1:nfeat),NA)
+	expect_equal(as.numeric(coefficients(mod0r1)),as.numeric(coefficients(fitmr1)),tolerance=0.0001)
+	expect_equal(as.numeric(coefficients(mod0r2)),as.numeric(coefficients(fitmr2)),tolerance=0.0001)
+
+})#UNFOLD
 test_that("hensm bits",{#FOLDUP
 	# travis only?
 	#skip_on_cran()
@@ -546,7 +596,7 @@ test_that("hensm bits",{#FOLDUP
 	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
 	beta <- rnorm(nfeat)
 	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+	expect_error(y <- rsm(eta,g=g),NA)
 
 	# now the pretty frontend
 	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
@@ -660,6 +710,48 @@ test_that("hensm consistency",{#FOLDUP
 	# close enough
 	expect_equal(fitm$gammas[1:3],gammas[1:3],tolerance=0.03)
 	expect_equal(as.numeric(fitm$beta),beta,tolerance=0.03)
+})#UNFOLD
+test_that("hensmfit regularization",{#FOLDUP
+	# travis only?
+	#skip_on_cran()
+	nfeat <- 5
+	ngam <- 3
+	set.seed(1234)
+	g <- 1 + ((1:1000) %% 100)
+	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
+	beta <- rnorm(nfeat)
+	eta <- X %*% beta
+	expect_error(y <- rsm(eta,g=g),NA)
+
+	# now the pretty frontend
+	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
+
+	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+
+	ncoef <- nfeat + ngam - 1
+
+	# these should error out for having bad weights or powers or indices, etc.
+	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(-1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=1:ncoef))
+	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=0,reg_zero=0,reg_coef_idx=1:ncoef))
+	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=(1:ncoef)+2))
+	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=(1:ncoef)-2))
+
+	# smoke test.
+	expect_error(mod0 <- hensm(fmla,data,group=race,ngamma=ngam),NA)
+	expect_error(mod0r1 <- hensm(fmla,data,group=race,ngamma=ngam,
+																reg_wt=rep(2,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=1:(ncoef)),NA)
+	expect_error(mod0r2 <- hensm(fmla,data,group=race,ngamma=ngam,
+																reg_wt=rep(50,ncoef),reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef)),NA)
+
+	# expect smaller coefficients for regularization terms.
+	expect_true(norm(coefficients(mod0),'2') > norm(coefficients(mod0r2),'2'))
+
+	# the zeroes should default to zero or one as appropriate
+	expect_error(mod0r2_a <- hensm(fmla,data,group=race,ngamma=ngam,
+																reg_wt=rep(2,ncoef),reg_power=2,reg_zero=c(rep(0,nfeat),rep(1,ngam-1)),reg_coef_idx=1:ncoef),NA)
+	expect_error(mod0r2_b <- hensm(fmla,data,group=race,ngamma=ngam,
+																reg_wt=rep(2,ncoef),reg_power=2,reg_zero=NULL,reg_coef_idx=1:ncoef),NA)
+	expect_equal(as.numeric(coefficients(mod0r2_a)),as.numeric(coefficients(mod0r2_b)),tolerance=0.0001)
 })#UNFOLD
 test_that("predictions with factors",{#FOLDUP
 	# travis only?

@@ -1,6 +1,6 @@
 # /usr/bin/r
 #
-# Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
+# Copyright 2018-2025 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav 
 #
 # This file is part of ohenery.
@@ -26,29 +26,32 @@
 # apparently necessary to register hensm as an S3 class
 setOldClass('hensm')
 
-.hensmlik <- function(theta, group, idx, X, wt, eta0) {
+.hensmlik <- function(theta, group, idx, X, wt, eta0, ...) {
 	k <- ncol(X)
 	beta <- theta[1:k]
 	gamma <- theta[(k+1):length(theta)]
 	eta <- X  %*% beta 
 	if (!is.null(eta0)) { eta <- eta + eta0 }
-	hensmlik(group, idx, eta, gamma=gamma, wt=wt)
+	hensmlik(group, idx, eta, gamma=gamma, wt=wt) + .regularization_term(c(beta,gamma),...)
 }
-.hensmgrad <- function(theta, group, idx, X, wt, eta0) {
+.hensmgrad <- function(theta, group, idx, X, wt, eta0, ...) {
 	k <- ncol(X)
 	beta <- theta[1:k]
 	gamma <- theta[(k+1):length(theta)]
 	eta <- X  %*% beta 
 	if (!is.null(eta0)) { eta <- eta + eta0 }
 	hval <- hensmlik(group, idx, eta, gamma=gamma, wt=wt, deleta=X)
-	c(attr(hval,'gradient'),
+	grad <- c(attr(hval,'gradient'),
 		attr(hval,'gradgamma'))
+	grad + .regularization_grad(c(beta, gamma), ...)
 }
 #2FIX: why isn't there a experts version of this one?
 #  @param ngamma  the number of gammas to model; we model
 #        \eqn{\gamma_2} through \eqn{\gamma_n}.
 .hmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, gamma0=NULL, normalize_wt=FALSE,
-									 ngamma=4,  method=c('BFGS','NR','CG','NM')) {
+									 ngamma=4,  
+									 reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,
+									 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 	if (!is.null(gamma0)) {
 		ngamma <- length(gamma0) + 1
@@ -61,6 +64,8 @@ setOldClass('hensm')
 		beta0 <- array(0,k)
 	}
 	theta0 <- c(beta0,gamma0)
+	reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta=k)
+  .check_regularization(theta0, reg_wt, reg_zero, reg_power, reg_coef_idx) 
 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
 	# turn g into integers?
@@ -69,7 +74,8 @@ setOldClass('hensm')
 	idx <- order(g,y,decreasing=TRUE) - 1
 	rv <- maxLik(logLik=.hensmlik,grad=.hensmgrad,hess=NULL,
 							 start=theta0,method=method,
-							 group=group,idx=idx,X=X,wt=wt,eta0=eta0)
+							 group=group,idx=idx,X=X,wt=wt,eta0=eta0,
+							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	retv <- list(mle=rv,
 							 beta=rv$estimate[1:k],
 							 coefficients=rv,
@@ -80,7 +86,8 @@ setOldClass('hensm')
 							 g=g,
 							 y=y,
 							 formula=NULL,
-							 eta0=eta0)
+							 eta0=eta0,
+							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 
 	
 	gnames <- paste0('gamma',2:ngamma)
@@ -124,16 +131,20 @@ setOldClass('hensm')
 #' we fill any missing gammas with 1.
 #' If a \code{harsm} object is given, then \code{ngamma} must be non-null.
 #'
+#' @template param-weights
+#' @template param-regularization
+#' @template param-group
 #' @template etc
 #' @template note-ties
 #' @template note-weights
-#' @template param-weights
-#' @template param-group
 #' @return An object of class \code{hensm}, but also of \code{maxLik} with the
 #' fit.
 #' @keywords fitting
 #' @seealso \code{\link{harsm}}, \code{\link{smlik}}.
 #' @template note-normalization
+#' @note When regularization is used, the first gamma coefficient is not
+#' shrunk, as it always equals one in the Henery model, and is not estimated
+#' from the data.
 #'
 #' @examples 
 #'
@@ -184,10 +195,32 @@ setOldClass('hensm')
 #' fit0_har <- harsm(fmla,data=df,group=EventId,weights=weights)
 #' fit4 <- hensm(fmla,data=df,group=EventId,fit0=fit0_har,weights=weights)
 #'
+#' # regularization examples
+#' fmla <- Finish ~ offset(eta0) + fac_age + PostPosition
+#' # no regularization
+#' fitr0 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3)
+#' # ridge regression on the betas (there are two)
+#' fitr2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#'   reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
+#' # l1 regression on the betas (there are two)
+#' fitr1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#'   reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
+#' # elasticnet regression on the betas (there are two)
+#' fitr12 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#'   reg_wt=rep(1,4), reg_power=c(1,1,2,2) reg_zero=0, reg_coef_idx=c(1,2,1,2))
+#' # l1 regression on the gammas, shrinking to one (there are two estimated)
+#' fitrg1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#'   reg_wt=rep(1,2), reg_power=1, reg_zero=1, reg_coef_idx=c(3,4))
+#' # l2 regression on the betas and gammas, shrinking beta to 0, gamma to 1.
+#' fitrg2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#'   reg_wt=rep(1,4), reg_power=2, reg_zero=c(0,0,1,1), reg_coef_idx=1:4)
+#'
 #' @importFrom stats coef formula model.frame model.matrix na.omit
 #' @export
 #' @rdname hensm
-hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,na.action=na.omit) {
+hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,
+									reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,
+									na.action=na.omit) {
 	substitute(formula)
 
 	# I find it highly offensive that this cannot be done reasonably
@@ -238,7 +271,8 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,na.act
 		gamma0 <- NULL
 	}
 
-	retv <- .hmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, beta0=beta0, gamma0=gamma0, ngamma=ngamma, eta0=dat$eta0)
+	retv <- .hmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, beta0=beta0, gamma0=gamma0, ngamma=ngamma, eta0=dat$eta0,
+									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	retv <- as.linodds(retv, formula, beta=retv$beta)
 	retv
 }
@@ -248,6 +282,9 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,na.act
 #' @param object  an object of class \code{hensm}.
 #' @method vcov hensm
 vcov.hensm <- function(object, ...) {
+	if (!is.null(object$reg_coef_idx)) {
+		warning('Computing vcov on object fit with regularization; statistical properties are dubious.')
+	}
 	vcov(object$mle)
 }
 

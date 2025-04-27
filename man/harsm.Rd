@@ -12,6 +12,10 @@ harsm(
   group = NULL,
   weights = NULL,
   fit0 = NULL,
+  reg_wt = NULL,
+  reg_zero = 0,
+  reg_power = NULL,
+  reg_coef_idx = NULL,
   na.action = na.omit
 )
 
@@ -47,6 +51,27 @@ These will be used for \sQuote{warm start} of the estimation procedure.
 A warm start should only speed up estimation, not change the ultimate results. 
 When there is mismatch between the coefficients in \code{fit0} and the model 
 being fit here, the missing coefficients are initialized as zero.}
+
+\item{reg_wt}{the multiplicative weight(s) of the regularization terms.
+must be non-negative.
+May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.}
+
+\item{reg_zero}{the \sQuote{zero} of the regularization terms. This would
+usually be zero if you want to shrink to zero, but in some cases you may
+with to shrink to 1 for example.
+May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
+If \code{NULL} is given, defaults to zeroes for beta terms,
+and ones for gamma terms in a Henery model fit, all zeroes
+for Harville model fits.}
+
+\item{reg_power}{the power of the regularization terms, 2 for ridge
+regression, 1 for lasso.}
+
+\item{reg_coef_idx}{the index of the coefficient which the corresponding
+regularization term is applied to. For the Harville model, the indices only refer to
+the \eqn{\beta} coefficient vector. For the Henery model, the indices refer to the
+\eqn{beta} coefficient vector and \eqn{\gamma} coefficient vector
+concatenated together.}
 
 \item{na.action}{How to deal with missing values in the outcomes,
 groups, weights, etc.}
@@ -97,14 +122,9 @@ does not always give positive R-squareds,
 and the statistic is otherwise hard to interpret.
 }
 \note{
-Since version 0.1.0 of this package, the
-normalization of weights used in this function
-have changed under the hood. This is to
-give correct inference in the case where
-zero weights are used to signify finishing
-places were not observed. If in doubt,
-please confirm inference by simulations,
-taking as example the simulations in the README.
+The fit functions return an object of type \code{\link[maxLik]{maxLik}}
+even when regularization penalties are applied; the statistical inference
+functions are not valid when regularization is used. The user is warned.
 
 This regression may give odd results when the outcomes are tied,
 imposing an arbitrary order on the tied outcomes.
@@ -126,7 +146,30 @@ set weights to 1 for the medal winners, and 0
 for the others. Note that the weights do not
 attach to the participants, they attach to
 the place they took.
+
+Since version 0.1.0 of this package, the
+normalization of weights used in this function
+have changed under the hood. This is to
+give correct inference in the case where
+zero weights are used to signify finishing
+places were not observed. If in doubt,
+please confirm inference by simulations,
+taking as example the simulations in the README.
 }
+\section{Regularization}{
+The regularization term is of the form
+\deqn{\sum_i w_i |\nu_{c_i} - z_i|^{p_i},}
+where \eqn{w_i} are the \code{reg_wt} weights,
+\eqn{z_i} are the \code{reg_zero} zeroes,
+\eqn{p_i} are the \code{reg_power} powers,
+and \eqn{c_i} are the \code{reg_coef_idx} coefficient indices.
+Note that the coefficient indices can be repeated so that the
+regularization term can include multiple contributions from one
+coefficient element. This allows \sQuote{elasticnet} regularization.
+The \eqn{\nu} here refer to the regression coefficients \eqn{\beta}
+concatenated with the \eqn{\gamma} coefficients in the Henery model.
+}
+
 \examples{
 
 nfeat <- 5
@@ -166,6 +209,18 @@ fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor 
 fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0) 
 
+# ridge regression.
+fitr2 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
+
+# l1 regularization regression.
+fitr1 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
+
+# elasticnet regularization regression.
+fitr12 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+reg_wt=rep(1,4), reg_power=c(1,1,2,2), reg_zero=0, reg_coef_idx=c(1,2,1,2))
+
 \donttest{
 # test against logistic regression
 if (require(dplyr)) {
@@ -195,6 +250,7 @@ modg <- glm(resu ~ delx + 1,data=ddf,family=binomial(link='logit'))
 
 all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
 all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
+
 }
 
 }

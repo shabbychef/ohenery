@@ -1,6 +1,6 @@
 # /usr/bin/r
 #
-# Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
+# Copyright 2018-2025 Steven E. Pav. All Rights Reserved.
 # Author: Steven E. Pav 
 #
 # This file is part of ohenery.
@@ -23,18 +23,19 @@
 # Author: Steven E. Pav <shabbychef@gmail.com>
 # Comments: Steven E. Pav
 
+
 # apparently necessary to register harsm as an S3 class
 setOldClass('harsm')
 
-.harsmlik <- function(beta, grp, idx, X, wt, eta0) {
+.harsmlik <- function(beta, grp, idx, X, wt, eta0, ...) {
 	eta <- X  %*% beta 
 	if (!is.null(eta0)) { eta <- eta + eta0 }
-	harsmlik(grp, idx, eta, wt)
+	harsmlik(grp, idx, eta, wt) + .regularization_term(beta, ...)
 }
-.harsmgrad <- function(beta, grp, idx, X, wt, eta0) {
+.harsmgrad <- function(beta, grp, idx, X, wt, eta0, ...) {
 	eta <- X  %*% beta 
 	if (!is.null(eta0)) { eta <- eta + eta0 }
-	attr(harsmlik(grp, idx, eta, wt, deleta=X),'gradient')
+	attr(harsmlik(grp, idx, eta, wt, deleta=X),'gradient') + .regularization_grad(beta, ...)
 }
 .wmse <- function(x,y,wt=NULL,na.rm=TRUE) { 
 	if (!is.null(wt)) {
@@ -97,6 +98,7 @@ globalVariables(c('dumb_rank','.'))
 #' to have mean value 1. Note that the default value has changed
 #' since version 0.1.0 of this package. Moreover, non-normalized
 #' weights can lead to incorrect inference. Use with caution.
+#' @template param-regularization
 #'
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
@@ -125,6 +127,7 @@ globalVariables(c('dumb_rank','.'))
 #' summary(modw)
 #' @export
 harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE,
+										 reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL,
 										 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 	if (is.null(beta0)) {
@@ -132,6 +135,8 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 	} else {
 		stopifnot(length(beta0)==ncol(X))
 	}
+	reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta=length(beta0))
+  .check_regularization(beta0, reg_wt, reg_zero, reg_power, reg_coef_idx) 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
 	# turn g into integers?
 	if (is.integer(g)) { grp <- g } else { grp <- match(g,unique(g)) }
@@ -139,7 +144,8 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 	idx <- order(g,y,decreasing=TRUE) - 1
 	rv <- maxLik(logLik=.harsmlik,grad=.harsmgrad,hess=NULL,
 							 start=beta0,method=method,
-							 grp=grp,idx=idx,X=X,wt=wt,eta0=eta0)
+							 grp=grp,idx=idx,X=X,wt=wt,eta0=eta0,
+							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	retv <- list(mle=rv,
 							 coefficients=rv$estimate,
 							 estimate=rv$estimate,  # sigh
@@ -147,7 +153,8 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 							 g=g,
 							 y=y,
 							 formula=NULL,
-							 eta0=eta0)
+							 eta0=eta0,
+							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	# do some summarization
 	retv$deviance <- -2 * rv$maximum
 	retv$deviance_df <- length(retv$coefficients)
@@ -223,7 +230,6 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 #' and the statistic is otherwise hard to interpret.
 #'
 #' @inheritParams stats::lm
-#' @template param-group
 #' @param na.action  How to deal with missing values in the outcomes,
 #' groups, weights, etc.
 #' @param fit0    An optional object of class \code{harsm} or of \code{hensm} 
@@ -232,7 +238,12 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 #' A warm start should only speed up estimation, not change the ultimate results. 
 #' When there is mismatch between the coefficients in \code{fit0} and the model 
 #' being fit here, the missing coefficients are initialized as zero. 
+#' @template param-weights
+#' @template param-regularization
+#' @template param-group
 #' @template etc
+#' @template note-ties
+#' @template note-weights
 #' @return An object of class \code{harsm}, but also of \code{maxLik} with the
 #' fit.
 #' @keywords fitting
@@ -278,6 +289,18 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 #' sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor 
 #' fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0) 
 #'
+#' # ridge regression.
+#' fitr2 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+#' reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
+#'
+#' # l1 regularization regression.
+#' fitr1 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+#' reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
+#'
+#' # elasticnet regularization regression.
+#' fitr12 <- harsm(sub_fmla,data=df,group=year,weights=weight,
+#' reg_wt=rep(1,4), reg_power=c(1,1,2,2), reg_zero=0, reg_coef_idx=c(1,2,1,2))
+#'
 #' \donttest{
 #' # test against logistic regression
 #' if (require(dplyr)) {
@@ -307,19 +330,20 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 #' 
 #' all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
 #' all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
+#'
 #' }
 #'
 #' }
 #'
 #'
 #' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights
-#' @template note-ties
-#' @template note-weights
-#' @template param-weights
 #' @export
 #' @rdname harsm
-harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,na.action=na.omit) {
+harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,
+									reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL,
+									na.action=na.omit) {
 	substitute(formula)
+
 	# I find it highly offensive that this cannot be done reasonably
 	# easily in a subfunction because of NSE whatever.
 
@@ -354,7 +378,8 @@ harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,na.action=na.om
 		beta0 <- NULL
 	}
 	# call the fit function
-	retv <- harsmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, eta0=dat$eta0, beta0=beta0)
+	retv <- harsmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, eta0=dat$eta0, beta0=beta0,
+									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	names(retv$mle$estimate) <- colnames(dat$Xs)
 	names(retv$coefficients) <- colnames(dat$Xs)
 	retv <- as.linodds(retv, formula, beta=retv$coefficients)
@@ -366,6 +391,9 @@ harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,na.action=na.om
 #' @param object  an object of class \code{harsm}.
 #' @method vcov harsm
 vcov.harsm <- function(object, ...) {
+	if (!is.null(object$reg_coef_idx)) {
+		warning('Computing vcov on object fit with regularization; statistical properties are dubious.')
+	}
 	vcov(object$mle)
 }
 
