@@ -127,7 +127,7 @@ globalVariables(c('dumb_rank','.'))
 #' summary(modw)
 #' @export
 harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE,
-										 reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL,
+										 reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL, reg_standardize=FALSE,
 										 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 	if (is.null(beta0)) {
@@ -136,6 +136,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 		stopifnot(length(beta0)==ncol(X))
 	}
 	reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta=length(beta0))
+	reg_wt <- .regularization_standardize(reg_wt, reg_coef_idx, reg_standardize, X)
   .check_regularization(beta0, reg_wt, reg_zero, reg_power, reg_coef_idx) 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
 	# turn g into integers?
@@ -145,7 +146,8 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 	rv <- maxLik(logLik=.harsmlik,grad=.harsmgrad,hess=NULL,
 							 start=beta0,method=method,
 							 grp=grp,idx=idx,X=X,wt=wt,eta0=eta0,
-							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+							 reg_wt=reg_wt, reg_zero=reg_zero, 
+							 reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	retv <- list(mle=rv,
 							 coefficients=rv$estimate,
 							 estimate=rv$estimate,  # sigh
@@ -154,7 +156,9 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 							 y=y,
 							 formula=NULL,
 							 eta0=eta0,
-							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+							 reg_wt=reg_wt, reg_zero=reg_zero, 
+							 reg_power=reg_power, reg_coef_idx=reg_coef_idx,
+							 reg_standardize=reg_standardize)
 	# do some summarization
 	retv$deviance <- -2 * rv$maximum
 	retv$deviance_df <- length(retv$coefficients)
@@ -340,7 +344,7 @@ harsmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, normalize_wt=FALSE
 #' @export
 #' @rdname harsm
 harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,
-									reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL,
+									reg_wt=NULL, reg_zero=0, reg_power=NULL, reg_coef_idx=NULL, reg_standardize=FALSE,
 									na.action=na.omit) {
 	substitute(formula)
 
@@ -379,7 +383,7 @@ harsm <- function(formula,data,group=NULL,weights=NULL,fit0=NULL,
 	}
 	# call the fit function
 	retv <- harsmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, eta0=dat$eta0, beta0=beta0,
-									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx, reg_standardize=reg_standardize)
 	names(retv$mle$estimate) <- colnames(dat$Xs)
 	names(retv$coefficients) <- colnames(dat$Xs)
 	retv <- as.linodds(retv, formula, beta=retv$coefficients)

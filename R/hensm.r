@@ -50,7 +50,7 @@ setOldClass('hensm')
 #        \eqn{\gamma_2} through \eqn{\gamma_n}.
 .hmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, gamma0=NULL, normalize_wt=FALSE,
 									 ngamma=4,  
-									 reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,
+									 reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,reg_standardize=FALSE,
 									 method=c('BFGS','NR','CG','NM')) {
 	method <- match.arg(method)
 	if (!is.null(gamma0)) {
@@ -65,6 +65,7 @@ setOldClass('hensm')
 	}
 	theta0 <- c(beta0,gamma0)
 	reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta=k)
+	reg_wt <- .regularization_standardize(reg_wt, reg_coef_idx, reg_standardize, X)
   .check_regularization(theta0, reg_wt, reg_zero, reg_power, reg_coef_idx) 
 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
@@ -75,7 +76,8 @@ setOldClass('hensm')
 	rv <- maxLik(logLik=.hensmlik,grad=.hensmgrad,hess=NULL,
 							 start=theta0,method=method,
 							 group=group,idx=idx,X=X,wt=wt,eta0=eta0,
-							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+							 reg_wt=reg_wt, reg_zero=reg_zero, 
+							 reg_power=reg_power, reg_coef_idx=reg_coef_idx)
 	retv <- list(mle=rv,
 							 beta=rv$estimate[1:k],
 							 coefficients=rv,
@@ -87,7 +89,9 @@ setOldClass('hensm')
 							 y=y,
 							 formula=NULL,
 							 eta0=eta0,
-							 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+							 reg_wt=reg_wt, reg_zero=reg_zero, 
+							 reg_power=reg_power, reg_coef_idx=reg_coef_idx,
+							 reg_standardize=reg_standardize)
 
 	
 	gnames <- paste0('gamma',2:ngamma)
@@ -219,7 +223,7 @@ setOldClass('hensm')
 #' @export
 #' @rdname hensm
 hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,
-									reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,
+									reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL, reg_standardize=FALSE,
 									na.action=na.omit) {
 	substitute(formula)
 
@@ -272,7 +276,7 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,
 	}
 
 	retv <- .hmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, beta0=beta0, gamma0=gamma0, ngamma=ngamma, eta0=dat$eta0,
-									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx)
+									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx, reg_standardize=reg_standardize)
 	retv <- as.linodds(retv, formula, beta=retv$beta)
 	retv
 }

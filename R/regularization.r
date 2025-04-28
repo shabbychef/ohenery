@@ -62,5 +62,23 @@
 	reg_zero
 }
 
+.zero_to_one <- function(z) { ifelse(z==0,1,z) }
+
+# standardize the reg_wt 
+.regularization_standardize <- function(reg_wt, reg_coef_idx, reg_standardize, X) {
+	if (reg_standardize) {
+		stds <- apply(X,FUN=sd,MARGIN=2)
+		if (any(stds[reg_coef_idx] == 0)) {
+			warning("Design matrix has some columns with zero standard deviation; will not standardize these")
+		}
+		for (idx in seq_along(reg_coef_idx)) {
+			reg_wt[idx] <- reg_wt[idx] / .zero_to_one(stds[reg_coef_idx[idx]])
+		}
+	} 
+	reg_wt
+}
+
+
+
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r
