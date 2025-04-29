@@ -65,14 +65,23 @@
 .zero_to_one <- function(z) { ifelse(z==0,1,z) }
 
 # standardize the reg_wt 
-.regularization_standardize <- function(reg_wt, reg_coef_idx, reg_standardize, X) {
+.regularization_standardize <- function(reg_wt, reg_power, reg_coef_idx, reg_standardize, X) {
 	if (reg_standardize) {
+		if (length(reg_wt) == 1) {
+			reg_wt <- rep(reg_wt, length(reg_coef_idx))
+		}
+		if (length(reg_power) == 1) {
+			reg_power <- rep(reg_power, length(reg_coef_idx))
+		}
 		stds <- apply(X,FUN=sd,MARGIN=2)
-		if (any(stds[reg_coef_idx] == 0)) {
+		check_us <- reg_coef_idx[reg_coef_idx <= ncol(X)]
+		if (any(stds[check_us] == 0)) {
 			warning("Design matrix has some columns with zero standard deviation; will not standardize these")
 		}
 		for (idx in seq_along(reg_coef_idx)) {
-			reg_wt[idx] <- reg_wt[idx] / .zero_to_one(stds[reg_coef_idx[idx]])
+			if (reg_coef_idx[idx] <= ncol(X)) {
+				reg_wt[idx] <- reg_wt[idx] * .zero_to_one(stds[reg_coef_idx[idx]] ** reg_power[idx])
+			}
 		}
 	} 
 	reg_wt

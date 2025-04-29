@@ -585,7 +585,20 @@ test_that("harsmfit regularization",{#FOLDUP
 																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=0,reg_coef_idx=1:nfeat),NA)
 	expect_equal(as.numeric(coefficients(mod0r1)),as.numeric(coefficients(fitmr1)),tolerance=0.0001)
 	expect_equal(as.numeric(coefficients(mod0r2)),as.numeric(coefficients(fitmr2)),tolerance=0.0001)
-
+	
+	skip_on_cran()
+	# test the standardization
+	inflate <- 5
+	fiveX <- inflate * X
+	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
+	expect_error(mod5 <- harsmfit(y=y,g=g,X=fiveX),NA)
+	expect_equal(as.numeric(inflate*coefficients(mod5)),as.numeric(coefficients(mod0)),tolerance=0.002)
+	WW <- 100
+	expect_error(mod0_r1 <- harsmfit(y=y,g=g,X=X,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=FALSE),NA)
+	expect_error(mod0_r1_t <- harsmfit(y=y,g=g,X=X,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=TRUE),NA)
+	expect_error(mod5_r1 <- harsmfit(y=y,g=g,X=fiveX,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=FALSE),NA)
+	expect_error(mod5_r1_t <- harsmfit(y=y,g=g,X=fiveX,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=TRUE),NA)
+	expect_equal(as.numeric(coefficients(mod0_r1_t)),as.numeric(inflate * coefficients(mod5_r1_t)),tolerance=0.002)
 })#UNFOLD
 test_that("hensm bits",{#FOLDUP
 	# travis only?
@@ -752,6 +765,22 @@ test_that("hensmfit regularization",{#FOLDUP
 	expect_error(mod0r2_b <- hensm(fmla,data,group=race,ngamma=ngam,
 																reg_wt=rep(2,ncoef),reg_power=2,reg_zero=NULL,reg_coef_idx=1:ncoef),NA)
 	expect_equal(as.numeric(coefficients(mod0r2_a)),as.numeric(coefficients(mod0r2_b)),tolerance=0.0001)
+
+
+	skip_on_cran()
+	# test the standardization
+	inflate <- 5
+	five_data <- cbind(data.frame(outcome=y,race=g),as.data.frame(inflate*X))
+	expect_error(mod0 <- hensm(fmla,data,group=race,ngamma=ngam),NA)
+	expect_error(mod5 <- hensm(fmla,five_data,group=race,ngamma=ngam),NA)
+	expect_equal(as.numeric(inflate*coefficients(mod5)),as.numeric(coefficients(mod0)),tolerance=0.002)
+	WW <- 100
+	expect_error(mod0_r1 <- hensm(fmla,data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=FALSE),NA)
+	expect_error(mod0_r1_t <- hensm(fmla,data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=TRUE),NA)
+	expect_error(mod5_r1 <- hensm(fmla,five_data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=FALSE),NA)
+	expect_error(mod5_r1_t <- hensm(fmla,five_data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=TRUE),NA)
+	expect_equal(as.numeric(coefficients(mod0_r1_t)),as.numeric(inflate * coefficients(mod5_r1_t)),tolerance=0.002)
+
 })#UNFOLD
 test_that("predictions with factors",{#FOLDUP
 	# travis only?

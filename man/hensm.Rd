@@ -79,14 +79,16 @@ regression, 1 for lasso.}
 regularization term is applied to. For the Harville model, the indices only refer to
 the \eqn{\beta} coefficient vector. For the Henery model, the indices refer to the
 \eqn{beta} coefficient vector and \eqn{\gamma} coefficient vector
-concatenated together.}
+concatenated together.
+The other regularization parameters may be recycled as needed, but not the
+\code{reg_coef_idx} values.}
 
 \item{reg_standardize}{if true, the \code{reg_wt} are normalized, or
 \sQuote{standardized} with respect to the standard deviation of the
 corresponding columns of the design matrix. That is, the weight used
-is the given weight divided by the standard deviation of the corresponding
-independent variable. Only terms associated with the betas are so
-normalized.}
+is the given weight \emph{times} the standard deviation of the corresponding
+independent variable to the corresponding \code{reg_power}.
+Only terms associated with the betas are so normalized.}
 
 \item{na.action}{How to deal with missing values in \code{y}, \code{g},
 \code{X}, \code{wt}, \code{eta0}.}

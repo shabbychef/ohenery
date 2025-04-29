@@ -65,7 +65,7 @@ setOldClass('hensm')
 	}
 	theta0 <- c(beta0,gamma0)
 	reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta=k)
-	reg_wt <- .regularization_standardize(reg_wt, reg_coef_idx, reg_standardize, X)
+	reg_wt <- .regularization_standardize(reg_wt, reg_power, reg_coef_idx, reg_standardize, X)
   .check_regularization(theta0, reg_wt, reg_zero, reg_power, reg_coef_idx) 
 
 	if (!is.null(wt) && normalize_wt) { wt <- wt / abs(mean(wt,na.rm=TRUE)) }  # by having the abs, negative weights still throw an error.
