@@ -24,7 +24,7 @@ via [drat](https://github.com/eddelbuettel/drat "drat"), or
 from github:
 
 
-```r
+``` r
 # via CRAN:
 install.packages("ohenery")
 # via drat:
@@ -117,7 +117,7 @@ and Film Editing co-nomination variables.
 
 
 
-```r
+``` r
 library(ohenery)
 library(dplyr)
 library(magrittr)
@@ -170,7 +170,7 @@ expected rank under the Henery model, as it is too computationally
 intensive. (File an issue if this is important.)
 
 
-```r
+``` r
 prd <- best_picture %>%
   mutate(prd_erank=as.numeric(predict(osmod,newdata=.,group=year,type='erank',na.action=na.pass))) %>%
   mutate(prd_eta=as.numeric(predict(osmod,newdata=.,group=year,type='eta'))) %>%
@@ -201,7 +201,7 @@ points to the left.
 
 
 
-```r
+``` r
 library(ohenery)
 library(dplyr)
 library(magrittr)
@@ -232,7 +232,10 @@ ph <- race_data %>%
 print(ph)
 ```
 
-<img src="tools/figure/race_data_efficiency-1.png" title="plot of chunk race_data_efficiency" alt="plot of chunk race_data_efficiency" width="700px" height="600px" />
+<div class="figure">
+<img src="tools/figure/race_data_efficiency-1.png" alt="plot of chunk race_data_efficiency" width="700px" height="600px" />
+<p class="caption">plot of chunk race_data_efficiency</p>
+</div>
 
 Here we use softmax regression under the Harville model to capture
 the longshot and sureshot biases.
@@ -246,7 +249,7 @@ so we adapt a Harville model and weight only the winning
 finishers.
 
 
-```r
+``` r
 # because of na.action, make ties for fourth
 df <- race_data %>%
   mutate(Outcome=coalesce(Finish,4L)) 
@@ -314,7 +317,7 @@ but a 'delta' R-squared is reported which gives the improvement
 in spread of predicted ranks over the model based on the offset:
 
 
-```r
+``` r
 # Harville Model with offset
 offmod <- harsm(Outcome ~ offset(eta0) + bettype,data=df,group=EventId,weights=weights)
 print(offmod)
@@ -354,7 +357,7 @@ the response variable has to be coalesced with tie-breakers.
 
 
 
-```r
+``` r
 # because of na.action, make ties for fourth
 df <- race_data %>%
   mutate(Outcome=coalesce(Finish,4L)) %>%
@@ -427,7 +430,7 @@ The home field advantage does not appear significant in this analysis.
 
 
 
-```r
+``` r
 library(forcats)
 data(diving)
 fitdat <- diving %>%
@@ -502,7 +505,7 @@ We believe the differences are due to convergence
 criteria in the MLE fit.
 
 
-```r
+``` r
 library(dplyr)
 nevent <- 10000
 set.seed(1234)
@@ -535,7 +538,7 @@ all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
 ## [1] TRUE
 ```
 
-```r
+``` r
 all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
 ```
 
@@ -543,7 +546,7 @@ all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
 ## [1] TRUE
 ```
 
-```r
+``` r
 print(coef(modh))
 ```
 
@@ -552,7 +555,7 @@ print(coef(modh))
 ##      0.34      1.49
 ```
 
-```r
+``` r
 print(coef(modg))
 ```
 
@@ -561,7 +564,7 @@ print(coef(modg))
 ##        0.34        1.49
 ```
 
-```r
+``` r
 print(vcov(modh))
 ```
 
@@ -571,7 +574,7 @@ print(vcov(modh))
 ## x           0.00012 0.00091
 ```
 
-```r
+``` r
 print(vcov(modg))
 ```
 
@@ -602,7 +605,7 @@ I check by taking the standard deviation, and Q-Q plotting
 against standard normal. The results are consistent with correct inference.
 
 
-```r
+``` r
 library(dplyr)
 nevent <- 5000
 # 3 of 8 observed values.
@@ -610,7 +613,7 @@ wlim <- 3
 nfield <- 8
 beta <- 2
 library(future.apply)
-plan(multiprocess,workers=7)
+plan(multicore,workers=7)
 set.seed(1234)
 zvals <- future_replicate(500,{ 
   adf <- data_frame(eventnum=sort(rep(seq_len(nevent),nfield))) %>%
@@ -633,7 +636,7 @@ sd(zvals)
 ## [1] 0.98
 ```
 
-```r
+``` r
 # QQ plot it
 library(ggplot2)
 ph <- data_frame(zvals=zvals) %>%
@@ -644,5 +647,117 @@ ph <- data_frame(zvals=zvals) %>%
 print(ph)
 ```
 
-<img src="tools/figure/wted_zsims-1.png" title="plot of chunk wted_zsims" alt="plot of chunk wted_zsims" width="700px" height="600px" />
+<div class="figure">
+<img src="tools/figure/wted_zsims-1.png" alt="plot of chunk wted_zsims" width="700px" height="600px" />
+<p class="caption">plot of chunk wted_zsims</p>
+</div>
 
+### Regularization
+
+The package supports regularization of coefficients in the estimation of the Harville and
+Henery models. When regularization is used, the objective that is maximized is 
+$$
+\log{L} - \sum_i w_i | \nu_{c_i} - z_i |^{p_i},
+$$
+where $\log{L}$ is the log likelihood, the $w_i$ are regularization weights,
+$z_i$ are the regularization "zeroes" (where the coefficients are shrunk to),
+$p_i$ are the regularization powers, and $c_i$ are the regularization indices.
+By use of these indices the regularization term can penalize the same
+coefficient with multiple powers, as in elasticnet. The $\nu$ here are the
+coefficients $\beta$ which are estimated in the Harville model or
+the $\beta$ and the $\gamma_2, \gamma_3, \ldots$ estimated in the Henery model,
+in that order.
+
+An optional flag to "standardize" the regularization adjusts the $w_i$ to
+be sensitive to the corresponding independent variable's standard deviation.
+This allows the same regularization to be applied under a rescaling of units,
+and also makes it easier to penalize different coefficients at approximately
+the same scale. 
+Note that it is not clear that the observed standard deviation is the right
+measure here, since what is important in the softmax fits is the diversity
+of a variable _within a given match_.
+That is, if there is a lot of variation across matches of some variable,
+but only a small amount within each match, the variable may have little
+apparent effect. Thus the standardization is not a perfect fix.
+
+Here we illustrate regulariztion using the Diving data as above.
+
+
+``` r
+library(broom)
+library(tidyr)
+library(knitr)
+# no regularization
+mod0 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
+# l2 regularization
+mod0_l2 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
+							reg_wt=1,reg_power=2,reg_coef_idx=1:10,reg_zero=0)
+# l1 regularization
+mod0_l1 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
+							reg_wt=1,reg_power=1,reg_coef_idx=1:10,reg_zero=0)
+# l1 & l2 regularization
+mod0_l1l2 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
+								 reg_wt=1,reg_power=rep(c(1,2),each=10),reg_coef_idx=rep(1:10,2),reg_zero=0)
+
+lapply(list(base=mod0,l1=mod0_l1,l2=mod0_l2,l1l2=mod0_l1l2),function(x) broom::tidy(x$mle)) %>% 
+	bind_rows(.id='model') %>% 
+	select(model,term,estimate) %>%
+	tidyr::spread(key=model,value=estimate) %>%
+	knitr::kable(caption='Henery model fits with shrinkage on the betas.')
+```
+
+
+
+Table: Henery model fits with shrinkage on the betas.
+
+|term               |  base|    l1|  l1l2|    l2|
+|:------------------|-----:|-----:|-----:|-----:|
+|countryGBR         | -0.67| -0.26| -0.17| -0.31|
+|countryGER         |  1.08|  0.72|  0.46|  0.60|
+|countryMEX         |  0.72|  0.44|  0.29|  0.39|
+|countrySWE         |  0.62|  0.28|  0.17|  0.28|
+|countryUSA         |  2.32|  1.86|  1.13|  1.45|
+|cut_age(19.5,21.5] |  0.03|  0.00|  0.00| -0.01|
+|cut_age(21.5,22.5] | -0.73| -0.47| -0.27| -0.40|
+|cut_age(22.5,25.5] |  0.10|  0.08|  0.07|  0.09|
+|cut_age(25.5,99]   | -0.18| -0.10| -0.11| -0.16|
+|gamma2             |  1.01|  1.24|  2.05|  1.60|
+|gamma3             |  0.97|  1.22|  2.03|  1.59|
+|home_advantageTRUE |  0.58|  0.37|  0.26|  0.37|
+
+We now illustrate shrinkage of the $\gamma$ as well; these are typically shrunk
+towards 1.
+
+
+``` r
+# no regularization
+mod0 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3)
+# l1 regularization
+mod0_l1 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
+							reg_wt=1,reg_power=1,reg_coef_idx=11:12,reg_zero=1)
+
+lapply(list(base=mod0,l1=mod0_l1),function(x) broom::tidy(x$mle)) %>% 
+	bind_rows(.id='model') %>% 
+	select(model,term,estimate) %>%
+	tidyr::spread(key=model,value=estimate) %>%
+	knitr::kable(caption='Henery model fits with shrinkage on the gammas only.')
+```
+
+
+
+Table: Henery model fits with shrinkage on the gammas only.
+
+|term               |  base|    l1|
+|:------------------|-----:|-----:|
+|countryGBR         | -0.67| -0.64|
+|countryGER         |  1.08|  1.07|
+|countryMEX         |  0.72|  0.71|
+|countrySWE         |  0.62|  0.62|
+|countryUSA         |  2.32|  2.30|
+|cut_age(19.5,21.5] |  0.03|  0.02|
+|cut_age(21.5,22.5] | -0.73| -0.74|
+|cut_age(22.5,25.5] |  0.10|  0.09|
+|cut_age(25.5,99]   | -0.18| -0.19|
+|gamma2             |  1.01|  1.00|
+|gamma3             |  0.97|  1.00|
+|home_advantageTRUE |  0.58|  0.58|
