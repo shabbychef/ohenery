@@ -1,7 +1,7 @@
 # /usr/bin/r
 #
 # Copyright 2018-2024 Steven E. Pav. All Rights Reserved.
-# Author: Steven E. Pav 
+# Author: Steven E. Pav
 #
 # This file is part of ohenery.
 #
@@ -24,36 +24,39 @@
 # Comments: Steven E. Pav
 
 # putting in the sort_order makes it somewhat stable wrt probabilities.
-.rsm_one <- function(mu,gamma=NULL,sort_order=TRUE) {
-	#if (is.null(gamma)) {
-	#ng <- length(mu)
-	#y <- sample(1:ng,ng,mu=mu)
-	#places <- rep(NA,ng)
-	#places[y] <- 1:ng
-	#}
-	if (sort_order) {
-		mux <- sort(mu,index.return=TRUE)
-		mu <- mux$x
-	}
-	if (is.null(gamma)) {
-		places <- rhenery(mu=mu)
-	} else {
-		# this is inefficient and should move into rhenery?
-		if (length(gamma) < length(mu) - 1) {
-			gamma <- c(gamma,rep(gamma[length(gamma)],length(mu)-1-length(gamma)))
-		} else if (length(gamma) > length(mu) - 1) {
-			gamma <- gamma[1:(length(mu)-1)]
-		}
-		places <- rhenery(mu=mu,gamma=gamma)
-	}
-	if (sort_order) {
-		places[mux$ix] <- places
-	}
-	places
+.rsm_one <- function(mu, gamma = NULL, sort_order = TRUE) {
+  #if (is.null(gamma)) {
+  #ng <- length(mu)
+  #y <- sample(1:ng,ng,mu=mu)
+  #places <- rep(NA,ng)
+  #places[y] <- 1:ng
+  #}
+  if (sort_order) {
+    mux <- sort(mu, index.return = TRUE)
+    mu <- mux$x
+  }
+  if (is.null(gamma)) {
+    places <- rhenery(mu = mu)
+  } else {
+    # this is inefficient and should move into rhenery?
+    if (length(gamma) < length(mu) - 1) {
+      gamma <- c(
+        gamma,
+        rep(gamma[length(gamma)], length(mu) - 1 - length(gamma))
+      )
+    } else if (length(gamma) > length(mu) - 1) {
+      gamma <- gamma[1:(length(mu) - 1)]
+    }
+    places <- rhenery(mu = mu, gamma = gamma)
+  }
+  if (sort_order) {
+    places[mux$ix] <- places
+  }
+  places
 }
 #' @title Generate variates from a softmax distribution.
 #'
-#' @description 
+#' @description
 #'
 #' Generate variates from a softmax distribution
 #' under Harville or Henery models.
@@ -100,11 +103,11 @@
 #' the number of elements in each group.
 #' @note Regarding the \sQuote{direction}, we associate
 #' higher odds with a smaller outcome. That is, the ith element of
-#' the output encodes the place that the ith participant 
+#' the output encodes the place that the ith participant
 #' took in the simulated \sQuote{race}; it should be small if the
-#' odds for that participant are very high. 
+#' odds for that participant are very high.
 #' @keywords probability
-#' @examples 
+#' @examples
 #' # simple use
 #' set.seed(1234)
 #' g <- ceiling(seq(1,10,by=0.1))
@@ -146,7 +149,7 @@
 #' beta <- rnorm(nfeat)
 #' eta <- X %*% beta
 #' y <- rsm(eta,g=g)
-#' 
+#'
 #' idx <- order(g,y,decreasing=TRUE) - 1
 #' fooey <- harsmlik(g,idx,eta,deleta=X)
 #' set.seed(3493)
@@ -166,14 +169,14 @@
 #'                 fooey2 <- harsmlik(g,idx,eta1,deleta=X)
 #'                 sum(attr(fooey2,'gradient') * dib)
 #'               })
-#' 
+#'
 #' if (require('ggplot2') && require('dplyr')) {
 #'   bestx <- xvl[which.max(rsu)]
 #'   ph <- data.frame(x=xvl,lik=rsu,grd=drv) %>%
-#'     ggplot(aes(x=x,y=lik)) + 
-#'     geom_point() + 
+#'     ggplot(aes(x=x,y=lik)) +
+#'     geom_point() +
 #'     geom_line(aes(y=grd/200)) +
-#'     geom_vline(xintercept=bestx,linetype=2,alpha=0.5) + 
+#'     geom_vline(xintercept=bestx,linetype=2,alpha=0.5) +
 #'     geom_hline(yintercept=0,linetype=2,alpha=0.5)
 #'   print(ph)
 #' }
@@ -185,41 +188,45 @@
 #'   simdraw <- replicate(10000,{
 #'     rsm(eta=c(100,rnorm(7)))[1]
 #'   })
-#' 
+#'
 #'   as.data.frame(table(simdraw)) %>%
 #'     mutate(prob=Freq / sum(Freq)) %>%
 #'     knitr::kable()
-#' 
+#'
 #'   # expect this to be uniform on 2 through 8
 #'   set.seed(1234)
 #'   simdraw <- replicate(10000,{
 #'     rsm(eta=c(100,rnorm(7)))[2]
 #'   })
-#' 
+#'
 #'   as.data.frame(table(simdraw)) %>%
 #'     mutate(prob=Freq / sum(Freq)) %>%
 #'     knitr::kable()
 #' }
 #'
-#' @importFrom dplyr group_by mutate ungroup 
-#' @importFrom magrittr %>% 
+#' @importFrom dplyr group_by mutate ungroup
+#' @importFrom magrittr %>%
 #' @template etc
 #' @export
-rsm <- function(eta, g=NULL, mu=NULL, gamma=NULL) {
-	if (is.null(g) || (all(g==g[1]))) { 
-		if (missing(mu)) { mu <- smax(eta) }
-		return(.rsm_one(mu,gamma))
-	}
-	stopifnot(missing(mu) && (length(g)==length(eta)) || (length(g)==length(mu)))
-	if (missing(mu)) {
-		mu <- smax(eta,g=g)
-	}
-	rv <- data.frame(g=g,mu=mu,rowid=seq_along(g)) %>%
-		group_by(g) %>%
-		mutate(retv=.rsm_one(mu,gamma)) %>%
-		ungroup() %>%
-		arrange(rowid)
-	rv$retv
+rsm <- function(eta, g = NULL, mu = NULL, gamma = NULL) {
+  if (is.null(g) || (all(g == g[1]))) {
+    if (missing(mu)) {
+      mu <- smax(eta)
+    }
+    return(.rsm_one(mu, gamma))
+  }
+  stopifnot(
+    missing(mu) && (length(g) == length(eta)) || (length(g) == length(mu))
+  )
+  if (missing(mu)) {
+    mu <- smax(eta, g = g)
+  }
+  rv <- data.frame(g = g, mu = mu, rowid = seq_along(g)) %>%
+    group_by(g) %>%
+    mutate(retv = .rsm_one(mu, gamma)) %>%
+    ungroup() %>%
+    arrange(rowid)
+  rv$retv
 }
 
 #for vim modeline: (do not edit)

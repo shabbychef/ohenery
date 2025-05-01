@@ -5,7 +5,7 @@
 \alias{race_data}
 \title{Horse Race Data}
 \format{
-A \code{data.frame} object with 36,418 observations and 19 columns. 
+A \code{data.frame} object with 36,418 observations and 19 columns.
 
 The columns are defined as follows:
 \describe{
@@ -17,16 +17,16 @@ different tracks represented.}
 \item{\code{CorrectedPostTime}}{The \sQuote{corrected} post time of the race, in the form \code{\%Y-\%m-\%d \%H:\%M:\%S},
 presumably in the PDT time zone. Has values like \dQuote{2019-03-05 02:30:00}.}
 \item{\code{Yards}}{The length of the race, in yards.}
-\item{\code{SurfaceText}}{A string, one of 
+\item{\code{SurfaceText}}{A string, one of
 \dQuote{Turf}, \dQuote{Dirt}, \dQuote{All-Weather} or \code{NA}.}
 \item{\code{HorseName}}{The string name of the horse.}
-\item{\code{HorseId}}{A unique integer ID for each horse. As different horses can have the same name, this ID is constructed from the name 
+\item{\code{HorseId}}{A unique integer ID for each horse. As different horses can have the same name, this ID is constructed from the name
 of the Horse, the Sire and the Dam.}
 \item{\code{Age}}{The age of the horse, in integer years, at the time of the event.
 Typically less than 10.}
 \item{\code{Sex}}{A single character denoting the sex of the horse. I
-believe the codes are 
-\dQuote{M} for \dQuote{Mare} (female four years or older), 
+believe the codes are
+\dQuote{M} for \dQuote{Mare} (female four years or older),
 \dQuote{G} for \dQuote{Gelding},
 \dQuote{F} for \dQuote{Filly} (female under four years of age),
 \dQuote{C} for \dQuote{Colt} (male under four years of age),
@@ -86,11 +86,11 @@ efficiency <- race_data \%>\%
 \donttest{
 if (require('ggplot2') && require('scales')) {
   efficiency \%>\%
-    ggplot(aes(MedImpl,PropWin,size=nObs)) + 
-    geom_point() + 
-    scale_x_sqrt(labels=percent) + 
-    scale_y_sqrt(labels=percent) + 
-    geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) + 
+    ggplot(aes(MedImpl,PropWin,size=nObs)) +
+    geom_point() +
+    scale_x_sqrt(labels=percent) +
+    scale_y_sqrt(labels=percent) +
+    geom_abline(slope=1,intercept=0,linetype=2,alpha=0.6) +
     labs(title='actual win probability versus implied win probability',
          size='# horses',
          x='implied win probability',

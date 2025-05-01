@@ -58,7 +58,7 @@ is only one group.
 
 Regarding the \sQuote{direction}, we associate
 higher odds with a smaller outcome. That is, the ith element of
-the output encodes the place that the ith participant 
+the output encodes the place that the ith participant
 took in the simulated \sQuote{race}; it should be small if the
 odds for that participant are very high.
 }
@@ -128,10 +128,10 @@ drv <- sapply(xvl,
 if (require('ggplot2') && require('dplyr')) {
   bestx <- xvl[which.max(rsu)]
   ph <- data.frame(x=xvl,lik=rsu,grd=drv) \%>\%
-    ggplot(aes(x=x,y=lik)) + 
-    geom_point() + 
+    ggplot(aes(x=x,y=lik)) +
+    geom_point() +
     geom_line(aes(y=grd/200)) +
-    geom_vline(xintercept=bestx,linetype=2,alpha=0.5) + 
+    geom_vline(xintercept=bestx,linetype=2,alpha=0.5) +
     geom_hline(yintercept=0,linetype=2,alpha=0.5)
   print(ph)
 }

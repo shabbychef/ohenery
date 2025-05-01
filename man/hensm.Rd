@@ -49,13 +49,13 @@ for none.}
 
 \item{ngamma}{The number of gammas to fit. Should be at least 2.}
 
-\item{fit0}{An optional object of class \code{hensm} or of \code{harsm} 
-with the initial fit estimates. 
-These will be used for \sQuote{warm start} of the estimation procedure. 
-A warm start should only speed up estimation, not change the ultimate results. 
-When there is mismatch between the coefficients in \code{fit0} and the model 
-being fit here, the missing coefficients are initialized as zero. 
-If \code{ngamma} is \code{NULL} and \code{fit0} is given, 
+\item{fit0}{An optional object of class \code{hensm} or of \code{harsm}
+with the initial fit estimates.
+These will be used for \sQuote{warm start} of the estimation procedure.
+A warm start should only speed up estimation, not change the ultimate results.
+When there is mismatch between the coefficients in \code{fit0} and the model
+being fit here, the missing coefficients are initialized as zero.
+If \code{ngamma} is \code{NULL} and \code{fit0} is given,
 we default to the number of gammas in the initial fit, otherwise
 we fill any missing gammas with 1.
 If a \code{harsm} object is given, then \code{ngamma} must be non-null.}
@@ -110,7 +110,7 @@ A user friendly interface to the softmax regression under the Henery model.
 \details{
 Performs a softmax regression by groups, via Maximum Likelihood Estimation.
 It is assumed that successive sub-races maintain the proportional
-probability of the softmax, up to some gamma coefficients, 
+probability of the softmax, up to some gamma coefficients,
 \eqn{\gamma_2, \gamma_3, ..., \gamma_n}, which we fit. This model
 nests the Harville model fit by \code{\link{harsm}}, by fixing all
 the gammas equal to 1.
@@ -198,7 +198,7 @@ df <- race_data \%>\%
 		mutate(eta0=log(WN_pool / sum(WN_pool))) \%>\%
 	ungroup() \%>\%
 	mutate(weights=ifelse(!is.na(Finish),1,0)) \%>\%
-	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE)) 
+	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
 
 # Henery Model with market efficiency
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)

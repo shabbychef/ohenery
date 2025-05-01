@@ -17,10 +17,10 @@
 # along with ohenery.  If not, see <http://www.gnu.org/licenses/>.
 
 # env var:
-# nb: 
+# nb:
 # see also:
 # todo:
-# changelog: 
+# changelog:
 #
 # Created: 2018.09.25
 # Copyright: Steven E. Pav, 2018-2019
@@ -29,874 +29,1452 @@
 
 # helpers#FOLDUP
 set.char.seed <- function(str) {
-	set.seed(as.integer(charToRaw(str)))
+  set.seed(as.integer(charToRaw(str)))
 }
 #UNFOLD
 
 library(dplyr)
 library(numDeriv)
-context("code runs at all")#FOLDUP
+context("code runs at all") #FOLDUP
 
-test_that("rsm bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(mu <- smax(eta,g=g),NA)
-	set.seed(5234)
-	expect_error(y1 <- rsm(eta,g=g),NA)
-	# first, is it deterministic?
-	set.seed(5234)
-	expect_error(y2 <- rsm(eta,g=g),NA)
-	expect_equal(y1,y2)
-	
-	# secondly, does it also accept mu?
-	set.seed(5234)
-	expect_error(y3 <- rsm(g=g,mu=mu),NA)
-	expect_equal(y1,y3)
+test_that("rsm bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(mu <- smax(eta, g = g), NA)
+  set.seed(5234)
+  expect_error(y1 <- rsm(eta, g = g), NA)
+  # first, is it deterministic?
+  set.seed(5234)
+  expect_error(y2 <- rsm(eta, g = g), NA)
+  expect_equal(y1, y2)
 
-	# rsm for henery
-	set.seed(1212)
-	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,1,1)),NA)
-	set.seed(1212)
-	expect_error(yb <- rsm(g=g,mu=mu),NA)
-	expect_equal(ya,yb)
+  # secondly, does it also accept mu?
+  set.seed(5234)
+  expect_error(y3 <- rsm(g = g, mu = mu), NA)
+  expect_equal(y1, y3)
 
-	# rsm henery: is this ok?
-	set.seed(1212)
-	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,0.8,0.8,0.8)),NA)
-	expect_error(ya <- rsm(g=g,mu=mu,gamma=c(1,rep(0.8,15))),NA)
+  # rsm for henery
+  set.seed(1212)
+  expect_error(ya <- rsm(g = g, mu = mu, gamma = c(1, 1, 1)), NA)
+  set.seed(1212)
+  expect_error(yb <- rsm(g = g, mu = mu), NA)
+  expect_equal(ya, yb)
 
+  # rsm henery: is this ok?
+  set.seed(1212)
+  expect_error(ya <- rsm(g = g, mu = mu, gamma = c(1, 0.8, 0.8, 0.8)), NA)
+  expect_error(ya <- rsm(g = g, mu = mu, gamma = c(1, rep(0.8, 15))), NA)
+}) #UNFOLD
+test_that("harsmlik bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
 
-})#UNFOLD
-test_that("harsmlik bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
+  nfeat <- 8
+  set.seed(321)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
 
-	nfeat <- 8
-	set.seed(321)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  fastval <- attr(harsmlik(g, idx, eta, deleta = X), 'gradient')
+  numap <- grad(
+    function(beta, g, idx, X) {
+      eta <- X %*% beta
+      as.numeric(harsmlik(g, idx, eta))
+    },
+    x = beta,
+    g = g,
+    idx = idx,
+    X = X
+  )
 
-	idx <- order(g,y,decreasing=TRUE) - 1
-	fastval <- attr(harsmlik(g,idx,eta,deleta=X),'gradient') 
-	numap <- grad(function(beta,g,idx,X) { 
-									eta <- X %*% beta
-									as.numeric(harsmlik(g,idx,eta))
-		},x=beta,g=g,idx=idx,X=X)
+  expect_equal(fastval, numap, tolerance = 0.1)
 
-	expect_equal(fastval,numap,tolerance=0.1)
+  # now reweight them
+  wt <- runif(length(g))
+  wt <- wt / mean(wt) # mean 1 is recommended
+  expect_error(foores <- harsmlik(g, idx, eta, wt = wt), NA)
+}) #UNFOLD
+test_that("hensmlik and harsmlik nest", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
 
-	# now reweight them
-	wt <- runif(length(g))
-	wt <- wt / mean(wt)   # mean 1 is recommended
-	expect_error(foores <- harsmlik(g,idx,eta,wt=wt),NA)
-})#UNFOLD
-test_that("hensmlik and harsmlik nest",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
+  nfeat <- 8
+  set.seed(321)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
 
-	nfeat <- 8
-	set.seed(321)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+  # hensmlik and harsmlik should return the same for gamma=1
+  gams <- c(1.0, 1.0, 1.0)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  expect_error(
+    hooval <- hensmlik(g = g, idx = idx, eta = eta, gamma = gams, deleta = X),
+    NA
+  )
+  expect_true(!is.na(hooval))
+  expect_error(sooval <- harsmlik(g = g, idx = idx, eta = eta, deleta = X), NA)
+  expect_equal(as.numeric(sooval), as.numeric(hooval))
+}) #UNFOLD
+test_that("hensmlik bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
 
-	# hensmlik and harsmlik should return the same for gamma=1
-	gams <- c(1.0,1.0,1.0)
-	idx <- order(g,y,decreasing=TRUE) - 1
-	expect_error(hooval <- hensmlik(g=g,idx=idx,eta=eta,gamma=gams,deleta=X),NA)
-	expect_true(!is.na(hooval))
-	expect_error(sooval <- harsmlik(g=g,idx=idx,eta=eta,deleta=X),NA)
-	expect_equal(as.numeric(sooval),as.numeric(hooval))
-})#UNFOLD
-test_that("hensmlik bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
+  nfeat <- 8
+  set.seed(321)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
 
-	nfeat <- 8
-	set.seed(321)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+  gams <- c(1.0, 1.0, 1.0)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  expect_error(
+    hooval <- hensmlik(g = g, idx = idx, eta = eta, gamma = gams, deleta = X),
+    NA
+  )
+  expect_true(!is.na(hooval))
+  fastval <- attr(hooval, 'gradient')
+  numap <- grad(
+    function(beta, g, idx, X, gams) {
+      eta <- X %*% beta
+      as.numeric(hensmlik(g, idx, eta, gamma = gams))
+    },
+    x = beta,
+    g = g,
+    idx = idx,
+    X = X,
+    gams = gams
+  )
+  expect_equal(fastval, numap, tolerance = 0.1)
 
-	gams <- c(1.0,1.0,1.0)
-	idx <- order(g,y,decreasing=TRUE) - 1
-	expect_error(hooval <- hensmlik(g=g,idx=idx,eta=eta,gamma=gams,deleta=X),NA)
-	expect_true(!is.na(hooval))
-	fastval <- attr(hooval,'gradient') 
-	numap <- grad(function(beta,g,idx,X,gams) { 
-									eta <- X %*% beta
-									as.numeric(hensmlik(g,idx,eta,gamma=gams))
-		},x=beta,g=g,idx=idx,X=X,gams=gams)
-	expect_equal(fastval,numap,tolerance=0.1)
+  gams <- c(1.0, 0.9, 0.8)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  expect_error(
+    hooval <- hensmlik(g = g, idx = idx, eta = eta, gamma = gams, deleta = X),
+    NA
+  )
+  expect_true(!is.na(hooval))
+  fastval <- attr(hooval, 'gradient')
+  numap <- grad(
+    function(beta, g, idx, X, gams) {
+      eta <- X %*% beta
+      as.numeric(hensmlik(g, idx, eta, gamma = gams))
+    },
+    x = beta,
+    g = g,
+    idx = idx,
+    X = X,
+    gams = gams
+  )
+  expect_equal(fastval, numap, tolerance = 0.1)
 
-	gams <- c(1.0,0.9,0.8)
-	idx <- order(g,y,decreasing=TRUE) - 1
-	expect_error(hooval <- hensmlik(g=g,idx=idx,eta=eta,gamma=gams,deleta=X),NA)
-	expect_true(!is.na(hooval))
-	fastval <- attr(hooval,'gradient') 
-	numap <- grad(function(beta,g,idx,X,gams) { 
-									eta <- X %*% beta
-									as.numeric(hensmlik(g,idx,eta,gamma=gams))
-		},x=beta,g=g,idx=idx,X=X,gams=gams)
-	expect_equal(fastval,numap,tolerance=0.1)
+  # now reweight them
+  wt <- runif(length(g))
+  wt <- wt / mean(wt) # mean 1 is recommended
+  expect_error(foores <- hensmlik(g, idx, eta, wt = wt, gamma = gams), NA)
+}) #UNFOLD
 
-	# now reweight them
-	wt <- runif(length(g))
-	wt <- wt / mean(wt)   # mean 1 is recommended
-	expect_error(foores <- hensmlik(g,idx,eta,wt=wt,gamma=gams),NA)
-})#UNFOLD
+test_that("smax bits", {
+  #FOLDUP
+  # location invariant
+  nfeat <- 10
+  set.seed(1001)
+  eta <- rnorm(nfeat)
+  keta <- eta + 10
+  expect_error(mu <- smax(eta), NA)
+  expect_error(kmu <- smax(keta), NA)
+  expect_equal(mu, kmu, tolerance = 1e-7)
 
-test_that("smax bits",{#FOLDUP
-	# location invariant
-	nfeat <- 10
-	set.seed(1001)
-	eta <- rnorm(nfeat)
-	keta <- eta + 10
-	expect_error(mu <- smax(eta),NA)
-	expect_error(kmu <- smax(keta),NA)
-	expect_equal(mu,kmu,tolerance=1e-7)
+  expect_error(smax(c(1, 0)), NA)
+  expect_error(mubig <- smax(c(10000, 0, 0, 0)), NA)
+  expect_equal(mubig, c(1, 0, 0, 0))
 
-	expect_error(smax(c(1,0)),NA)
-	expect_error(mubig <- smax(c(10000,0,0,0)),NA)
-	expect_equal(mubig,c(1,0,0,0))
+  nfeat <- 5
+  set.seed(4234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  eta <- data.frame(eta = as.numeric(eta), g = g) %>%
+    group_by(g) %>%
+    mutate(eta = eta - mean(eta)) %>%
+    ungroup() %>%
+    {
+      .$eta
+    }
 
-	nfeat <- 5
-	set.seed(4234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	eta <- data.frame(eta=as.numeric(eta),g=g) %>%
-			group_by(g) %>%
-				mutate(eta=eta-mean(eta)) %>%
-			ungroup() %>%
-			{ .$eta }
+  expect_error(mu <- smax(eta, g = g), NA)
+  expect_error(eta0 <- inv_smax(mu, g = g), NA)
+  expect_equal(eta, eta0, tolerance = 1e-14)
 
-	expect_error(mu <- smax(eta,g=g),NA)
-	expect_error(eta0 <- inv_smax(mu,g=g),NA)
-	expect_equal(eta,eta0,tolerance=1e-14)
+  nfeat <- 8
+  set.seed(808)
+  expect_error(mu <- normalize(runif(nfeat)), NA)
+  expect_error(eta0 <- inv_smax(mu), NA)
+  expect_error(mu1 <- smax(eta0), NA)
+  expect_equal(mu, mu1, tolerance = 1e-10)
 
-	nfeat <- 8
-	set.seed(808)
-	expect_error(mu <- normalize(runif(nfeat)),NA)
-	expect_error(eta0 <- inv_smax(mu),NA)
-	expect_error(mu1 <- smax(eta0),NA)
-	expect_equal(mu,mu1,tolerance=1e-10)
+  # fingers crossed.
+  mu <- c(1, 0, 0, 0)
+  expect_error(eta0 <- inv_smax(mu), NA)
+  expect_error(mu1 <- smax(eta0), NA)
+  expect_equal(mu, mu1, tolerance = 1e-10)
+}) #UNFOLD
+test_that("rhenery bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  eta <- rnorm(10)
+  mu <- smax(eta)
+  gamma <- runif(length(eta) - 1, min = 0.5, max = 1.5)
+  set.seed(5234)
+  expect_error(y1 <- rhenery(mu, gamma), NA)
+  # first, is it deterministic?
+  set.seed(5234)
+  expect_error(y2 <- rhenery(mu, gamma), NA)
+  expect_equal(y1, y2)
+}) #UNFOLD
+test_that("erank bits", {
+  #FOLDUP
+  set.seed(321)
+  for (nfeat in c(1, 2, 3, 4, 8)) {
+    probs <- runif(nfeat)
+    probs <- probs / sum(probs)
+    expect_error(erank(probs), NA)
+  }
 
-	# fingers crossed.
-	mu <- c(1,0,0,0)
-	expect_error(eta0 <- inv_smax(mu),NA)
-	expect_error(mu1 <- smax(eta0),NA)
-	expect_equal(mu,mu1,tolerance=1e-10)
+  set.seed(2345)
+  eta <- rnorm(7)
+  val1 <- rowMeans(replicate(5000, rsm(eta)))
+  val2 <- erank(smax(eta))
 
-
-})#UNFOLD
-test_that("rhenery bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	eta <- rnorm(10)
-	mu <- smax(eta)
-	gamma <- runif(length(eta)-1,min=0.5,max=1.5)
-	set.seed(5234)
-	expect_error(y1 <- rhenery(mu,gamma),NA)
-	# first, is it deterministic?
-	set.seed(5234)
-	expect_error(y2 <- rhenery(mu,gamma),NA)
-	expect_equal(y1,y2)
-})#UNFOLD
-test_that("erank bits",{#FOLDUP
-	set.seed(321)
-	for (nfeat in c(1,2,3,4,8)) {
-		probs <- runif(nfeat)
-		probs <- probs / sum(probs)
-		expect_error(erank(probs),NA)
-	}
-
-	set.seed(2345)
-	eta <- rnorm(7)
-	val1 <- rowMeans(replicate(5000,rsm(eta)))
-	val2 <- erank(smax(eta))
-
-	expect_equal(val1, val2, tolerance=0.05)
-})#UNFOLD
-test_that("utils",{#FOLDUP
-	set.seed(321)
-	x <- rnorm(10)
-	expect_error(normalize(x),NA)
-	expect_error(smax(x),NA)
-})#UNFOLD
-test_that("normalize ok",{#FOLDUP
-	set.seed(111)
-	x <- rnorm(10)
-	kx <- 4 * x
-	expect_error(y <- normalize(x),NA)
-	expect_error(ky <- normalize(kx),NA)
-	expect_equal(y, ky, tolerance=1e-8)
-})#UNFOLD
+  expect_equal(val1, val2, tolerance = 0.05)
+}) #UNFOLD
+test_that("utils", {
+  #FOLDUP
+  set.seed(321)
+  x <- rnorm(10)
+  expect_error(normalize(x), NA)
+  expect_error(smax(x), NA)
+}) #UNFOLD
+test_that("normalize ok", {
+  #FOLDUP
+  set.seed(111)
+  x <- rnorm(10)
+  kx <- 4 * x
+  expect_error(y <- normalize(x), NA)
+  expect_error(ky <- normalize(kx), NA)
+  expect_equal(y, ky, tolerance = 1e-8)
+}) #UNFOLD
 
 #UNFOLD
-context("group invariance")# FOLDUP
+context("group invariance") # FOLDUP
 
-test_that("smax",{#FOLDUP
-	nfeat <- 8
-	set.seed(123)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	mu <- smax(eta,g=g)
+test_that("smax", {
+  #FOLDUP
+  nfeat <- 8
+  set.seed(123)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  mu <- smax(eta, g = g)
 
-	set.seed(789)
-	newidx <- sample.int(length(g),length(g))
-	gi <- g[newidx]
-	ei <- eta[newidx]
-	mui <- smax(ei,g=gi)
+  set.seed(789)
+  newidx <- sample.int(length(g), length(g))
+  gi <- g[newidx]
+  ei <- eta[newidx]
+  mui <- smax(ei, g = gi)
 
-	expect_equal(mu[newidx],mui)
-})#UNFOLD
-test_that("harsm_invlink",{#FOLDUP
-	nfeat <- 8
-	set.seed(123)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
+  expect_equal(mu[newidx], mui)
+}) #UNFOLD
+test_that("harsm_invlink", {
+  #FOLDUP
+  nfeat <- 8
+  set.seed(123)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
 
-	expect_error(ernk <- harsm_invlink(eta),NA)
-	expect_error(ernk <- harsm_invlink(eta,g=g),NA)
-	expect_error(ernk2 <- harsm_invlink(eta,g=rep(g[1],length(g))),NA)
+  expect_error(ernk <- harsm_invlink(eta), NA)
+  expect_error(ernk <- harsm_invlink(eta, g = g), NA)
+  expect_error(ernk2 <- harsm_invlink(eta, g = rep(g[1], length(g))), NA)
 
-	# get warning
-	expect_error(mu <- smax(eta,g),NA)
-	expect_warning(ernk2 <- harsm_invlink(eta=eta,mu=mu,g=g))
+  # get warning
+  expect_error(mu <- smax(eta, g), NA)
+  expect_warning(ernk2 <- harsm_invlink(eta = eta, mu = mu, g = g))
 
+  set.seed(789)
+  newidx <- sample.int(length(g), length(g))
+  gi <- g[newidx]
+  ei <- eta[newidx]
+  expect_error(ernki <- harsm_invlink(ei, g = gi), NA)
 
-	set.seed(789)
-	newidx <- sample.int(length(g),length(g))
-	gi <- g[newidx]
-	ei <- eta[newidx]
-	expect_error(ernki <- harsm_invlink(ei,g=gi),NA)
+  expect_equal(ernk[newidx], ernki)
+}) #UNFOLD
+test_that("rsm invariant wrt reordering", {
+  #FOLDUP
+  #nfeat <- 8
+  for (nfeat in c(4, 8)) {
+    set.seed(123)
+    for (g in list(rep(1, 20), ceiling(seq(0.1, 100, by = 0.1)))) {
+      X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+      beta <- rnorm(nfeat)
+      eta <- X %*% beta
+      set.seed(115)
+      y <- rsm(eta, g = g)
 
-	expect_equal(ernk[newidx],ernki)
-})#UNFOLD
-test_that("rsm invariant wrt reordering",{#FOLDUP
-	#nfeat <- 8
-	for (nfeat in c(4,8)) { 
-		set.seed(123)
-		for (g in list(rep(1,20),ceiling(seq(0.1,100,by=0.1)))) {
-			X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-			beta <- rnorm(nfeat)
-			eta <- X %*% beta
-			set.seed(115)
-			y <- rsm(eta,g=g)
-
-			set.seed(789)
-			newidx <- sample.int(length(y),length(y))
-			gi <- g[newidx]
-			ei <- eta[newidx]
-			set.seed(115)
-			yo <- rsm(ei,g=gi)
-			yi <- y[newidx]
-			expect_equal(yo,yi)
-		}
-	}
-})#UNFOLD
-test_that("rhenery not invariant wrt reordering",{#FOLDUP
-	set.seed(432)
-	mu <- normalize(runif(40))
-	set.seed(1111)
-	expect_error(r1 <- rhenery(mu),NA)
-	set.seed(1111)
-	expect_error(r2 <- rhenery(rev(mu)),NA)
-	expect_true(!all(r1==rev(r2)))
-})#UNFOLD
+      set.seed(789)
+      newidx <- sample.int(length(y), length(y))
+      gi <- g[newidx]
+      ei <- eta[newidx]
+      set.seed(115)
+      yo <- rsm(ei, g = gi)
+      yi <- y[newidx]
+      expect_equal(yo, yi)
+    }
+  }
+}) #UNFOLD
+test_that("rhenery not invariant wrt reordering", {
+  #FOLDUP
+  set.seed(432)
+  mu <- normalize(runif(40))
+  set.seed(1111)
+  expect_error(r1 <- rhenery(mu), NA)
+  set.seed(1111)
+  expect_error(r2 <- rhenery(rev(mu)), NA)
+  expect_true(!all(r1 == rev(r2)))
+}) #UNFOLD
 
 # UNFOLD
-context("sm makes sense")# FOLDUP
-test_that("sm foo",{#FOLDUP
-	nfeat <- 8
-	set.seed(123)
-	g <- ceiling(seq(0.1,1000,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	set.seed(678)
-	beta <- rnorm(nfeat,sd=3)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
+context("sm makes sense") # FOLDUP
+test_that("sm foo", {
+  #FOLDUP
+  nfeat <- 8
+  set.seed(123)
+  g <- ceiling(seq(0.1, 1000, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  set.seed(678)
+  beta <- rnorm(nfeat, sd = 3)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
 
-	# now the consensus
-	beta0 <- beta
-	beta0[1] <- 0
-	beta0[2] <- 0
-	beta0[3] <- 0
-	eta0 <- X %*% beta0
-	expect_error(foo <- harsmfit(y=y,g=g,X=X,eta0=eta0),NA)
-	donotuse <- capture.output(expect_error(print(foo),NA))
+  # now the consensus
+  beta0 <- beta
+  beta0[1] <- 0
+  beta0[2] <- 0
+  beta0[3] <- 0
+  eta0 <- X %*% beta0
+  expect_error(foo <- harsmfit(y = y, g = g, X = X, eta0 = eta0), NA)
+  donotuse <- capture.output(expect_error(print(foo), NA))
 
-	#.mse <- function(x,y) sum((x-y)^2)
-	#ppooh <- data.frame(y=foo$y,
-											#g=foo$g,
-											#er=foo$erank) %>%
-		#group_by(g) %>%
-			#mutate(qo=rank(er),
-						 #qdumb=(n() + 1)/2) %>%
-		#ungroup() %>%
-		#summarize(ssre=.mse(qo,y),
-							#ssto=.mse(qdumb,y)) 
-	
-
-})#UNFOLD
+  #.mse <- function(x,y) sum((x-y)^2)
+  #ppooh <- data.frame(y=foo$y,
+  #g=foo$g,
+  #er=foo$erank) %>%
+  #group_by(g) %>%
+  #mutate(qo=rank(er),
+  #qdumb=(n() + 1)/2) %>%
+  #ungroup() %>%
+  #summarize(ssre=.mse(qo,y),
+  #ssto=.mse(qdumb,y))
+}) #UNFOLD
 
 # UNFOLD
-context("modeling functions")#FOLDUP
-test_that("harsmfit bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
-			 
-	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
-	expect_equal(as.numeric(coefficients(mod0)),beta,tolerance=0.1)
-
-	# now the pretty frontend
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
-	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
-	donotuse <- capture.output(expect_error(print(fitm),NA))
-	expect_error(vcov(fitm),NA)
-
-	# check broom methods
-	expect_error(foo1 <- tidy(fitm),NA)
-	expect_error(foo2 <- glance(fitm),NA)
-
-	# group given by name 
-	expect_error(fitm2 <- harsm(fmla,group='race',data=data),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=0.0001)
-
-	# can deal with a single offset
-	fmla <- outcome ~ offset(V1) + V2 
-	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
-	fmla <- outcome ~ V1 + offset(V2)
-	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
-
-	# with consensus odds, but there
-	eta0 <- rowMeans(X)
-	data <- cbind(data.frame(outcome=y,race=g,eta0=eta0),as.data.frame(X))
-	fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
-
-	# with consensus odds, but there isn't Z1 and Z2
-	fmla <- outcome ~ offset(eta0) + Z1 + Z2
-	expect_error(fitm <- harsm(fmla,group=race,data=data))
-
-	# fit with weights
-	wt <- runif(length(y))
-	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,data,group=race,weights=wt),NA)
-	# weights given by name
-	expect_error(fitm2 <- harsm(fmla,data,group=race,weights='wt'),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=0.0001)
-
-	# this should error: negative weights
-	data <- cbind(data.frame(outcome=y,race=g,wt=rep(-1,length(y))),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,data,group=race,weights='wt'))
-	
-	# check on non-numeric race ids
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-	data <- data[data$race <= 26,]
-	data$letrace <- letters[data$race]
-	data$facrace <- factor(data$letrace)
-	data$intrace <- as.integer(data$race)
-
-	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitlet <- harsm(outcome ~ V1 + V2,data,group=letrace),NA)
-	expect_error(fitfac <- harsm(outcome ~ V1 + V2,data,group=facrace),NA)
-	expect_error(fitint <- harsm(outcome ~ V1 + V2,data,group=intrace),NA)
-
-	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
-	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
-
-	# warm start
-	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitnum2 <- harsm(outcome ~ V1 + V2,data,group=race,fit0=fitnum),NA)
-	expect_error(fitnum3 <- harsm(outcome ~ V2,data,group=race,fit0=fitnum),NA)
-	expect_error(fitnum4 <- harsm(outcome ~ V2 + V3,data,group=race,fit0=fitnum),NA)
-	expect_error(fitnum5 <- harsm(outcome ~ V3 + V4,data,group=race,fit0=fitnum),NA)
-})#UNFOLD
-test_that("harsm vs logistic",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	library(dplyr)
-	nop <- 5000
-	set.seed(1234)
-	adf <- data.frame(eventnum=floor(seq(1,nop + 0.7,by=0.5))) %>%
-		mutate(x=rnorm(n())) %>%
-		mutate(program_num=rep(c(1,2),nop)) %>%
-		mutate(intercept=as.numeric(program_num==1)) %>%
-		mutate(eta=1.5 * x + 0.3 * intercept) %>%
-		mutate(place=ohenery::rsm(eta,g=eventnum))
-
-	expect_error(modo <- harsm(place ~ intercept + x,data=adf,group=eventnum),NA)
-
-	ddf <- adf %>%
-		arrange(eventnum,program_num) %>%
-		group_by(eventnum) %>%
-			summarize(resu=as.numeric(first(place)==1),
-								delx=first(x) - last(x),
-								deli=first(intercept) - last(intercept)) %>%
-		ungroup()
-
-	modg <- glm(resu ~ delx + 1,data=ddf,family=binomial(link='logit'))
-
-	expect_equal(as.numeric(coef(modo)),as.numeric(coef(modg)),tolerance=1e-3)
-	expect_equal(as.numeric(vcov(modo)),as.numeric(vcov(modg)),tolerance=1e-5)
-})#UNFOLD
-test_that("harsmfit prediction",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 2
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
-	
-	# check on non-numeric race ids
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-	data <- data[data$race <= 26,]
-	data$letrace <- letters[data$race]
-	data$facrace <- factor(data$letrace)
-
-	expect_error(fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitlet <- harsm(outcome ~ V1 + V2,data,group=letrace),NA)
-	expect_error(fitfac <- harsm(outcome ~ V1 + V2,data,group=facrace),NA)
-	expect_error(fitoff <- harsm(outcome ~ V1 + offset(V2),data,group=race),NA)
-
-	for (ttype in c('eta','mu','erank')) {
-		expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
-		expect_error(fuh <- predict(fitlet,newdata=data,type=ttype),NA)
-		expect_error(fuh <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
-		expect_error(fuh <- predict(fitlet,newdata=data,type=ttype,group=letrace),NA)
-		expect_error(fuh <- predict(fitoff,newdata=data,type=ttype,group=race),NA)
-	}
-
-	# given by name
-	ttype <- 'eta'
-	expect_error(fuhbar <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
-	expect_error(barfuh <- predict(fitnum,newdata=data,type=ttype,group='race'),NA)
-	expect_equal(fuhbar,barfuh,tolerance=1e-7)
-
-	# if predict data is missing some columns, should error
-	baddata <- data[c('race','V1')]
-	ttype <- 'eta'
-	expect_error(fuhbar <- predict(fitnum,newdata=baddata,type=ttype,group=race))
-
-	# deal with na actions
-	expect_error(fuh <- as.numeric(predict(fitlet,newdata=data,type='eta',group=letrace,na.action=na.pass)),NA)
-	expect_equal(length(fuh),nrow(data))
-
-	# outcome should have no affect on the na action
-	badata <- data
-	badata$outcome[1] <- NA
-	expect_error(fuh <- as.numeric(predict(fitlet,newdata=badata,type='eta',group=letrace,na.action=na.pass)),NA)
-	expect_equal(length(fuh),nrow(badata))
-	expect_error(fuh <- as.numeric(predict(fitlet,newdata=badata,type='eta',group=letrace,na.action=na.omit)),NA)
-	expect_equal(length(fuh),nrow(badata))
-
-	# but for V1
-	badata <- data
-	badata$V1[1] <- NA
-	expect_error(fuh <- as.numeric(predict(fitlet,newdata=badata,type='eta',group=letrace,na.action=na.pass)),NA)
-	expect_equal(length(fuh),nrow(badata))
-	expect_true(all(is.na(fuh[is.na(badata$V1)])))
-	expect_true(all(!is.na(fuh[!is.na(badata$V1)])))
-
-	expect_error(fuh <- as.numeric(predict(fitlet,newdata=badata,type='eta',group=letrace,na.action=na.omit)),NA)
-	expect_equal(length(fuh),sum(!is.na(badata$V1)))
-	expect_true(all(!is.na(fuh)))
-})#UNFOLD
-test_that("harsmfit regularization",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
-
-	# these should error out for having bad weights or powers or indices, etc.
-	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(-1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat))
-	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=0,reg_zero=0,reg_coef_idx=1:nfeat))
-	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=(1:nfeat)+2))
-	expect_error(ignore <- harsmfit(y=y,g=g,X=X,reg_wt=rep(1,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=(1:nfeat)-2))
-
-	# smoke test.
-	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
-	expect_error(mod0r1 <- harsmfit(y=y,g=g,X=X,
-																	reg_wt=rep(2,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
-	expect_error(mod0r2 <- harsmfit(y=y,g=g,X=X,
-																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=0,reg_coef_idx=1:nfeat),NA)
-
-	# expect smaller coefficients for regularization terms.
-	expect_true(norm(coefficients(mod0),'2') > norm(coefficients(mod0r2),'2'))
-
-	# the zeroes should default to zero.
-	expect_error(mod0r2_alt <- harsmfit(y=y,g=g,X=X,
-																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=NULL,reg_coef_idx=1:nfeat),NA)
-	expect_equal(as.numeric(coefficients(mod0r2)),as.numeric(coefficients(mod0r2_alt)),tolerance=0.0001)
-
-	# can we drive a coefficient to zero via l1 regression?
-	expect_error(mod0r1_harsh <- harsmfit(y=y,g=g,X=X,
-																	reg_wt=rep(200,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
-	expect_true(min(abs(coefficients(mod0r1_harsh))) < 1e-7)
-
-	# now the pretty frontend
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,group=race,data=data),NA)
-	expect_error(fitmr1 <- harsm(fmla,group=race,data=data,
-																	reg_wt=rep(2,nfeat),reg_power=1,reg_zero=0,reg_coef_idx=1:nfeat),NA)
-	expect_error(fitmr2 <- harsm(fmla,group=race,data=data,
-																	reg_wt=rep(2,nfeat),reg_power=2,reg_zero=0,reg_coef_idx=1:nfeat),NA)
-	expect_equal(as.numeric(coefficients(mod0r1)),as.numeric(coefficients(fitmr1)),tolerance=0.0001)
-	expect_equal(as.numeric(coefficients(mod0r2)),as.numeric(coefficients(fitmr2)),tolerance=0.0001)
-	
-	skip_on_cran()
-	# test the standardization
-	inflate <- 5
-	fiveX <- inflate * X
-	expect_error(mod0 <- harsmfit(y=y,g=g,X=X),NA)
-	expect_error(mod5 <- harsmfit(y=y,g=g,X=fiveX),NA)
-	expect_equal(as.numeric(inflate*coefficients(mod5)),as.numeric(coefficients(mod0)),tolerance=0.002)
-	WW <- 100
-	expect_error(mod0_r1 <- harsmfit(y=y,g=g,X=X,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=FALSE),NA)
-	expect_error(mod0_r1_t <- harsmfit(y=y,g=g,X=X,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=TRUE),NA)
-	expect_error(mod5_r1 <- harsmfit(y=y,g=g,X=fiveX,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=FALSE),NA)
-	expect_error(mod5_r1_t <- harsmfit(y=y,g=g,X=fiveX,reg_wt=WW,reg_power=2,reg_coef_idx=1:nfeat,reg_standardize=TRUE),NA)
-	expect_equal(as.numeric(coefficients(mod0_r1_t)),as.numeric(inflate * coefficients(mod5_r1_t)),tolerance=0.002)
-})#UNFOLD
-test_that("hensm bits",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- 1 + ((1:1000) %% 100)
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
-
-	# now the pretty frontend
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	# runs?
-	expect_error(fitm <- hensm(fmla,data,group=race),NA)
-	donotuse <- capture.output(expect_error(print(fitm),NA))
-	expect_error(vcov(fitm),NA)
-	# deterministic?
-	expect_error(fitm2 <- hensm(fmla,data,group=race),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
-
-	# check broom methods
-	expect_error(foo1 <- tidy(fitm),NA)
-	expect_error(foo2 <- glance(fitm),NA)
-
-	# group given by name
-	expect_error(fitm3 <- hensm(fmla,data,group='race'),NA)
-	expect_equal(fitm$coefficients,fitm3$coefficients)
-
-	# can deal with a single offset
-	fmla <- outcome ~ offset(V1) + V2 
-	expect_error(fitm <- hensm(fmla,data,group=race),NA)
-	fmla <- outcome ~ V1 + offset(V2)
-	expect_error(fitm <- hensm(fmla,data,group=race),NA)
-
-	# with consensus odds, but there
-	eta0 <- rowMeans(X)
-	data <- cbind(data.frame(outcome=y,race=g,eta0=eta0),as.data.frame(X))
-	fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race),NA)
-
-	# with consensus odds, but there isn't Z1 and Z2
-	fmla <- outcome ~ offset(eta0) + Z1 + Z2
-	expect_error(fitm <- hensm(fmla,data,group=race))
-
-	# fit with weights
-	wt <- runif(length(y))
-	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race,weights=wt),NA)
-	# weights given by name
-	expect_error(fitm2 <- hensm(fmla,data,group=race,weights='wt'),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
-
-	# this should error: negative weights
-	data <- cbind(data.frame(outcome=y,race=g,wt=rep(-1,length(y))),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race,weights=wt))
-	
-	# check on non-numeric race ids
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-	data <- data[data$race <= 26,]
-	data$letrace <- letters[data$race]
-	data$facrace <- factor(data$letrace)
-	data$intrace <- as.integer(data$race)
-
-	expect_error(fitnum <- hensm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitlet <- hensm(outcome ~ V1 + V2,data,group=letrace),NA)
-	expect_error(fitfac <- hensm(outcome ~ V1 + V2,data,group=facrace),NA)
-	expect_error(fitint <- hensm(outcome ~ V1 + V2,data,group=intrace),NA)
-	
-	# if predict data is missing some columns, should error
-	baddata <- data[c('race','V1')]
-	ttype <- 'eta'
-	expect_error(fuhbar <- predict(fitnum,newdata=baddata,type=ttype,group=race))
-
-	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitlet)),tolerance=1e-7)
-	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitfac)),tolerance=1e-7)
-
-	# warm start!
-	expect_error(fitnum <- hensm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitnum2 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum),NA)
-	# why are they not closer?
-	expect_equal(as.numeric(coefficients(fitnum)),as.numeric(coefficients(fitnum2)),tolerance=1e-3)
-
-	expect_error(fitnum3 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum,ngamma=3),NA)
-	expect_error(fitnum4 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=fitnum,ngamma=4),NA)
-	expect_error(fitnum2b <- hensm(outcome ~ V1,data,group=race,fit0=fitnum),NA)
-	expect_error(fitnum2c <- hensm(outcome ~ V1 + V3,data,group=race,fit0=fitnum),NA)
-
-	# warm start from harsm object.
-	expect_error(har_fitnum <- harsm(outcome ~ V1 + V2,data,group=race),NA)
-	expect_error(fitnum2 <- hensm(outcome ~ V1 + V2,data,group=race,fit0=har_fitnum),NA)
-
-	#for (ttype in c('eta','mu','erank')) {
-		#expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
-		#expect_error(fuh <- predict(fitlet,newdata=data,type=ttype),NA)
-		#expect_error(fuh <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
-		#expect_error(fuh <- predict(fitlet,newdata=data,type=ttype,group=letrace),NA)
-	#}
-})#UNFOLD
-test_that("hensm consistency",{#FOLDUP
-	# travis only?
-	skip_on_cran()
-	nfeat <- 2
-	set.seed(1234)
-	g <- 1 + ((1:120000) %% 20000)
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	mu <- smax(eta,g=g)
-	gammas <- c(0.9,0.8,0.7,rep(1,6))
-
-	# now the pretty frontend
-	data <- cbind(data.frame(mu=mu,race=g),as.data.frame(X)) %>%
-		group_by(race) %>%
-			mutate(outcome=rhenery(mu,gammas[1:(n()-1)])) %>%
-		ungroup()
-
-	fmla <- outcome ~ V1 + V2 
-	expect_error(fitm <- hensm(fmla,data,group=race,ngamma=5),NA)
-
-	# close enough
-	expect_equal(fitm$gammas[1:3],gammas[1:3],tolerance=0.03)
-	expect_equal(as.numeric(fitm$beta),beta,tolerance=0.03)
-})#UNFOLD
-test_that("hensmfit regularization",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	ngam <- 3
-	set.seed(1234)
-	g <- 1 + ((1:1000) %% 100)
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
-
-	# now the pretty frontend
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-
-	ncoef <- nfeat + ngam - 1
-
-	# these should error out for having bad weights or powers or indices, etc.
-	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(-1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=1:ncoef))
-	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=0,reg_zero=0,reg_coef_idx=1:ncoef))
-	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=(1:ncoef)+2))
-	expect_error(ignore <- hensm(fmla,data,group=race,reg_wt=rep(1,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=(1:ncoef)-2))
-
-	# smoke test.
-	expect_error(mod0 <- hensm(fmla,data,group=race,ngamma=ngam),NA)
-	expect_error(mod0r1 <- hensm(fmla,data,group=race,ngamma=ngam,
-																reg_wt=rep(2,ncoef),reg_power=1,reg_zero=0,reg_coef_idx=1:(ncoef)),NA)
-	expect_error(mod0r2 <- hensm(fmla,data,group=race,ngamma=ngam,
-																reg_wt=rep(50,ncoef),reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef)),NA)
-
-	# expect smaller coefficients for regularization terms.
-	expect_true(norm(coefficients(mod0),'2') > norm(coefficients(mod0r2),'2'))
-
-	# the zeroes should default to zero or one as appropriate
-	expect_error(mod0r2_a <- hensm(fmla,data,group=race,ngamma=ngam,
-																reg_wt=rep(2,ncoef),reg_power=2,reg_zero=c(rep(0,nfeat),rep(1,ngam-1)),reg_coef_idx=1:ncoef),NA)
-	expect_error(mod0r2_b <- hensm(fmla,data,group=race,ngamma=ngam,
-																reg_wt=rep(2,ncoef),reg_power=2,reg_zero=NULL,reg_coef_idx=1:ncoef),NA)
-	expect_equal(as.numeric(coefficients(mod0r2_a)),as.numeric(coefficients(mod0r2_b)),tolerance=0.0001)
-
-
-	skip_on_cran()
-	# test the standardization
-	inflate <- 5
-	five_data <- cbind(data.frame(outcome=y,race=g),as.data.frame(inflate*X))
-	expect_error(mod0 <- hensm(fmla,data,group=race,ngamma=ngam),NA)
-	expect_error(mod5 <- hensm(fmla,five_data,group=race,ngamma=ngam),NA)
-	expect_equal(as.numeric(inflate*coefficients(mod5)),as.numeric(coefficients(mod0)),tolerance=0.002)
-	WW <- 100
-	expect_error(mod0_r1 <- hensm(fmla,data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=FALSE),NA)
-	expect_error(mod0_r1_t <- hensm(fmla,data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=TRUE),NA)
-	expect_error(mod5_r1 <- hensm(fmla,five_data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=FALSE),NA)
-	expect_error(mod5_r1_t <- hensm(fmla,five_data,group=race,ngamma=ngam,reg_wt=WW,reg_power=2,reg_zero=0,reg_coef_idx=1:(ncoef),reg_standardize=TRUE),NA)
-	expect_equal(as.numeric(coefficients(mod0_r1_t)),as.numeric(inflate * coefficients(mod5_r1_t)),tolerance=0.002)
-
-})#UNFOLD
-test_that("predictions with factors",{#FOLDUP
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 2
-	set.seed(1234)
-	g <- ceiling(seq(0.1,30,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	y <- rsm(eta,g=g)
-	
-	# create a variable V3, which is a factor variable.
-	# in the training data is has values 'a':'q'; we build a model.
-	# in the test data we try data with values 'a':'m' and only those levels.
-	# and also test data with values 'a':'m' but levels 'a':'z'.
-	# In each case we should be able to call predict on the model.
-	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
-	data_AQ <- data
-	data_AQ$V3 <- factor(sample(letters[1:17],nrow(data_AQ),replace=TRUE))
-	data_AM <- data
-	data_AM$V3 <- factor(sample(letters[1:13],nrow(data_AM),replace=TRUE))
-	data_AMZ <- data_AM
-	data_AMZ$V3 <- factor(as.character(data_AMZ$V3),levels=letters)
-
-	expect_error(fitmod <- harsm(outcome ~ V1 + V3,data_AQ,group=race),NA)
-	expect_error(henmod <- hensm(outcome ~ V1 + V3,data_AQ,group=race),NA)
-	for (ttype in c('eta','mu','erank')) {
-		expect_error(fuh <- predict(fitmod,newdata=data_AQ,type=ttype),NA)
-		expect_error(fuh <- predict(fitmod,newdata=data_AQ,type=ttype,group=race),NA)
-
-		expect_error(fuh <- predict(fitmod,newdata=data_AM,type=ttype),NA)
-		expect_error(fuh <- predict(fitmod,newdata=data_AM,type=ttype,group=race),NA)
-		expect_error(fuh <- predict(fitmod,newdata=data_AMZ,type=ttype),NA)
-		expect_error(fuh <- predict(fitmod,newdata=data_AMZ,type=ttype,group=race),NA)
-
-		expect_error(fuh <- predict(henmod,newdata=data_AQ,type=ttype),NA)
-		expect_error(fuh <- predict(henmod,newdata=data_AQ,type=ttype,group=race),NA)
-
-		expect_error(fuh <- predict(henmod,newdata=data_AM,type=ttype),NA)
-		expect_error(fuh <- predict(henmod,newdata=data_AM,type=ttype,group=race),NA)
-		expect_error(fuh <- predict(henmod,newdata=data_AMZ,type=ttype),NA)
-		expect_error(fuh <- predict(henmod,newdata=data_AMZ,type=ttype,group=race),NA)
-	}
-
-})#UNFOLD
+context("modeling functions") #FOLDUP
+test_that("harsmfit bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+
+  expect_error(mod0 <- harsmfit(y = y, g = g, X = X), NA)
+  expect_equal(as.numeric(coefficients(mod0)), beta, tolerance = 0.1)
+
+  # now the pretty frontend
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, group = race, data = data), NA)
+  expect_equal(
+    as.numeric(coefficients(mod0)),
+    as.numeric(coefficients(fitm)),
+    tolerance = 0.0001
+  )
+  donotuse <- capture.output(expect_error(print(fitm), NA))
+  expect_error(vcov(fitm), NA)
+
+  # check broom methods
+  expect_error(foo1 <- tidy(fitm), NA)
+  expect_error(foo2 <- glance(fitm), NA)
+
+  # group given by name
+  expect_error(fitm2 <- harsm(fmla, group = 'race', data = data), NA)
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm)),
+    tolerance = 0.0001
+  )
+
+  # can deal with a single offset
+  fmla <- outcome ~ offset(V1) + V2
+  expect_error(fitm <- harsm(fmla, group = race, data = data), NA)
+  fmla <- outcome ~ V1 + offset(V2)
+  expect_error(fitm <- harsm(fmla, group = race, data = data), NA)
+
+  # with consensus odds, but there
+  eta0 <- rowMeans(X)
+  data <- cbind(
+    data.frame(outcome = y, race = g, eta0 = eta0),
+    as.data.frame(X)
+  )
+  fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, group = race, data = data), NA)
+
+  # with consensus odds, but there isn't Z1 and Z2
+  fmla <- outcome ~ offset(eta0) + Z1 + Z2
+  expect_error(fitm <- harsm(fmla, group = race, data = data))
+
+  # fit with weights
+  wt <- runif(length(y))
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, data, group = race, weights = wt), NA)
+  # weights given by name
+  expect_error(fitm2 <- harsm(fmla, data, group = race, weights = 'wt'), NA)
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm)),
+    tolerance = 0.0001
+  )
+
+  # this should error: negative weights
+  data <- cbind(
+    data.frame(outcome = y, race = g, wt = rep(-1, length(y))),
+    as.data.frame(X)
+  )
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, data, group = race, weights = 'wt'))
+
+  # check on non-numeric race ids
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+  data <- data[data$race <= 26, ]
+  data$letrace <- letters[data$race]
+  data$facrace <- factor(data$letrace)
+  data$intrace <- as.integer(data$race)
+
+  expect_error(fitnum <- harsm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(fitlet <- harsm(outcome ~ V1 + V2, data, group = letrace), NA)
+  expect_error(fitfac <- harsm(outcome ~ V1 + V2, data, group = facrace), NA)
+  expect_error(fitint <- harsm(outcome ~ V1 + V2, data, group = intrace), NA)
+
+  expect_equal(
+    as.numeric(coefficients(fitnum)),
+    as.numeric(coefficients(fitlet)),
+    tolerance = 1e-7
+  )
+  expect_equal(
+    as.numeric(coefficients(fitnum)),
+    as.numeric(coefficients(fitfac)),
+    tolerance = 1e-7
+  )
+
+  # warm start
+  expect_error(fitnum <- harsm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(
+    fitnum2 <- harsm(outcome ~ V1 + V2, data, group = race, fit0 = fitnum),
+    NA
+  )
+  expect_error(
+    fitnum3 <- harsm(outcome ~ V2, data, group = race, fit0 = fitnum),
+    NA
+  )
+  expect_error(
+    fitnum4 <- harsm(outcome ~ V2 + V3, data, group = race, fit0 = fitnum),
+    NA
+  )
+  expect_error(
+    fitnum5 <- harsm(outcome ~ V3 + V4, data, group = race, fit0 = fitnum),
+    NA
+  )
+}) #UNFOLD
+test_that("harsm vs logistic", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  library(dplyr)
+  nop <- 5000
+  set.seed(1234)
+  adf <- data.frame(eventnum = floor(seq(1, nop + 0.7, by = 0.5))) %>%
+    mutate(x = rnorm(n())) %>%
+    mutate(program_num = rep(c(1, 2), nop)) %>%
+    mutate(intercept = as.numeric(program_num == 1)) %>%
+    mutate(eta = 1.5 * x + 0.3 * intercept) %>%
+    mutate(place = ohenery::rsm(eta, g = eventnum))
+
+  expect_error(
+    modo <- harsm(place ~ intercept + x, data = adf, group = eventnum),
+    NA
+  )
+
+  ddf <- adf %>%
+    arrange(eventnum, program_num) %>%
+    group_by(eventnum) %>%
+    summarize(
+      resu = as.numeric(first(place) == 1),
+      delx = first(x) - last(x),
+      deli = first(intercept) - last(intercept)
+    ) %>%
+    ungroup()
+
+  modg <- glm(resu ~ delx + 1, data = ddf, family = binomial(link = 'logit'))
+
+  expect_equal(as.numeric(coef(modo)), as.numeric(coef(modg)), tolerance = 1e-3)
+  expect_equal(as.numeric(vcov(modo)), as.numeric(vcov(modg)), tolerance = 1e-5)
+}) #UNFOLD
+test_that("harsmfit prediction", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 2
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
+
+  # check on non-numeric race ids
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+  data <- data[data$race <= 26, ]
+  data$letrace <- letters[data$race]
+  data$facrace <- factor(data$letrace)
+
+  expect_error(fitnum <- harsm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(fitlet <- harsm(outcome ~ V1 + V2, data, group = letrace), NA)
+  expect_error(fitfac <- harsm(outcome ~ V1 + V2, data, group = facrace), NA)
+  expect_error(
+    fitoff <- harsm(outcome ~ V1 + offset(V2), data, group = race),
+    NA
+  )
+
+  for (ttype in c('eta', 'mu', 'erank')) {
+    expect_error(fuh <- predict(fitnum, newdata = data, type = ttype), NA)
+    expect_error(fuh <- predict(fitlet, newdata = data, type = ttype), NA)
+    expect_error(
+      fuh <- predict(fitnum, newdata = data, type = ttype, group = race),
+      NA
+    )
+    expect_error(
+      fuh <- predict(fitlet, newdata = data, type = ttype, group = letrace),
+      NA
+    )
+    expect_error(
+      fuh <- predict(fitoff, newdata = data, type = ttype, group = race),
+      NA
+    )
+  }
+
+  # given by name
+  ttype <- 'eta'
+  expect_error(
+    fuhbar <- predict(fitnum, newdata = data, type = ttype, group = race),
+    NA
+  )
+  expect_error(
+    barfuh <- predict(fitnum, newdata = data, type = ttype, group = 'race'),
+    NA
+  )
+  expect_equal(fuhbar, barfuh, tolerance = 1e-7)
+
+  # if predict data is missing some columns, should error
+  baddata <- data[c('race', 'V1')]
+  ttype <- 'eta'
+  expect_error(
+    fuhbar <- predict(fitnum, newdata = baddata, type = ttype, group = race)
+  )
+
+  # deal with na actions
+  expect_error(
+    fuh <- as.numeric(predict(
+      fitlet,
+      newdata = data,
+      type = 'eta',
+      group = letrace,
+      na.action = na.pass
+    )),
+    NA
+  )
+  expect_equal(length(fuh), nrow(data))
+
+  # outcome should have no affect on the na action
+  badata <- data
+  badata$outcome[1] <- NA
+  expect_error(
+    fuh <- as.numeric(predict(
+      fitlet,
+      newdata = badata,
+      type = 'eta',
+      group = letrace,
+      na.action = na.pass
+    )),
+    NA
+  )
+  expect_equal(length(fuh), nrow(badata))
+  expect_error(
+    fuh <- as.numeric(predict(
+      fitlet,
+      newdata = badata,
+      type = 'eta',
+      group = letrace,
+      na.action = na.omit
+    )),
+    NA
+  )
+  expect_equal(length(fuh), nrow(badata))
+
+  # but for V1
+  badata <- data
+  badata$V1[1] <- NA
+  expect_error(
+    fuh <- as.numeric(predict(
+      fitlet,
+      newdata = badata,
+      type = 'eta',
+      group = letrace,
+      na.action = na.pass
+    )),
+    NA
+  )
+  expect_equal(length(fuh), nrow(badata))
+  expect_true(all(is.na(fuh[is.na(badata$V1)])))
+  expect_true(all(!is.na(fuh[!is.na(badata$V1)])))
+
+  expect_error(
+    fuh <- as.numeric(predict(
+      fitlet,
+      newdata = badata,
+      type = 'eta',
+      group = letrace,
+      na.action = na.omit
+    )),
+    NA
+  )
+  expect_equal(length(fuh), sum(!is.na(badata$V1)))
+  expect_true(all(!is.na(fuh)))
+}) #UNFOLD
+test_that("harsmfit regularization", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+
+  # these should error out for having bad weights or powers or indices, etc.
+  expect_error(
+    ignore <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(-1, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    )
+  )
+  expect_error(
+    ignore <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(1, nfeat),
+      reg_power = 0,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    )
+  )
+  expect_error(
+    ignore <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(1, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = (1:nfeat) + 2
+    )
+  )
+  expect_error(
+    ignore <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(1, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = (1:nfeat) - 2
+    )
+  )
+
+  # smoke test.
+  expect_error(mod0 <- harsmfit(y = y, g = g, X = X), NA)
+  expect_error(
+    mod0r1 <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(2, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+  expect_error(
+    mod0r2 <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(2, nfeat),
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+
+  # expect smaller coefficients for regularization terms.
+  expect_true(norm(coefficients(mod0), '2') > norm(coefficients(mod0r2), '2'))
+
+  # the zeroes should default to zero.
+  expect_error(
+    mod0r2_alt <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(2, nfeat),
+      reg_power = 2,
+      reg_zero = NULL,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0r2)),
+    as.numeric(coefficients(mod0r2_alt)),
+    tolerance = 0.0001
+  )
+
+  # can we drive a coefficient to zero via l1 regression?
+  expect_error(
+    mod0r1_harsh <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = rep(200, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+  expect_true(min(abs(coefficients(mod0r1_harsh))) < 1e-7)
+
+  # now the pretty frontend
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, group = race, data = data), NA)
+  expect_error(
+    fitmr1 <- harsm(
+      fmla,
+      group = race,
+      data = data,
+      reg_wt = rep(2, nfeat),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+  expect_error(
+    fitmr2 <- harsm(
+      fmla,
+      group = race,
+      data = data,
+      reg_wt = rep(2, nfeat),
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:nfeat
+    ),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0r1)),
+    as.numeric(coefficients(fitmr1)),
+    tolerance = 0.0001
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0r2)),
+    as.numeric(coefficients(fitmr2)),
+    tolerance = 0.0001
+  )
+
+  skip_on_cran()
+  # test the standardization
+  inflate <- 5
+  fiveX <- inflate * X
+  expect_error(mod0 <- harsmfit(y = y, g = g, X = X), NA)
+  expect_error(mod5 <- harsmfit(y = y, g = g, X = fiveX), NA)
+  expect_equal(
+    as.numeric(inflate * coefficients(mod5)),
+    as.numeric(coefficients(mod0)),
+    tolerance = 0.002
+  )
+  WW <- 100
+  expect_error(
+    mod0_r1 <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_coef_idx = 1:nfeat,
+      reg_standardize = FALSE
+    ),
+    NA
+  )
+  expect_error(
+    mod0_r1_t <- harsmfit(
+      y = y,
+      g = g,
+      X = X,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_coef_idx = 1:nfeat,
+      reg_standardize = TRUE
+    ),
+    NA
+  )
+  expect_error(
+    mod5_r1 <- harsmfit(
+      y = y,
+      g = g,
+      X = fiveX,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_coef_idx = 1:nfeat,
+      reg_standardize = FALSE
+    ),
+    NA
+  )
+  expect_error(
+    mod5_r1_t <- harsmfit(
+      y = y,
+      g = g,
+      X = fiveX,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_coef_idx = 1:nfeat,
+      reg_standardize = TRUE
+    ),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0_r1_t)),
+    as.numeric(inflate * coefficients(mod5_r1_t)),
+    tolerance = 0.002
+  )
+}) #UNFOLD
+test_that("hensm bits", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- 1 + ((1:1000) %% 100)
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+
+  # now the pretty frontend
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  # runs?
+  expect_error(fitm <- hensm(fmla, data, group = race), NA)
+  donotuse <- capture.output(expect_error(print(fitm), NA))
+  expect_error(vcov(fitm), NA)
+  # deterministic?
+  expect_error(fitm2 <- hensm(fmla, data, group = race), NA)
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm)),
+    tolerance = 1e-7
+  )
+
+  # check broom methods
+  expect_error(foo1 <- tidy(fitm), NA)
+  expect_error(foo2 <- glance(fitm), NA)
+
+  # group given by name
+  expect_error(fitm3 <- hensm(fmla, data, group = 'race'), NA)
+  expect_equal(fitm$coefficients, fitm3$coefficients)
+
+  # can deal with a single offset
+  fmla <- outcome ~ offset(V1) + V2
+  expect_error(fitm <- hensm(fmla, data, group = race), NA)
+  fmla <- outcome ~ V1 + offset(V2)
+  expect_error(fitm <- hensm(fmla, data, group = race), NA)
+
+  # with consensus odds, but there
+  eta0 <- rowMeans(X)
+  data <- cbind(
+    data.frame(outcome = y, race = g, eta0 = eta0),
+    as.data.frame(X)
+  )
+  fmla <- outcome ~ offset(eta0) + V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- hensm(fmla, data, group = race), NA)
+
+  # with consensus odds, but there isn't Z1 and Z2
+  fmla <- outcome ~ offset(eta0) + Z1 + Z2
+  expect_error(fitm <- hensm(fmla, data, group = race))
+
+  # fit with weights
+  wt <- runif(length(y))
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- hensm(fmla, data, group = race, weights = wt), NA)
+  # weights given by name
+  expect_error(fitm2 <- hensm(fmla, data, group = race, weights = 'wt'), NA)
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm)),
+    tolerance = 1e-7
+  )
+
+  # this should error: negative weights
+  data <- cbind(
+    data.frame(outcome = y, race = g, wt = rep(-1, length(y))),
+    as.data.frame(X)
+  )
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- hensm(fmla, data, group = race, weights = wt))
+
+  # check on non-numeric race ids
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+  data <- data[data$race <= 26, ]
+  data$letrace <- letters[data$race]
+  data$facrace <- factor(data$letrace)
+  data$intrace <- as.integer(data$race)
+
+  expect_error(fitnum <- hensm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(fitlet <- hensm(outcome ~ V1 + V2, data, group = letrace), NA)
+  expect_error(fitfac <- hensm(outcome ~ V1 + V2, data, group = facrace), NA)
+  expect_error(fitint <- hensm(outcome ~ V1 + V2, data, group = intrace), NA)
+
+  # if predict data is missing some columns, should error
+  baddata <- data[c('race', 'V1')]
+  ttype <- 'eta'
+  expect_error(
+    fuhbar <- predict(fitnum, newdata = baddata, type = ttype, group = race)
+  )
+
+  expect_equal(
+    as.numeric(coefficients(fitnum)),
+    as.numeric(coefficients(fitlet)),
+    tolerance = 1e-7
+  )
+  expect_equal(
+    as.numeric(coefficients(fitnum)),
+    as.numeric(coefficients(fitfac)),
+    tolerance = 1e-7
+  )
+
+  # warm start!
+  expect_error(fitnum <- hensm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(
+    fitnum2 <- hensm(outcome ~ V1 + V2, data, group = race, fit0 = fitnum),
+    NA
+  )
+  # why are they not closer?
+  expect_equal(
+    as.numeric(coefficients(fitnum)),
+    as.numeric(coefficients(fitnum2)),
+    tolerance = 1e-3
+  )
+
+  expect_error(
+    fitnum3 <- hensm(
+      outcome ~ V1 + V2,
+      data,
+      group = race,
+      fit0 = fitnum,
+      ngamma = 3
+    ),
+    NA
+  )
+  expect_error(
+    fitnum4 <- hensm(
+      outcome ~ V1 + V2,
+      data,
+      group = race,
+      fit0 = fitnum,
+      ngamma = 4
+    ),
+    NA
+  )
+  expect_error(
+    fitnum2b <- hensm(outcome ~ V1, data, group = race, fit0 = fitnum),
+    NA
+  )
+  expect_error(
+    fitnum2c <- hensm(outcome ~ V1 + V3, data, group = race, fit0 = fitnum),
+    NA
+  )
+
+  # warm start from harsm object.
+  expect_error(har_fitnum <- harsm(outcome ~ V1 + V2, data, group = race), NA)
+  expect_error(
+    fitnum2 <- hensm(outcome ~ V1 + V2, data, group = race, fit0 = har_fitnum),
+    NA
+  )
+
+  #for (ttype in c('eta','mu','erank')) {
+  #expect_error(fuh <- predict(fitnum,newdata=data,type=ttype),NA)
+  #expect_error(fuh <- predict(fitlet,newdata=data,type=ttype),NA)
+  #expect_error(fuh <- predict(fitnum,newdata=data,type=ttype,group=race),NA)
+  #expect_error(fuh <- predict(fitlet,newdata=data,type=ttype,group=letrace),NA)
+  #}
+}) #UNFOLD
+test_that("hensm consistency", {
+  #FOLDUP
+  # travis only?
+  skip_on_cran()
+  nfeat <- 2
+  set.seed(1234)
+  g <- 1 + ((1:120000) %% 20000)
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  mu <- smax(eta, g = g)
+  gammas <- c(0.9, 0.8, 0.7, rep(1, 6))
+
+  # now the pretty frontend
+  data <- cbind(data.frame(mu = mu, race = g), as.data.frame(X)) %>%
+    group_by(race) %>%
+    mutate(outcome = rhenery(mu, gammas[1:(n() - 1)])) %>%
+    ungroup()
+
+  fmla <- outcome ~ V1 + V2
+  expect_error(fitm <- hensm(fmla, data, group = race, ngamma = 5), NA)
+
+  # close enough
+  expect_equal(fitm$gammas[1:3], gammas[1:3], tolerance = 0.03)
+  expect_equal(as.numeric(fitm$beta), beta, tolerance = 0.03)
+}) #UNFOLD
+test_that("hensmfit regularization", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  ngam <- 3
+  set.seed(1234)
+  g <- 1 + ((1:1000) %% 100)
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+
+  # now the pretty frontend
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+
+  ncoef <- nfeat + ngam - 1
+
+  # these should error out for having bad weights or powers or indices, etc.
+  expect_error(
+    ignore <- hensm(
+      fmla,
+      data,
+      group = race,
+      reg_wt = rep(-1, ncoef),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:ncoef
+    )
+  )
+  expect_error(
+    ignore <- hensm(
+      fmla,
+      data,
+      group = race,
+      reg_wt = rep(1, ncoef),
+      reg_power = 0,
+      reg_zero = 0,
+      reg_coef_idx = 1:ncoef
+    )
+  )
+  expect_error(
+    ignore <- hensm(
+      fmla,
+      data,
+      group = race,
+      reg_wt = rep(1, ncoef),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = (1:ncoef) + 2
+    )
+  )
+  expect_error(
+    ignore <- hensm(
+      fmla,
+      data,
+      group = race,
+      reg_wt = rep(1, ncoef),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = (1:ncoef) - 2
+    )
+  )
+
+  # smoke test.
+  expect_error(mod0 <- hensm(fmla, data, group = race, ngamma = ngam), NA)
+  expect_error(
+    mod0r1 <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = rep(2, ncoef),
+      reg_power = 1,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef)
+    ),
+    NA
+  )
+  expect_error(
+    mod0r2 <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = rep(50, ncoef),
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef)
+    ),
+    NA
+  )
+
+  # expect smaller coefficients for regularization terms.
+  expect_true(norm(coefficients(mod0), '2') > norm(coefficients(mod0r2), '2'))
+
+  # the zeroes should default to zero or one as appropriate
+  expect_error(
+    mod0r2_a <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = rep(2, ncoef),
+      reg_power = 2,
+      reg_zero = c(rep(0, nfeat), rep(1, ngam - 1)),
+      reg_coef_idx = 1:ncoef
+    ),
+    NA
+  )
+  expect_error(
+    mod0r2_b <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = rep(2, ncoef),
+      reg_power = 2,
+      reg_zero = NULL,
+      reg_coef_idx = 1:ncoef
+    ),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0r2_a)),
+    as.numeric(coefficients(mod0r2_b)),
+    tolerance = 0.0001
+  )
+
+  skip_on_cran()
+  # test the standardization
+  inflate <- 5
+  five_data <- cbind(
+    data.frame(outcome = y, race = g),
+    as.data.frame(inflate * X)
+  )
+  expect_error(mod0 <- hensm(fmla, data, group = race, ngamma = ngam), NA)
+  expect_error(mod5 <- hensm(fmla, five_data, group = race, ngamma = ngam), NA)
+  expect_equal(
+    as.numeric(inflate * coefficients(mod5)),
+    as.numeric(coefficients(mod0)),
+    tolerance = 0.002
+  )
+  WW <- 100
+  expect_error(
+    mod0_r1 <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef),
+      reg_standardize = FALSE
+    ),
+    NA
+  )
+  expect_error(
+    mod0_r1_t <- hensm(
+      fmla,
+      data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef),
+      reg_standardize = TRUE
+    ),
+    NA
+  )
+  expect_error(
+    mod5_r1 <- hensm(
+      fmla,
+      five_data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef),
+      reg_standardize = FALSE
+    ),
+    NA
+  )
+  expect_error(
+    mod5_r1_t <- hensm(
+      fmla,
+      five_data,
+      group = race,
+      ngamma = ngam,
+      reg_wt = WW,
+      reg_power = 2,
+      reg_zero = 0,
+      reg_coef_idx = 1:(ncoef),
+      reg_standardize = TRUE
+    ),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(mod0_r1_t)),
+    as.numeric(inflate * coefficients(mod5_r1_t)),
+    tolerance = 0.002
+  )
+}) #UNFOLD
+test_that("predictions with factors", {
+  #FOLDUP
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 2
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 30, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  y <- rsm(eta, g = g)
+
+  # create a variable V3, which is a factor variable.
+  # in the training data is has values 'a':'q'; we build a model.
+  # in the test data we try data with values 'a':'m' and only those levels.
+  # and also test data with values 'a':'m' but levels 'a':'z'.
+  # In each case we should be able to call predict on the model.
+  data <- cbind(data.frame(outcome = y, race = g), as.data.frame(X))
+  data_AQ <- data
+  data_AQ$V3 <- factor(sample(letters[1:17], nrow(data_AQ), replace = TRUE))
+  data_AM <- data
+  data_AM$V3 <- factor(sample(letters[1:13], nrow(data_AM), replace = TRUE))
+  data_AMZ <- data_AM
+  data_AMZ$V3 <- factor(as.character(data_AMZ$V3), levels = letters)
+
+  expect_error(fitmod <- harsm(outcome ~ V1 + V3, data_AQ, group = race), NA)
+  expect_error(henmod <- hensm(outcome ~ V1 + V3, data_AQ, group = race), NA)
+  for (ttype in c('eta', 'mu', 'erank')) {
+    expect_error(fuh <- predict(fitmod, newdata = data_AQ, type = ttype), NA)
+    expect_error(
+      fuh <- predict(fitmod, newdata = data_AQ, type = ttype, group = race),
+      NA
+    )
+
+    expect_error(fuh <- predict(fitmod, newdata = data_AM, type = ttype), NA)
+    expect_error(
+      fuh <- predict(fitmod, newdata = data_AM, type = ttype, group = race),
+      NA
+    )
+    expect_error(fuh <- predict(fitmod, newdata = data_AMZ, type = ttype), NA)
+    expect_error(
+      fuh <- predict(fitmod, newdata = data_AMZ, type = ttype, group = race),
+      NA
+    )
+
+    expect_error(fuh <- predict(henmod, newdata = data_AQ, type = ttype), NA)
+    expect_error(
+      fuh <- predict(henmod, newdata = data_AQ, type = ttype, group = race),
+      NA
+    )
+
+    expect_error(fuh <- predict(henmod, newdata = data_AM, type = ttype), NA)
+    expect_error(
+      fuh <- predict(henmod, newdata = data_AM, type = ttype, group = race),
+      NA
+    )
+    expect_error(fuh <- predict(henmod, newdata = data_AMZ, type = ttype), NA)
+    expect_error(
+      fuh <- predict(henmod, newdata = data_AMZ, type = ttype, group = race),
+      NA
+    )
+  }
+}) #UNFOLD
 #UNFOLD
-context("weighting")#FOLDUP
-test_that("harsmfit zero weights",{#FOLDUP
-	# confirm that zero weights are equivalent to removing the data altogether
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
+context("weighting") #FOLDUP
+test_that("harsmfit zero weights", {
+  #FOLDUP
+  # confirm that zero weights are equivalent to removing the data altogether
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
 
-	# usually we use weights for the first k outcomes. 
-	wt <- ifelse(y <= 3,1,0)
-	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- harsm(fmla,data,group=race,weights=wt),NA)
-	
-	# now say we want to ignore some of the races
-	ignore <- g <= 10
-	data <- cbind(data.frame(outcome=y,race=g,pre_wt=wt,wt=as.numeric(!ignore) * wt),as.data.frame(X))
+  # usually we use weights for the first k outcomes.
+  wt <- ifelse(y <= 3, 1, 0)
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(fitm <- harsm(fmla, data, group = race, weights = wt), NA)
 
-	# fit twice
-	expect_error(fitm1 <- harsm(fmla,data,group=race,weights=wt),NA)
-	subdata <- data[!ignore,]
-	expect_error(fitm2 <- harsm(fmla,subdata,group=race,weights=pre_wt),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm1)),tolerance=0.0001)
+  # now say we want to ignore some of the races
+  ignore <- g <= 10
+  data <- cbind(
+    data.frame(
+      outcome = y,
+      race = g,
+      pre_wt = wt,
+      wt = as.numeric(!ignore) * wt
+    ),
+    as.data.frame(X)
+  )
 
-})#UNFOLD
-test_that("hensmfit zero weights",{#FOLDUP
-	# confirm that zero weights are equivalent to removing the data altogether
-	# travis only?
-	#skip_on_cran()
-	nfeat <- 5
-	set.seed(1234)
-	g <- ceiling(seq(0.1,100,by=0.1))
-	X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
-	beta <- rnorm(nfeat)
-	eta <- X %*% beta
-	expect_error(y <- rsm(eta,g=g),NA)
+  # fit twice
+  expect_error(fitm1 <- harsm(fmla, data, group = race, weights = wt), NA)
+  subdata <- data[!ignore, ]
+  expect_error(
+    fitm2 <- harsm(fmla, subdata, group = race, weights = pre_wt),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )
+}) #UNFOLD
+test_that("hensmfit zero weights", {
+  #FOLDUP
+  # confirm that zero weights are equivalent to removing the data altogether
+  # travis only?
+  #skip_on_cran()
+  nfeat <- 5
+  set.seed(1234)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
 
-	# usually we use weights for the first k outcomes. 
-	wt <- ifelse(y <= 3,1,0)
-	data <- cbind(data.frame(outcome=y,race=g,wt=wt),as.data.frame(X))
-	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
-	expect_error(fitm <- hensm(fmla,data,group=race,weights=wt,ngamma=2),NA)
-	
-	# now say we want to ignore some of the races
-	ignore <- g <= 10
-	data <- cbind(data.frame(outcome=y,race=g,pre_wt=wt,wt=as.numeric(!ignore) * wt),as.data.frame(X))
+  # usually we use weights for the first k outcomes.
+  wt <- ifelse(y <= 3, 1, 0)
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+  expect_error(
+    fitm <- hensm(fmla, data, group = race, weights = wt, ngamma = 2),
+    NA
+  )
 
-	# fit twice
-	expect_error(fitm1 <- hensm(fmla,data,group=race,weights=wt,ngamma=2),NA)
-	subdata <- data[!ignore,]
-	expect_error(fitm2 <- hensm(fmla,subdata,group=race,weights=pre_wt,ngamma=2),NA)
-	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm1)),tolerance=0.0001)
-})#UNFOLD
+  # now say we want to ignore some of the races
+  ignore <- g <= 10
+  data <- cbind(
+    data.frame(
+      outcome = y,
+      race = g,
+      pre_wt = wt,
+      wt = as.numeric(!ignore) * wt
+    ),
+    as.data.frame(X)
+  )
+
+  # fit twice
+  expect_error(
+    fitm1 <- hensm(fmla, data, group = race, weights = wt, ngamma = 2),
+    NA
+  )
+  subdata <- data[!ignore, ]
+  expect_error(
+    fitm2 <- hensm(fmla, subdata, group = race, weights = pre_wt, ngamma = 2),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )
+}) #UNFOLD
 
 #UNFOLD
-
 
 #for vim modeline: (do not edit)
 # vim:ts=2:sw=2:tw=79:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r:ai:si:cin:nu:fo=croql:cino=p0t0c5(0:

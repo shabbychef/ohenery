@@ -27,7 +27,7 @@ A glanced \code{tibble::tibble()} with fields
 Glance at a harsm, hensm or linodds model.
 }
 \details{
-Returns a table with information on the overall fit 
+Returns a table with information on the overall fit
 an estimated Harville or Henery model.
 }
 \note{
@@ -41,8 +41,8 @@ df <- best_picture
 df$place <- ifelse(df$winner,1,2)
 df$weight <- ifelse(df$winner,1,0)
 
-fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
-fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
+fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama
+fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 print(glance(fit0))
 
 }

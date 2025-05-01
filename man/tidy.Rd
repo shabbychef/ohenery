@@ -38,8 +38,8 @@ df <- best_picture
 df$place <- ifelse(df$winner,1,2)
 df$weight <- ifelse(df$winner,1,0)
 
-fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
-fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
+fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama
+fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 print(tidy(fit0))
 
 }

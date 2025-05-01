@@ -46,11 +46,11 @@ weights in the \code{data} for use in the fitting process. The weights
 are attached to the outcomes, not the participant.  Set to \code{NULL}
 for none.}
 
-\item{fit0}{An optional object of class \code{harsm} or of \code{hensm} 
-with the initial fit estimates. 
-These will be used for \sQuote{warm start} of the estimation procedure. 
-A warm start should only speed up estimation, not change the ultimate results. 
-When there is mismatch between the coefficients in \code{fit0} and the model 
+\item{fit0}{An optional object of class \code{harsm} or of \code{hensm}
+with the initial fit estimates.
+These will be used for \sQuote{warm start} of the estimation procedure.
+A warm start should only speed up estimation, not change the ultimate results.
+When there is mismatch between the coefficients in \code{fit0} and the model
 being fit here, the missing coefficients are initialized as zero.}
 
 \item{reg_wt}{the multiplicative weight(s) of the regularization terms.
@@ -103,9 +103,9 @@ model.
 }
 \details{
 Performs a softmax regression by groups, via Maximum Likelihood Estimation,
-under the Harville model. 
-We fit \eqn{\beta} where odds are \eqn{\eta = x^{\top}\beta} for 
-independent variables \eqn{x}. 
+under the Harville model.
+We fit \eqn{\beta} where odds are \eqn{\eta = x^{\top}\beta} for
+independent variables \eqn{x}.
 The probability of taking first place is then \eqn{\mu=c\exp{\eta}},
 where the \eqn{c} is chosen so the \eqn{\mu} sum to one.
 Under the Harville model, conditional on the first place finisher
@@ -121,7 +121,7 @@ When the formula includes an offset, a \sQuote{delta R-squared}
 is also output. This is the improvement in predicted
 ranks over the model based on the offset term.
 Note that the expected ranks are only easy to produce
-under the Harville model; under the Henery model, 
+under the Harville model; under the Henery model,
 the summary R-squared statistics are not produced.
 Note that this computation uses weighted sums of squares,
 as the weights contribute to the likelihood term.
@@ -212,12 +212,12 @@ df <- best_picture
 df$place <- ifelse(df$winner,1,2)
 df$weight <- ifelse(df$winner,1,0)
 
-fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
-fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
+fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama
+fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 
 # warm start is a thing:
-sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor 
-fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0) 
+sub_fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor
+fit1 <- harsm(sub_fmla,data=df,group=year,weights=weight,fit0=fit0)
 
 # ridge regression.
 fitr2 <- harsm(sub_fmla,data=df,group=year,weights=weight,
