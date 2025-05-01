@@ -562,7 +562,7 @@ mod0_l1 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights
 mod0_l1l2 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
 								 reg_wt=1,reg_power=rep(c(1,2),each=10),reg_coef_idx=rep(1:10,2),reg_zero=0)
 
-lapply(list(base=mod0,l1=mod0_l1,l2=mod0_l2,l1l2=mod0_l1l2),function(x) broom::tidy(x$mle)) %>% 
+lapply(list(base=mod0,l1=mod0_l1,l2=mod0_l2,l1l2=mod0_l1l2),broom::tidy) %>%
 	bind_rows(.id='model') %>% 
 	select(model,term,estimate) %>%
 	tidyr::spread(key=model,value=estimate) %>%
@@ -579,9 +579,10 @@ mod0 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=we
 mod0_l1 <- hensm(Finish ~ cut_age + country + home_advantage,data=fitdat,weights=weight,group=EventId,ngamma=3,
 							reg_wt=1,reg_power=1,reg_coef_idx=11:12,reg_zero=1)
 
-lapply(list(base=mod0,l1=mod0_l1),function(x) broom::tidy(x$mle)) %>% 
+lapply(list(base=mod0,l1=mod0_l1),broom::tidy) %>%
 	bind_rows(.id='model') %>% 
 	select(model,term,estimate) %>%
 	tidyr::spread(key=model,value=estimate) %>%
+	arrange(grepl('gamma',term),term) %>%
 	knitr::kable(caption='Henery model fits with shrinkage on the gammas only.')
 ```
