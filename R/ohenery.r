@@ -119,6 +119,8 @@
 #' @section \ohenery{} Version 0.1.4 (2025-??-??) :
 #' \itemize{
 #' \item Adding regularization. #9
+#' \item Adding hensmfit experts function. #10
+#' \item Adding broom tidy and glance methods. #11
 #' }
 #'
 #' @section \ohenery{} Version 0.1.3 (2025-04-19) :
