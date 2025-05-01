@@ -388,6 +388,10 @@ test_that("harsmfit bits",{#FOLDUP
 	donotuse <- capture.output(expect_error(print(fitm),NA))
 	expect_error(vcov(fitm),NA)
 
+	# check broom methods
+	expect_error(foo1 <- tidy(fitm),NA)
+	expect_error(foo2 <- glance(fitm),NA)
+
 	# group given by name 
 	expect_error(fitm2 <- harsm(fmla,group='race',data=data),NA)
 	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=0.0001)
@@ -622,6 +626,10 @@ test_that("hensm bits",{#FOLDUP
 	# deterministic?
 	expect_error(fitm2 <- hensm(fmla,data,group=race),NA)
 	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
+
+	# check broom methods
+	expect_error(foo1 <- tidy(fitm),NA)
+	expect_error(foo2 <- glance(fitm),NA)
 
 	# group given by name
 	expect_error(fitm3 <- hensm(fmla,data,group='race'),NA)
