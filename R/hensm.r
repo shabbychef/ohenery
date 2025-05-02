@@ -48,7 +48,62 @@ setOldClass('hensm')
 #2FIX: why isn't there a experts version of this one?
 #  @param ngamma  the number of gammas to model; we model
 #        \eqn{\gamma_2} through \eqn{\gamma_n}.
-.hmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, gamma0=NULL, normalize_wt=FALSE,
+#' @title Experts only softmax regression under Henery model.
+#'
+#' @description 
+#'
+#' An \dQuote{experts only} softmax fitting function for the Henery 
+#' model.
+#'
+#' @details
+#' 
+#' Given a number of events, indexed by group, and a vector \eqn{y} of
+#' the ranks of each entry within that group, perform maximum likelihood
+#' estimation under the softmax and proportional probability model.
+#'
+#' The user can optionally supply a vector of \eqn{\eta_0}, which are
+#' taken as the fixed, or \sQuote{consensus} odds. The estimation is
+#' then conditional on these fixed odds.
+#'
+#' Weighted estimation is supported.
+#'
+#' The code relies on the likelihood function of \code{\link{hensmlik}},
+#' and MLE code from \code{\link[maxLik]{maxLik}}.
+#'
+#' @param gamma0  an optional vector of the initial estimate of beta for
+#' \sQuote{warm start} of the estimation procedure.
+#' Must be of length \code{ngamma - 1}.
+#' Should only affect the speed of the computation, not the results.
+#' Defaults to all ones.
+#'
+#' @inheritParams harsmfit
+#' @inheritParams maxLik::maxLik
+#' @return An object of class \code{hensm}, \code{maxLik}, and \code{linodds}.
+#' @keywords fitting
+#' @seealso the friendly interface \code{hensm}, 
+#' the likelihood function, \code{\link{hensmlik}},
+#' and the expected rank function (the inverse link), \code{\link{erank}}.
+#' @template etc
+#' @importFrom maxLik maxLik
+#' @importFrom dplyr summarize
+#' @importFrom stats sd
+#'
+#' @examples 
+#' nfeat <- 5
+#' set.seed(1234)
+#' g <- ceiling(seq(0.1,1000,by=0.1))
+#' X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
+#' beta <- rnorm(nfeat)
+#' eta <- X %*% beta
+#' y <- rsm(eta,g)
+#'      
+#' mod0 <- hensmfit(y=y,g=g,X=X,ngamma=3)
+#' summary(mod0)
+#' # now upweight finishers 1-5
+#' modw <- hensmfit(y=y,g=g,X=X,wt=1 + as.numeric(y < 6),ngamma=2)
+#' summary(modw)
+#' @export
+hensmfit <- function(y, g, X, wt=NULL, eta0=NULL, beta0=NULL, gamma0=NULL, normalize_wt=FALSE,
 									 ngamma=4,  
 									 reg_wt=NULL, reg_zero=NULL, reg_power=NULL, reg_coef_idx=NULL,reg_standardize=FALSE,
 									 method=c('BFGS','NR','CG','NM')) {
@@ -92,17 +147,20 @@ setOldClass('hensm')
 							 reg_wt=reg_wt, reg_zero=reg_zero, 
 							 reg_power=reg_power, reg_coef_idx=reg_coef_idx,
 							 reg_standardize=reg_standardize)
-
-	
 	gnames <- paste0('gamma',2:ngamma)
-	names(retv$mle$estimate) <- c(colnames(X),gnames)
-	names(retv$beta) <- colnames(X)
+	if (is.null(colnames(X))) {
+		Xnames <- paste0('beta',1:ncol(X))
+	} else {
+		Xnames <- colnames(X)
+	}
+	names(retv$mle$estimate) <- c(Xnames, gnames)
+	names(retv$beta) <- Xnames
 
 	# do some summarization
 	retv$deviance <- -2 * rv$maximum
 	retv$deviance_df <- length(retv$estimate)
 	retv$is_relative <- !is.null(eta0)
-	class(retv) <- 'hensm'
+	class(retv) <- c('hensm','linodds')
 	retv
 }
 #' @title Friendly interface to softmax regression under Henery model.
@@ -275,7 +333,7 @@ hensm <- function(formula,data,group=NULL,weights=NULL,ngamma=4,fit0=NULL,
 		gamma0 <- NULL
 	}
 
-	retv <- .hmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, beta0=beta0, gamma0=gamma0, ngamma=ngamma, eta0=dat$eta0,
+	retv <- hensmfit(y=dat$y, g=dat$group, X=dat$Xs, wt=dat$wt, beta0=beta0, gamma0=gamma0, ngamma=ngamma, eta0=dat$eta0,
 									 reg_wt=reg_wt, reg_zero=reg_zero, reg_power=reg_power, reg_coef_idx=reg_coef_idx, reg_standardize=reg_standardize)
 	retv <- as.linodds(retv, formula, beta=retv$beta)
 	retv
@@ -292,7 +350,6 @@ vcov.hensm <- function(object, ...) {
 	vcov(object$mle)
 }
 
-# basically FML
 # on print overloading 
 # https://www.rdocumentation.org/packages/mvbutils/versions/2.7.4.1/topics/print
 # and see

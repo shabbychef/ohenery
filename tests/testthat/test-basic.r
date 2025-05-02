@@ -615,16 +615,36 @@ test_that("hensm bits",{#FOLDUP
 	eta <- X %*% beta
 	expect_error(y <- rsm(eta,g=g),NA)
 
+	expect_error(mod0 <- hensmfit(y=y,g=g,X=X),NA)
+
 	# now the pretty frontend
 	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
 
 	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
 	# runs?
 	expect_error(fitm <- hensm(fmla,data,group=race),NA)
+	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
+
+	# check for multiple gamma
+	for (ngam in c(2,5)) {
+		expect_error(tmp0 <- hensmfit(y=y,g=g,X=X,ngamma=ngam),NA)
+		expect_error(tmp1 <- hensm(fmla,data,group=race,ngamma=ngam),NA)
+		expect_equal(as.numeric(coefficients(tmp0)),as.numeric(coefficients(tmp1)),tolerance=0.0001)
+	}
+
+	# now the pretty frontend
+	data <- cbind(data.frame(outcome=y,race=g),as.data.frame(X))
+
+	fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+	# runs?
+	expect_error(fitm <- hensm(fmla,data,group=race),NA)
+	expect_equal(as.numeric(coefficients(mod0)),as.numeric(coefficients(fitm)),tolerance=0.0001)
+
 	donotuse <- capture.output(expect_error(print(fitm),NA))
 	expect_error(vcov(fitm),NA)
 	# deterministic?
 	expect_error(fitm2 <- hensm(fmla,data,group=race),NA)
+	# fails
 	expect_equal(as.numeric(coefficients(fitm2)),as.numeric(coefficients(fitm)),tolerance=1e-7)
 
 	# check broom methods

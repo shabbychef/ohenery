@@ -103,8 +103,9 @@ globalVariables(c('dumb_rank','.'))
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{harsm}, \code{maxLik}, and \code{linodds}.
 #' @keywords fitting
-#' @seealso the likelihood function, \code{\link{harsmlik}}, and the
-#' expected rank function (the inverse link), \code{\link{erank}}.
+#' @seealso the friendly interface \code{harsm}, 
+#' the likelihood function, \code{\link{harsmlik}}, 
+#' and the expected rank function (the inverse link), \code{\link{erank}}.
 #' @template etc
 #' @template ref-harville
 #' @importFrom maxLik maxLik

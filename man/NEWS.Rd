@@ -13,6 +13,8 @@ News for package \sQuote{ohenery}
 
 \itemize{
 \item Adding regularization. #9
+\item Adding hensmfit experts function. #10
+\item Adding broom tidy and glance methods. #11
 }
 }
 
