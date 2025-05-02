@@ -39,23 +39,23 @@ hensm(
 
 \item{group}{the string name of the group variable in the data,
 or a bare character with the group name. The group indices
-need not be integers, but that is more efficient. 
+need not be integers, but that is more efficient.
 They need not be sorted.}
 
-\item{weights}{an optional vector of weights, or the string or bare name of the 
+\item{weights}{an optional vector of weights, or the string or bare name of the
 weights in the \code{data} for use in the fitting process. The weights
 are attached to the outcomes, not the participant.  Set to \code{NULL}
 for none.}
 
 \item{ngamma}{The number of gammas to fit. Should be at least 2.}
 
-\item{fit0}{An optional object of class \code{hensm} or of \code{harsm} 
-with the initial fit estimates. 
-These will be used for \sQuote{warm start} of the estimation procedure. 
-A warm start should only speed up estimation, not change the ultimate results. 
-When there is mismatch between the coefficients in \code{fit0} and the model 
-being fit here, the missing coefficients are initialized as zero. 
-If \code{ngamma} is \code{NULL} and \code{fit0} is given, 
+\item{fit0}{An optional object of class \code{hensm} or of \code{harsm}
+with the initial fit estimates.
+These will be used for \sQuote{warm start} of the estimation procedure.
+A warm start should only speed up estimation, not change the ultimate results.
+When there is mismatch between the coefficients in \code{fit0} and the model
+being fit here, the missing coefficients are initialized as zero.
+If \code{ngamma} is \code{NULL} and \code{fit0} is given,
 we default to the number of gammas in the initial fit, otherwise
 we fill any missing gammas with 1.
 If a \code{harsm} object is given, then \code{ngamma} must be non-null.}
@@ -110,7 +110,7 @@ A user friendly interface to the softmax regression under the Henery model.
 \details{
 Performs a softmax regression by groups, via Maximum Likelihood Estimation.
 It is assumed that successive sub-races maintain the proportional
-probability of the softmax, up to some gamma coefficients, 
+probability of the softmax, up to some gamma coefficients,
 \eqn{\gamma_2, \gamma_3, ..., \gamma_n}, which we fit. This model
 nests the Harville model fit by \code{\link{harsm}}, by fixing all
 the gammas equal to 1.
@@ -129,7 +129,7 @@ Cox Proportional Hazards regression, using
 the methods of Breslow or Efron.
 
 To avoid incorrect inference when only the top
-performers are recorded, and all others are 
+performers are recorded, and all others are
 effectively tied, one should use weighting.
 Set the weights to zero for participants who
 are tied non-winners, and one for the rest
@@ -198,7 +198,7 @@ df <- race_data \%>\%
 		mutate(eta0=log(WN_pool / sum(WN_pool))) \%>\%
 	ungroup() \%>\%
 	mutate(weights=ifelse(!is.na(Finish),1,0)) \%>\%
-	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE)) 
+	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
 
 # Henery Model with market efficiency
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)

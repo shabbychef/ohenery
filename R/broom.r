@@ -1,7 +1,7 @@
 # /usr/bin/r
 #
 # Copyright 2025-2025 Steven E. Pav. All Rights Reserved.
-# Author: Steven E. Pav 
+# Author: Steven E. Pav
 #
 # This file is part of ohenery.
 #
@@ -33,7 +33,7 @@ generics::glance
 
 #' @title Tidy
 #'
-#' @description 
+#' @description
 #'
 #' Tidy a harsm, hensm or linodds model.
 #'
@@ -57,39 +57,39 @@ generics::glance
 #' }
 #' @seealso \code{\link{tidy.maxLik}}.
 #'
-#' @examples 
+#' @examples
 #'
 #' # softmax on the Best Picture data
 #' data(best_picture)
 #' df <- best_picture
 #' df$place <- ifelse(df$winner,1,2)
 #' df$weight <- ifelse(df$winner,1,0)
-#' 
-#' fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
-#' fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
+#'
+#' fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama
+#' fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 #' print(tidy(fit0))
 #'
 #' @template etc
 #' @rdname tidy
 #' @export
 tidy.harsm <- function(x, ...) {
-	result <- tidy(x$mle, ...)
+  result <- tidy(x$mle, ...)
 }
 #' @rdname tidy
 #' @export
 tidy.hensm <- function(x, ...) {
-	result <- tidy(x$mle, ...)
+  result <- tidy(x$mle, ...)
 }
 
 #' @title Glance
 #'
-#' @description 
+#' @description
 #'
 #' Glance at a harsm, hensm or linodds model.
 #'
 #' @details
 #'
-#' Returns a table with information on the overall fit 
+#' Returns a table with information on the overall fit
 #' an estimated Harville or Henery model.
 #'
 #' @usage
@@ -109,28 +109,28 @@ tidy.hensm <- function(x, ...) {
 #' In the future this may include information about the regularization, if any.
 #' @seealso \code{\link{glance.maxLik}}.
 #'
-#' @examples 
+#' @examples
 #'
 #' # softmax on the Best Picture data
 #' data(best_picture)
 #' df <- best_picture
 #' df$place <- ifelse(df$winner,1,2)
 #' df$weight <- ifelse(df$winner,1,0)
-#' 
-#' fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama 
-#' fit0 <- harsm(fmla,data=df,group=year,weights=weight) 
+#'
+#' fmla <- place ~ nominated_for_BestDirector + nominated_for_BestActor + Drama
+#' fit0 <- harsm(fmla,data=df,group=year,weights=weight)
 #' print(glance(fit0))
 #'
 #' @template etc
 #' @rdname glance
 #' @export
 glance.harsm <- function(x, ...) {
-	result <- glance(x$mle, ...)
+  result <- glance(x$mle, ...)
 }
 #' @rdname glance
 #' @export
 glance.hensm <- function(x, ...) {
-	result <- glance(x$mle, ...)
+  result <- glance(x$mle, ...)
 }
 
 #for vim modeline: (do not edit)

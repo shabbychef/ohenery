@@ -149,7 +149,7 @@ X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
 beta <- rnorm(nfeat)
 eta <- X \%*\% beta
 y <- rsm(eta,g)
-     
+
 mod0 <- harsmfit(y=y,g=g,X=X)
 summary(mod0)
 # now upweight finishers 1-5
@@ -157,13 +157,13 @@ modw <- harsmfit(y=y,g=g,X=X,wt=1 + as.numeric(y < 6))
 summary(modw)
 }
 \references{
-Harville, D. A. "Assigning probabilities to the outcomes of multi-entry competitions." 
+Harville, D. A. "Assigning probabilities to the outcomes of multi-entry competitions."
 Journal of the American Statistical Association 68, no. 342 (1973): 312-316.
 \doi{10.1080/01621459.1973.10482425}
 }
 \seealso{
-the friendly interface \code{harsm}, 
-the likelihood function, \code{\link{harsmlik}}, 
+the friendly interface \code{harsm},
+the likelihood function, \code{\link{harsmlik}},
 and the expected rank function (the inverse link), \code{\link{erank}}.
 }
 \author{

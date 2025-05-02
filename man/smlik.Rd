@@ -82,7 +82,7 @@ not the participant.
 The likelihood function does not yet support ties.
 
 To avoid incorrect inference when only the top
-performers are recorded, and all others are 
+performers are recorded, and all others are
 effectively tied, one should use weighting.
 Set the weights to zero for participants who
 are tied non-winners, and one for the rest
@@ -146,11 +146,11 @@ foores <- hensmlik(g,idx,eta,gamma=c(0.9,0.8,1),wt=wt)
 }
 }
 \references{
-Harville, D. A. "Assigning probabilities to the outcomes of multi-entry competitions." 
+Harville, D. A. "Assigning probabilities to the outcomes of multi-entry competitions."
 Journal of the American Statistical Association 68, no. 342 (1973): 312-316.
 \doi{10.1080/01621459.1973.10482425}
 
-Henery, R. J. "Permutation probabilities as models for horse races." 
+Henery, R. J. "Permutation probabilities as models for horse races."
 Journal of the Royal Statistical Society: Series B (Methodological) 43, no. 1 (1981): 86-91.
 \doi{10.1111/j.2517-6161.1981.tb01153.x}
 }

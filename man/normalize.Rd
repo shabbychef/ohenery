@@ -10,7 +10,7 @@ normalize(x)
 \item{x}{vector of input data.}
 }
 \value{
-the input divided by its sum. 
+the input divided by its sum.
 For the row-wise version, each row is divided by its sum.
 }
 \description{

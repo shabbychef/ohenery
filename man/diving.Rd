@@ -5,7 +5,7 @@
 \alias{diving}
 \title{Olympic Diving Data}
 \format{
-A \code{data.frame} object with 695 observations and 13 columns. 
+A \code{data.frame} object with 695 observations and 13 columns.
 
 The columns are defined as follows:
 \describe{

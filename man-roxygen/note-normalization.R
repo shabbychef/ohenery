@@ -7,4 +7,4 @@
 #' places were not observed. If in doubt,
 #' please confirm inference by simulations,
 #' taking as example the simulations in the README.
-#' 
+#'

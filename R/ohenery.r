@@ -26,16 +26,16 @@
 #'
 #' @section Harville and Henery models:
 #'
-#' The Harville and Henery models describe the probability of 
-#' ordered outcomes in terms of some parameters. 
-#' Typically the ordered outcomes are things like place 
+#' The Harville and Henery models describe the probability of
+#' ordered outcomes in terms of some parameters.
+#' Typically the ordered outcomes are things like place
 #' in a race, or winner among a large number of contestants.
 #' The Harville model could be described as a softmax probability
 #' for the first place finish, with a recursive model on the
 #' remaining places.
 #' The Henery model generalizes that to adjust the remaining
 #' places with another parameter.
-#' 
+#'
 #' These are best illustrated with an example.
 #' Suppose you observe a race of 20 contestants.
 #' Contestant number 11 takes first place,
@@ -47,7 +47,7 @@
 #' \deqn{\frac{\mu_{11}}{\sum_i \mu_i} \frac{\mu_6}{\sum_{i \ne 11} \mu_i}
 #' \frac{\mu_{17}}{\sum_{i \ne 11, i \ne 6} \mu_i},}
 #' where \eqn{\mu_i = \exp{\eta_i}}.
-#' In a softmax regression under the Harville model, 
+#' In a softmax regression under the Harville model,
 #' one expresses the odds as \eqn{\eta_i = x_i^{\top}\beta}, where
 #' \eqn{x_i} are independent variables, for some
 #' \eqn{\beta} to be fit by the regression.
@@ -57,9 +57,9 @@
 #' \deqn{\frac{\mu_{11}}{\sum_i \mu_i} \frac{\mu_6^{\gamma_2}}{\sum_{i \ne 11} \mu_i^{\gamma_2}}
 #' \frac{\mu_{17}^{\gamma_3}}{\sum_{i \ne 11, i \ne 6} \mu_i^{\gamma_3}}.}
 #' There is no reason to model a \eqn{\gamma_1} as anything but one,
-#' since it would be redundant. 
-#' The Henery softmax regression estimates the \eqn{\beta} as well as 
-#' the \eqn{\gamma_j}. 
+#' since it would be redundant.
+#' The Henery softmax regression estimates the \eqn{\beta} as well as
+#' the \eqn{\gamma_j}.
 #' To simplify the regression, the higher order gammas are assumed to equal
 #' the last fit value. That is, we usually model
 #' \eqn{\gamma_5=\gamma_4=\gamma_3}.
@@ -82,7 +82,7 @@
 #' This package is a work in progress. Expect breaking changes.
 #' Please file any bug reports or issues at
 #' \url{https://github.com/shabbychef/ohenery/issues}.
-#' 
+#'
 #' @section Legal Mumbo Jumbo:
 #'
 #' ohenery is distributed in the hope that it will be useful,
@@ -102,14 +102,14 @@
 #' @template ref-henery
 #' @importFrom Rcpp evalCpp
 #' @note
-#' 
-#' This package is maintained as a hobby. 
+#'
+#' This package is maintained as a hobby.
 #'
 "_PACKAGE"
 
 #' @title News for package 'ohenery':
 #'
-#' @description 
+#' @description
 #'
 #' News for package \sQuote{ohenery}
 #'

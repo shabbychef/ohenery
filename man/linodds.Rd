@@ -44,7 +44,7 @@ frame via the formula of the \code{object}.}
 
 \item{group}{the string name of the group variable in the data,
 or a bare character with the group name. The group indices
-need not be integers, but that is more efficient. 
+need not be integers, but that is more efficient.
 They need not be sorted.}
 
 \item{...}{other arguments.}
@@ -53,16 +53,16 @@ They need not be sorted.}
 A model for odds linear in some feature.
 }
 \details{
-An object which holds a formula, some fit coefficients 
+An object which holds a formula, some fit coefficients
 \eqn{\beta} which fit in that formula to generate odds
-in odds space. 
+in odds space.
 The odds can then be converted, via \code{predict.linodds}
-to probabilities, 
+to probabilities,
 or to expected ranks under the Harville model.
 Both \code{\link{harsm}} and \code{\link{hensm}} return
 objects of class \code{linodds}.
 
-We think of linear odds as 
+We think of linear odds as
 \eqn{\eta = x^{\top}\beta},
 for independent variables \eqn{x}. The odds, \eqn{\eta}
 are converted to probabilities, \eqn{\mu} via

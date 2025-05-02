@@ -1,6 +1,6 @@
 #' @note
 #' To avoid incorrect inference when only the top
-#' performers are recorded, and all others are 
+#' performers are recorded, and all others are
 #' effectively tied, one should use weighting.
 #' Set the weights to zero for participants who
 #' are tied non-winners, and one for the rest

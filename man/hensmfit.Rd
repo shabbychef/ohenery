@@ -113,7 +113,7 @@ Only terms associated with the betas are so normalized.}
 An object of class \code{hensm}, \code{maxLik}, and \code{linodds}.
 }
 \description{
-An \dQuote{experts only} softmax fitting function for the Henery 
+An \dQuote{experts only} softmax fitting function for the Henery
 model.
 }
 \details{
@@ -138,7 +138,7 @@ X <- matrix(rnorm(length(g) * nfeat),ncol=nfeat)
 beta <- rnorm(nfeat)
 eta <- X \%*\% beta
 y <- rsm(eta,g)
-     
+
 mod0 <- hensmfit(y=y,g=g,X=X,ngamma=3)
 summary(mod0)
 # now upweight finishers 1-5
@@ -146,7 +146,7 @@ modw <- hensmfit(y=y,g=g,X=X,wt=1 + as.numeric(y < 6),ngamma=2)
 summary(modw)
 }
 \seealso{
-the friendly interface \code{hensm}, 
+the friendly interface \code{hensm},
 the likelihood function, \code{\link{hensmlik}},
 and the expected rank function (the inverse link), \code{\link{erank}}.
 }

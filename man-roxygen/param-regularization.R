@@ -1,15 +1,15 @@
-#' @param reg_wt  the multiplicative weight(s) of the regularization terms. 
-#' must be non-negative. 
+#' @param reg_wt  the multiplicative weight(s) of the regularization terms.
+#' must be non-negative.
 #' May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
 #' @param reg_zero  the \sQuote{zero} of the regularization terms. This would
-#' usually be zero if you want to shrink to zero, but in some cases you may 
+#' usually be zero if you want to shrink to zero, but in some cases you may
 #' with to shrink to 1 for example.
 #' May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
 #' If \code{NULL} is given, defaults to zeroes for beta terms,
 #' and ones for gamma terms in a Henery model fit, all zeroes
 #' for Harville model fits.
 #' @param reg_power  the power of the regularization terms, 2 for ridge
-#' regression, 1 for lasso. 
+#' regression, 1 for lasso.
 #' @param reg_coef_idx  the index of the coefficient which the corresponding
 #' regularization term is applied to. For the Harville model, the indices only refer to
 #' the \eqn{\beta} coefficient vector. For the Henery model, the indices refer to the
@@ -21,7 +21,7 @@
 #' \sQuote{standardized} with respect to the standard deviation of the
 #' corresponding columns of the design matrix. That is, the weight used
 #' is the given weight \emph{times} the standard deviation of the corresponding
-#' independent variable to the corresponding \code{reg_power}. 
+#' independent variable to the corresponding \code{reg_power}.
 #' Only terms associated with the betas are so normalized.
 #'
 #' @note
@@ -30,7 +30,7 @@
 #' functions are not valid when regularization is used. The user is warned.
 #'
 #' @md
-#' @details 
+#' @details
 #' # Regularization
 #'
 #' The regularization term is of the form
