@@ -220,21 +220,21 @@ fit4 <- hensm(fmla,data=df,group=EventId,fit0=fit0_har,weights=weights)
 # regularization examples
 fmla <- Finish ~ offset(eta0) + fac_age + PostPosition
 # no regularization
-fitr0 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3)
+fitr0 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3)
 # ridge regression on the betas (there are two)
-fitr2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+fitr2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
   reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
 # l1 regression on the betas (there are two)
-fitr1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+fitr1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
   reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
 # elasticnet regression on the betas (there are two)
-fitr12 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
-  reg_wt=rep(1,4), reg_power=c(1,1,2,2) reg_zero=0, reg_coef_idx=c(1,2,1,2))
+fitr12 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,4), reg_power=c(1,1,2,2), reg_zero=0, reg_coef_idx=c(1,2,1,2))
 # l1 regression on the gammas, shrinking to one (there are two estimated)
-fitrg1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+fitrg1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
   reg_wt=rep(1,2), reg_power=1, reg_zero=1, reg_coef_idx=c(3,4))
 # l2 regression on the betas and gammas, shrinking beta to 0, gamma to 1.
-fitrg2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+fitrg2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
   reg_wt=rep(1,4), reg_power=2, reg_zero=c(0,0,1,1), reg_coef_idx=1:4)
 
 }

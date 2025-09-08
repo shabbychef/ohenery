@@ -9,7 +9,7 @@ News for package \sQuote{ohenery}
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\ohenery}{\CRANpkg{ohenery}}
 }
-\section{\ohenery{} Version 0.1.4 (2025-??-??) }{
+\section{\ohenery{} Version 0.1.4 (2025-09-07) }{
 
 \itemize{
 \item Adding regularization. #9

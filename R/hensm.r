@@ -50,8 +50,6 @@ setOldClass('hensm')
   grad + .regularization_grad(c(beta, gamma), ...)
 }
 #2FIX: why isn't there a experts version of this one?
-#  @param ngamma  the number of gammas to model; we model
-#        \eqn{\gamma_2} through \eqn{\gamma_n}.
 #' @title Experts only softmax regression under Henery model.
 #'
 #' @description
@@ -80,6 +78,7 @@ setOldClass('hensm')
 #' Should only affect the speed of the computation, not the results.
 #' Defaults to all ones.
 #'
+#' @inheritParams hensm
 #' @inheritParams harsmfit
 #' @inheritParams maxLik::maxLik
 #' @return An object of class \code{hensm}, \code{maxLik}, and \code{linodds}.
@@ -225,8 +224,8 @@ hensmfit <- function(
 #' @inheritParams stats::lm
 #' @param na.action  How to deal with missing values in \code{y}, \code{g},
 #' \code{X}, \code{wt}, \code{eta0}.
-#' @param ngamma  The number of gammas to fit. Should be at least 2.
-#' @param fit0    An optional object of class \code{hensm} or of \code{harsm}
+#' @param ngamma The number of gammas to fit. Should be at least 2.
+#' @param fit0 An optional object of class \code{hensm} or of \code{harsm}
 #' with the initial fit estimates.
 #' These will be used for \sQuote{warm start} of the estimation procedure.
 #' A warm start should only speed up estimation, not change the ultimate results.
@@ -304,21 +303,21 @@ hensmfit <- function(
 #' # regularization examples
 #' fmla <- Finish ~ offset(eta0) + fac_age + PostPosition
 #' # no regularization
-#' fitr0 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3)
+#' fitr0 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3)
 #' # ridge regression on the betas (there are two)
-#' fitr2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#' fitr2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
 #'   reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
 #' # l1 regression on the betas (there are two)
-#' fitr1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#' fitr1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
 #'   reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
 #' # elasticnet regression on the betas (there are two)
-#' fitr12 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
-#'   reg_wt=rep(1,4), reg_power=c(1,1,2,2) reg_zero=0, reg_coef_idx=c(1,2,1,2))
+#' fitr12 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+#'   reg_wt=rep(1,4), reg_power=c(1,1,2,2), reg_zero=0, reg_coef_idx=c(1,2,1,2))
 #' # l1 regression on the gammas, shrinking to one (there are two estimated)
-#' fitrg1 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#' fitrg1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
 #'   reg_wt=rep(1,2), reg_power=1, reg_zero=1, reg_coef_idx=c(3,4))
 #' # l2 regression on the betas and gammas, shrinking beta to 0, gamma to 1.
-#' fitrg2 <- harsm(fmla,data=df,group=year,weights=weight,ngamma=3,
+#' fitrg2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
 #'   reg_wt=rep(1,4), reg_power=2, reg_zero=c(0,0,1,1), reg_coef_idx=1:4)
 #'
 #' @importFrom stats coef formula model.frame model.matrix na.omit

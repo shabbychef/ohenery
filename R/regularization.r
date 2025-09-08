@@ -31,7 +31,7 @@
   reg_coef_idx
 ) {
   if (is.null(reg_wt)) {
-    return
+    return(0)
   }
   # 2FIX: check for compatible sizes?
   stopifnot(all((reg_coef_idx >= 1) & (reg_coef_idx <= length(coef))))

@@ -61,6 +61,8 @@ to have mean value 1. Note that the default value has changed
 since version 0.1.0 of this package. Moreover, non-normalized
 weights can lead to incorrect inference. Use with caution.}
 
+\item{ngamma}{The number of gammas to fit. Should be at least 2.}
+
 \item{reg_wt}{the multiplicative weight(s) of the regularization terms.
 must be non-negative.
 May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.}

@@ -5,7 +5,7 @@
 \alias{glance.hensm}
 \title{Glance}
 \usage{
-glance(x, ...)
+\method{glance}{harsm}(x, ...)
 
 \method{glance}{hensm}(x, ...)
 }

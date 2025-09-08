@@ -5,7 +5,7 @@
 \alias{tidy.hensm}
 \title{Tidy}
 \usage{
-tidy(x, ...)
+\method{tidy}{harsm}(x, ...)
 
 \method{tidy}{hensm}(x, ...)
 }

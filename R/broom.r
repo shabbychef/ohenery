@@ -42,10 +42,6 @@ generics::glance
 #' Returns a table with information on the fit coefficients
 #' and standard errors of an estimated Harville or Henery model.
 #'
-#' @usage
-#'
-#' tidy(x, ...)
-#'
 #' @param x an object of type \code{harsm} or \code{hensm}
 #' @param ... arguments for generic consistency.
 #' @return A tidy \code{tibble::tibble()} with fields
@@ -91,10 +87,6 @@ tidy.hensm <- function(x, ...) {
 #'
 #' Returns a table with information on the overall fit
 #' an estimated Harville or Henery model.
-#'
-#' @usage
-#'
-#' glance(x, ...)
 #'
 #' @param x an object of type \code{harsm} or \code{hensm}
 #' @param ... arguments for generic consistency.
