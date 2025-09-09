@@ -44,7 +44,7 @@ print(tidy(fit0))
 
 }
 \seealso{
-\code{\link{tidy.maxLik}}.
+\code{\link[maxLik]{tidy.maxLik}}.
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

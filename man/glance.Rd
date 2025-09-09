@@ -47,7 +47,7 @@ print(glance(fit0))
 
 }
 \seealso{
-\code{\link{glance.maxLik}}.
+\code{\link[maxLik]{glance.maxLik}}.
 }
 \author{
 Steven E. Pav \email{shabbychef@gmail.com}

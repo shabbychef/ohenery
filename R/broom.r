@@ -51,7 +51,7 @@ generics::glance
 #'  \item{std.error}{The standard error of the estimate.}
 #'  \item{statistic}{The z-statistic of the estimate.}
 #' }
-#' @seealso \code{\link{tidy.maxLik}}.
+#' @seealso \code{\link[maxLik]{tidy.maxLik}}.
 #'
 #' @examples
 #'
@@ -99,7 +99,7 @@ tidy.hensm <- function(x, ...) {
 #' }
 #' @note
 #' In the future this may include information about the regularization, if any.
-#' @seealso \code{\link{glance.maxLik}}.
+#' @seealso \code{\link[maxLik]{glance.maxLik}}.
 #'
 #' @examples
 #'
