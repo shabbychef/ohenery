@@ -23,10 +23,10 @@ The inverse softmax function: take a logarithm and center.
 }
 \details{
 This is the inverse of the softmax function. Given
-vector \eqn{\mu} for a single group, finds vector 
+vector \eqn{\mu} for a single group, finds vector
 \eqn{\eta} such that
 \deqn{\eta_i = \log{\mu_i} + c,}
-where \eqn{c} is chosen such that the \eqn{\eta} sum 
+where \eqn{c} is chosen such that the \eqn{\eta} sum
 to zero:
 \deqn{c = \frac{-1}{n} \sum_i \log{\mu_i}.}
 }

@@ -11,8 +11,8 @@ harsm_invlink(eta, mu = smax(eta, g), g = NULL)
 Must be the same length as \code{g} if \code{g} is given.}
 
 \item{mu}{a vector of the probabilities. Should sum to one,
-at least per group. 
-Should be the same size as \code{g} if given. 
+at least per group.
+Should be the same size as \code{g} if given.
 If both \code{mu} and \code{eta} are given, a warning
 is issued, and the \code{mu} is used.}
 
@@ -26,7 +26,7 @@ a vector of the ranks.
 The inverse link function for the softmax. This function
 takes the group-wise probabilities, \eqn{\mu}, and computes
 the expected ranks within each group under the Harville
-model. That is, it is a groupwise computation of 
+model. That is, it is a groupwise computation of
 the \code{\link{erank}} function.
 }
 \examples{

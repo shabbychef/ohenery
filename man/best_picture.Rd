@@ -5,7 +5,7 @@
 \alias{best_picture}
 \title{Oscar Award Best Picture Data}
 \format{
-A \code{data.frame} object with 484 observations and 19 columns. 
+A \code{data.frame} object with 484 observations and 19 columns.
 The columns are defined as follows:
 \describe{
  \item{\code{year}}{The integer year of the nomination. These span from 1934 through 2014. Note that the
@@ -56,8 +56,8 @@ The columns are defined as follows:
  \item{\code{Other}}{A double computed as 1 minus the sum of
  the other genre indicators. Effectively this is is the
  sum of indicators for
- \dQuote{Mystery}, \dQuote{Family}, \dQuote{Fantasy}, 
- \dQuote{Action}, \dQuote{Western}, \dQuote{Music}, 
+ \dQuote{Mystery}, \dQuote{Family}, \dQuote{Fantasy},
+ \dQuote{Action}, \dQuote{Western}, \dQuote{Music},
  \dQuote{Sport}, \dQuote{Sci Fi},  \dQuote{Film-Noir},
  \dQuote{Animation}, and \dQuote{Horror} divided
  by the total count of genres tagged for the film.}
@@ -77,7 +77,7 @@ from 1934 through 2014.
 }
 \note{
 \dQuote{Oscar} is a copyright property of the Academy of Motion
-Picture Arts and Sciences. 
+Picture Arts and Sciences.
 IMDb is owned by Amazon.
 }
 \examples{
@@ -85,18 +85,18 @@ IMDb is owned by Amazon.
 library(dplyr)
 data(best_picture)
 
-best_picture \%>\% 
-  group_by(nominated_for_BestDirector) \%>\% 
-  summarize(propwin=mean(winner)) \%>\% 
+best_picture \%>\%
+  group_by(nominated_for_BestDirector) \%>\%
+  summarize(propwin=mean(winner)) \%>\%
   ungroup()
-best_picture \%>\% 
-  group_by(nominated_for_BestActor) \%>\% 
-  summarize(propwin=mean(winner)) \%>\% 
+best_picture \%>\%
+  group_by(nominated_for_BestActor) \%>\%
+  summarize(propwin=mean(winner)) \%>\%
   ungroup()
 # hmmmm.
-best_picture \%>\% 
-  group_by(nominated_for_BestActress) \%>\% 
-  summarize(propwin=mean(winner)) \%>\% 
+best_picture \%>\%
+  group_by(nominated_for_BestActress) \%>\%
+  summarize(propwin=mean(winner)) \%>\%
  ungroup()
 
 }

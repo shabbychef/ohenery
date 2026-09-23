@@ -17,10 +17,10 @@
 # along with ohenery.  If not, see <http://www.gnu.org/licenses/>.
 
 # env var:
-# nb: 
+# nb:
 # see also:
 # todo:
-# changelog: 
+# changelog:
 #
 # Created: 2018-09-17
 # Copyright: Steven E. Pav, 2018-2019

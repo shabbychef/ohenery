@@ -23,7 +23,7 @@ normalize.
 }
 \details{
 Given vector \eqn{\eta} for a single group, essentially
-computes vector \eqn{\mu} defined by 
+computes vector \eqn{\mu} defined by
 \deqn{\mu_i = \frac{\exp{\eta_i}}{\sum_j \exp{\eta_j}}.}
 
 Note that this computation should be invariant with respect

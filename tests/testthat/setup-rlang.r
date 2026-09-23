@@ -1,7 +1,7 @@
 # /usr/bin/r
 #
 # Copyright 2019-2019 Steven E. Pav. All Rights Reserved.
-# Author: Steven E. Pav 
+# Author: Steven E. Pav
 #
 # This file is part of ohenery.
 #
@@ -28,7 +28,7 @@
 
 testthat::context('Initialize environment')
 # some globe tasks ------------------------
-options(lifecycle_disable_warnings = TRUE) 
+options(lifecycle_disable_warnings = TRUE)
 
 #for vim modeline: (do not edit)
 # vim:fdm=marker:fmr=FOLDUP,UNFOLD:cms=#%s:syn=r:ft=r

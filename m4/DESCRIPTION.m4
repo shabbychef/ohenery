@@ -24,6 +24,7 @@ Imports:
     maxLik,
     magrittr,
     methods,
+    generics,
 dnl matrixcalc,
     dplyr
 LinkingTo: Rcpp

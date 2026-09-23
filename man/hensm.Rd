@@ -13,6 +13,11 @@ hensm(
   weights = NULL,
   ngamma = 4,
   fit0 = NULL,
+  reg_wt = NULL,
+  reg_zero = NULL,
+  reg_power = NULL,
+  reg_coef_idx = NULL,
+  reg_standardize = FALSE,
   na.action = na.omit
 )
 
@@ -34,26 +39,56 @@ hensm(
 
 \item{group}{the string name of the group variable in the data,
 or a bare character with the group name. The group indices
-need not be integers, but that is more efficient. 
+need not be integers, but that is more efficient.
 They need not be sorted.}
 
-\item{weights}{an optional vector of weights, or the string or bare name of the 
+\item{weights}{an optional vector of weights, or the string or bare name of the
 weights in the \code{data} for use in the fitting process. The weights
 are attached to the outcomes, not the participant.  Set to \code{NULL}
 for none.}
 
 \item{ngamma}{The number of gammas to fit. Should be at least 2.}
 
-\item{fit0}{An optional object of class \code{hensm} or of \code{harsm} 
-with the initial fit estimates. 
-These will be used for \sQuote{warm start} of the estimation procedure. 
-A warm start should only speed up estimation, not change the ultimate results. 
-When there is mismatch between the coefficients in \code{fit0} and the model 
-being fit here, the missing coefficients are initialized as zero. 
-If \code{ngamma} is \code{NULL} and \code{fit0} is given, 
+\item{fit0}{An optional object of class \code{hensm} or of \code{harsm}
+with the initial fit estimates.
+These will be used for \sQuote{warm start} of the estimation procedure.
+A warm start should only speed up estimation, not change the ultimate results.
+When there is mismatch between the coefficients in \code{fit0} and the model
+being fit here, the missing coefficients are initialized as zero.
+If \code{ngamma} is \code{NULL} and \code{fit0} is given,
 we default to the number of gammas in the initial fit, otherwise
 we fill any missing gammas with 1.
 If a \code{harsm} object is given, then \code{ngamma} must be non-null.}
+
+\item{reg_wt}{the multiplicative weight(s) of the regularization terms.
+must be non-negative.
+May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.}
+
+\item{reg_zero}{the \sQuote{zero} of the regularization terms. This would
+usually be zero if you want to shrink to zero, but in some cases you may
+with to shrink to 1 for example.
+May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
+If \code{NULL} is given, defaults to zeroes for beta terms,
+and ones for gamma terms in a Henery model fit, all zeroes
+for Harville model fits.}
+
+\item{reg_power}{the power of the regularization terms, 2 for ridge
+regression, 1 for lasso.}
+
+\item{reg_coef_idx}{the index of the coefficient which the corresponding
+regularization term is applied to. For the Harville model, the indices only refer to
+the \eqn{\beta} coefficient vector. For the Henery model, the indices refer to the
+\eqn{beta} coefficient vector and \eqn{\gamma} coefficient vector
+concatenated together.
+The other regularization parameters may be recycled as needed, but not the
+\code{reg_coef_idx} values.}
+
+\item{reg_standardize}{if true, the \code{reg_wt} are normalized, or
+\sQuote{standardized} with respect to the standard deviation of the
+corresponding columns of the design matrix. That is, the weight used
+is the given weight \emph{times} the standard deviation of the corresponding
+independent variable to the corresponding \code{reg_power}.
+Only terms associated with the betas are so normalized.}
 
 \item{na.action}{How to deal with missing values in \code{y}, \code{g},
 \code{X}, \code{wt}, \code{eta0}.}
@@ -75,12 +110,16 @@ A user friendly interface to the softmax regression under the Henery model.
 \details{
 Performs a softmax regression by groups, via Maximum Likelihood Estimation.
 It is assumed that successive sub-races maintain the proportional
-probability of the softmax, up to some gamma coefficients, 
+probability of the softmax, up to some gamma coefficients,
 \eqn{\gamma_2, \gamma_3, ..., \gamma_n}, which we fit. This model
 nests the Harville model fit by \code{\link{harsm}}, by fixing all
 the gammas equal to 1.
 }
 \note{
+The fit functions return an object of type \code{\link[maxLik]{maxLik}}
+even when regularization penalties are applied; the statistical inference
+functions are not valid when regularization is used. The user is warned.
+
 This regression may give odd results when the outcomes are tied,
 imposing an arbitrary order on the tied outcomes.
 Moreover, no warning may be issued in this case.
@@ -90,7 +129,7 @@ Cox Proportional Hazards regression, using
 the methods of Breslow or Efron.
 
 To avoid incorrect inference when only the top
-performers are recorded, and all others are 
+performers are recorded, and all others are
 effectively tied, one should use weighting.
 Set the weights to zero for participants who
 are tied non-winners, and one for the rest
@@ -110,7 +149,25 @@ zero weights are used to signify finishing
 places were not observed. If in doubt,
 please confirm inference by simulations,
 taking as example the simulations in the README.
+
+When regularization is used, the first gamma coefficient is not
+shrunk, as it always equals one in the Henery model, and is not estimated
+from the data.
 }
+\section{Regularization}{
+The regularization term is of the form
+\deqn{\sum_i w_i |\nu_{c_i} - z_i|^{p_i},}
+where \eqn{w_i} are the \code{reg_wt} weights,
+\eqn{z_i} are the \code{reg_zero} zeroes,
+\eqn{p_i} are the \code{reg_power} powers,
+and \eqn{c_i} are the \code{reg_coef_idx} coefficient indices.
+Note that the coefficient indices can be repeated so that the
+regularization term can include multiple contributions from one
+coefficient element. This allows \sQuote{elasticnet} regularization.
+The \eqn{\nu} here refer to the regression coefficients \eqn{\beta}
+concatenated with the \eqn{\gamma} coefficients in the Henery model.
+}
+
 \examples{
 
 nfeat <- 5
@@ -141,7 +198,7 @@ df <- race_data \%>\%
 		mutate(eta0=log(WN_pool / sum(WN_pool))) \%>\%
 	ungroup() \%>\%
 	mutate(weights=ifelse(!is.na(Finish),1,0)) \%>\%
-	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE)) 
+	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
 
 # Henery Model with market efficiency
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)
@@ -159,6 +216,26 @@ fit3 <- hensm(update(fmla,~ . + PostPosition),data=df,group=EventId,weights=weig
 # warm start from harsm object
 fit0_har <- harsm(fmla,data=df,group=EventId,weights=weights)
 fit4 <- hensm(fmla,data=df,group=EventId,fit0=fit0_har,weights=weights)
+
+# regularization examples
+fmla <- Finish ~ offset(eta0) + fac_age + PostPosition
+# no regularization
+fitr0 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3)
+# ridge regression on the betas (there are two)
+fitr2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,2), reg_power=2, reg_zero=0, reg_coef_idx=c(1,2))
+# l1 regression on the betas (there are two)
+fitr1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,2), reg_power=1, reg_zero=0, reg_coef_idx=c(1,2))
+# elasticnet regression on the betas (there are two)
+fitr12 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,4), reg_power=c(1,1,2,2), reg_zero=0, reg_coef_idx=c(1,2,1,2))
+# l1 regression on the gammas, shrinking to one (there are two estimated)
+fitrg1 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,2), reg_power=1, reg_zero=1, reg_coef_idx=c(3,4))
+# l2 regression on the betas and gammas, shrinking beta to 0, gamma to 1.
+fitrg2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
+  reg_wt=rep(1,4), reg_power=2, reg_zero=c(0,0,1,1), reg_coef_idx=1:4)
 
 }
 \seealso{
