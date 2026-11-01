@@ -80,6 +80,7 @@ int pick_winner(NumericVector probs,int max_el) {
 //' model.
 //'
 //' @param mu  a vector of the probabilities of taking first place.
+//' Must be all non-negative and non-NA.
 //' @param gamma  a vector of the gamma coefficients. Should have length
 //' one less than \code{mu}, but if longer the unused elements are ignored.
 //' If shorter, we reserve the right to either throw an error or extend out
@@ -107,6 +108,7 @@ IntegerVector rhenery(NumericVector mu,Rcpp::Nullable<NumericVector> gamma = R_N
 		if (nel > (1 + gammavals.length())) { stop("length mismatch: mu and gamma"); }
 	}
 	if (any( mu < 0 ).is_true()) { stop("mu out of bounds. must be non-negative."); }
+	if (any( is_nan(mu) ).is_true()) { stop("mu has NA values, not allowed."); }
 	double summu = sum(mu);
 	if (summu < 0) { stop("negative mu makes no sense, or you have NA probs."); }
 	int max_el = nel;
