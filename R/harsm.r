@@ -212,7 +212,7 @@ harsmfit <- function(
   retv$deviance_df <- length(retv$coefficients)
   # now the estimated rank
   deleta <- X %*% retv$coefficients
-  etahat <- deleta + ifelse(!is.null(eta0), eta0, rep(0, length(g)))
+  etahat <- if (is.null(eta0)) deleta else deleta + eta0
   retv$etahat <- etahat
   retv$erank <- harsm_invlink(retv$etahat, g = g)
 
