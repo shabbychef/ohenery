@@ -61,7 +61,9 @@ setOldClass('linodds')
 as.linodds <- function(object, formula, beta) {
   object$formula <- formula
   object$beta <- beta
-  class(object) <- c(class(object), 'linodds')
+	if (!is(object, "linodds")) {
+		class(object) <- c(class(object), 'linodds')
+	}
   object
 }
 
@@ -137,7 +139,7 @@ predict.linodds <- function(
     mu = smax(eta = eta, g = dat$group),
     erank = harsm_invlink(eta = eta, g = dat$group)
   )
-  attr(retval, 'na.action') <- attr(dat, 'na.action')
+  attr(retval, 'na.action') <- attr(mf, 'na.action')
   retval
 }
 
