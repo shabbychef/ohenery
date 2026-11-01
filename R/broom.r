@@ -69,12 +69,12 @@ generics::glance
 #' @rdname tidy
 #' @export
 tidy.harsm <- function(x, ...) {
-  result <- tidy(x$mle, ...)
+  tidy(x$mle, ...)
 }
 #' @rdname tidy
 #' @export
 tidy.hensm <- function(x, ...) {
-  result <- tidy(x$mle, ...)
+  tidy(x$mle, ...)
 }
 
 #' @title Glance
@@ -117,12 +117,12 @@ tidy.hensm <- function(x, ...) {
 #' @rdname glance
 #' @export
 glance.harsm <- function(x, ...) {
-  result <- glance(x$mle, ...)
+  glance(x$mle, ...)
 }
 #' @rdname glance
 #' @export
 glance.hensm <- function(x, ...) {
-  result <- glance(x$mle, ...)
+  glance(x$mle, ...)
 }
 
 #for vim modeline: (do not edit)
