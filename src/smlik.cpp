@@ -195,6 +195,7 @@ NumericVector harsmlik(IntegerVector g,
 	int thisgrp;
 	double loglik = 0;
 	double summu = mu[jjj];
+	if (has_deriv) { sumgrad = summu * del_eta(jjj, _); }
 	double thiswt;
 
 	for (int iii=1;iii < idx.length();iii++) {
