@@ -31,7 +31,11 @@ to level shifts of the \eqn{\eta}, and thus we de-mean
 the odds first.
 }
 \note{
-This function can deal with overflow in a semi-coherent way.
+This function deals with overflow by shifting by the maximum.
+If any element of a group is \code{Inf}, those elements share the mass
+equally, and the rest get zero; \code{-Inf} elements get zero, unless
+all elements are \code{-Inf}, in which case the output is uniform.
+If any element of a group is \code{NA}, the whole group is \code{NA}.
 }
 \examples{
 # we can deal with large values:

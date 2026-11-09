@@ -45,23 +45,19 @@ normalize <- function(x) {
 
 globalVariables(c('rowid'))
 
-# this is a big more complicated than I would have liked, but here we go:
-# assume the input is already centered:
-.smax_one <- function(xc) {
-  if (any(xc > 709.78, na.rm = TRUE)) {
-    # where overflow occurs
-    fsrt <- sort.int(xc, decreasing = TRUE, index.return = TRUE)
-    vals <- normalize(c(1, exp(cumsum(diff(fsrt$x)))))
-    retv <- rep(0, length(xc))
-    retv[fsrt$ix] <- vals
-    return(retv)
-  }
-  # else
-  normalize(exp(xc))
-}
-# 2FIX: check for infinity?
+# softmax of a single group.
+# shifting by the max avoids overflow; underflow to zero is the right limit.
+# any NA makes the normalizing constant unknown, so the whole group is NA.
+# if any element is +Inf, the +Inf elements split the mass equally;
+# if all are -Inf, by shift invariance the result is uniform.
 .smax_two <- function(x) {
-  .smax_one(x - mean(x, na.rm = TRUE))
+  if (!length(x)) { return(numeric(0)) }
+  if (anyNA(x)) { return(rep(NA_real_, length(x))) }
+  top <- max(x)
+  if (is.infinite(top)) {
+    return(normalize(as.numeric(x == top)))
+  }
+  normalize(exp(x - top))
 }
 
 #' @title The softmax function.
@@ -86,7 +82,11 @@ globalVariables(c('rowid'))
 #' The odds are de-meaned within each group.
 #' @return the exponentiated data normalized.
 #' For the row-wise version, each row is soft maxed.
-#' @note This function can deal with overflow in a semi-coherent way.
+#' @note This function deals with overflow by shifting by the maximum.
+#' If any element of a group is \code{Inf}, those elements share the mass
+#' equally, and the rest get zero; \code{-Inf} elements get zero, unless
+#' all elements are \code{-Inf}, in which case the output is uniform.
+#' If any element of a group is \code{NA}, the whole group is \code{NA}.
 #' @importFrom dplyr group_by mutate ungroup arrange n
 #' @template etc
 #' @export
