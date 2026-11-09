@@ -277,11 +277,11 @@ hensmfit <- function(
 #' library(dplyr)
 #' data(race_data)
 #' df <- race_data %>%
-#' 	group_by(EventId) %>%
-#' 		mutate(eta0=log(WN_pool / sum(WN_pool))) %>%
-#' 	ungroup() %>%
-#' 	mutate(weights=ifelse(!is.na(Finish),1,0)) %>%
-#' 	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
+#'   group_by(EventId) %>%
+#'     mutate(eta0=log(WN_pool / sum(WN_pool))) %>%
+#'   ungroup() %>%
+#'   mutate(weights=ifelse(!is.na(Finish),1,0)) %>%
+#'   mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
 #'
 #' # Henery Model with market efficiency
 #' hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)
@@ -320,7 +320,7 @@ hensmfit <- function(
 #' fitrg2 <- hensm(fmla,data=df,group=EventId,weights=weights,ngamma=3,
 #'   reg_wt=rep(1,4), reg_power=2, reg_zero=c(0,0,1,1), reg_coef_idx=1:4)
 #'
-#' @importFrom stats coef formula model.frame model.matrix na.omit
+#' @importFrom stats coef formula model.frame model.matrix na.omit .getXlevels
 #' @export
 #' @rdname hensm
 hensm <- function(
@@ -358,6 +358,9 @@ hensm <- function(
   mf <- eval(mf, parent.frame()) #evaluate call
 
   Xs <- model.matrix(formula, mf)
+  # remember factor levels and contrasts so predict can rebuild the same columns
+  xlevels <- .getXlevels(attr(mf, 'terms'), mf)
+  contrasts <- attr(Xs, 'contrasts')
   # remove intercept!
   if (colnames(Xs)[1] == '(Intercept)') {
     Xs <- Xs[, -1, drop = FALSE]
@@ -408,7 +411,7 @@ hensm <- function(
     reg_coef_idx = reg_coef_idx,
     reg_standardize = reg_standardize
   )
-  retv <- as.linodds(retv, formula, beta = retv$beta)
+  retv <- as.linodds(retv, formula, beta = retv$beta, xlevels = xlevels, contrasts = contrasts)
   retv
 }
 #' @export

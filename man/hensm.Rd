@@ -194,11 +194,11 @@ fitm <- hensm(fmla,data,group=race)
 library(dplyr)
 data(race_data)
 df <- race_data \%>\%
-	group_by(EventId) \%>\%
-		mutate(eta0=log(WN_pool / sum(WN_pool))) \%>\%
-	ungroup() \%>\%
-	mutate(weights=ifelse(!is.na(Finish),1,0)) \%>\%
-	mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
+  group_by(EventId) \%>\%
+    mutate(eta0=log(WN_pool / sum(WN_pool))) \%>\%
+  ungroup() \%>\%
+  mutate(weights=ifelse(!is.na(Finish),1,0)) \%>\%
+  mutate(fac_age=cut(Age,c(0,3,5,7,Inf),include.lowest=TRUE))
 
 # Henery Model with market efficiency
 hensm(Finish ~ eta0,data=df,group=EventId,weights=weights,ngamma=3)

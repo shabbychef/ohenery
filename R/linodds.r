@@ -54,16 +54,23 @@ setOldClass('linodds')
 #' @param object  some list-like object.
 #' @inheritParams stats::lm
 #' @param beta  the fit coefficients.
+#' @param xlevels  an optional named list of the levels of each factor
+#' in the model frame used in fitting, as from \code{\link[stats]{.getXlevels}}.
+#' Used by \code{predict} so that new data with only some of the
+#' levels produces the same design matrix columns.
+#' @param contrasts  an optional list of the contrasts used in fitting,
+#' as from the \code{contrasts} attribute of the design matrix.
 #' @rdname linodds
 #' @seealso \code{\link{harsm}}, \code{\link{hensm}}.
+#' @importFrom methods is
 #' @template etc
 #' @export
-as.linodds <- function(object, formula, beta) {
+as.linodds <- function(object, formula, beta, xlevels = NULL, contrasts = NULL) {
   object$formula <- formula
   object$beta <- beta
-	if (!is(object, "linodds")) {
-		class(object) <- c(class(object), 'linodds')
-	}
+  object$xlevels <- xlevels
+  object$contrasts <- contrasts
+	if (!is(object, "linodds")) { class(object) <- c(class(object), 'linodds') }
   object
 }
 
@@ -108,13 +115,20 @@ predict.linodds <- function(
 
   m <- match(c("data", "group", "na.action"), names(mf), 0L)
   mf <- mf[c(1L, 1L, m)]
+
+  # use factor levels from fitting, if known, so dummy columns match the fit 
+  # even when newdata lacks some levels. 
+  # if object has no xlevels, fall back to dropping unused levels.
+  if (is.null(object$xlevels)) {
+    mf$drop.unused.levels <- TRUE
+  } else {
+    mf$xlev <- object$xlevels
+  }
   mf$drop.unused.levels <- TRUE
-  # need this
-  # mf$xlev <-
   mf[[1L]] <- quote(stats::model.frame)
   mf[[2L]] <- Terms
   mf <- eval(mf, parent.frame()) #evaluate call
-  Xs <- model.matrix(as.formula(Terms), mf)
+  Xs <- model.matrix(Terms, mf, contrasts.arg = object$contrasts)
   # remove intercept!
   if (colnames(Xs)[1] == '(Intercept)') {
     Xs <- Xs[, -1, drop = FALSE]

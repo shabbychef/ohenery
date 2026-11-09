@@ -7,7 +7,8 @@
 rhenery(mu, gamma = NULL)
 }
 \arguments{
-\item{mu}{a vector of the probabilities of taking first place.}
+\item{mu}{a vector of the probabilities of taking first place.
+Must be all non-negative and non-NA.}
 
 \item{gamma}{a vector of the gamma coefficients. Should have length
 one less than \code{mu}, but if longer the unused elements are ignored.

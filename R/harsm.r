@@ -390,7 +390,7 @@ harsmfit <- function(
 #' }
 #'
 #'
-#' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights
+#' @importFrom stats coef formula model.frame model.matrix na.omit model.response model.weights .getXlevels
 #' @export
 #' @rdname harsm
 harsm <- function(
@@ -427,6 +427,9 @@ harsm <- function(
   mf <- eval(mf, parent.frame()) #evaluate call
 
   Xs <- model.matrix(formula, mf)
+  # remember factor levels and contrasts so predict can rebuild the same columns
+  xlevels <- .getXlevels(attr(mf, 'terms'), mf)
+  contrasts <- attr(Xs, 'contrasts')
   # remove intercept!
   if (colnames(Xs)[1] == '(Intercept)') {
     Xs <- Xs[, -1, drop = FALSE]
@@ -463,7 +466,7 @@ harsm <- function(
   )
   names(retv$mle$estimate) <- colnames(dat$Xs)
   names(retv$coefficients) <- colnames(dat$Xs)
-  retv <- as.linodds(retv, formula, beta = retv$coefficients)
+  retv <- as.linodds(retv, formula, beta = retv$coefficients, xlevels = xlevels, contrasts = contrasts)
   retv
 }
 #' @export

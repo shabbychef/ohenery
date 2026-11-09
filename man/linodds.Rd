@@ -6,7 +6,7 @@
 \alias{coef.linodds}
 \title{An object for modeling linear odds.}
 \usage{
-as.linodds(object, formula, beta)
+as.linodds(object, formula, beta, xlevels = NULL, contrasts = NULL)
 
 \method{predict}{linodds}(
   object,
@@ -28,6 +28,14 @@ as.linodds(object, formula, beta)
     under \sQuote{Details}.}
 
 \item{beta}{the fit coefficients.}
+
+\item{xlevels}{an optional named list of the levels of each factor
+in the model frame used in fitting, as from \code{\link[stats]{.getXlevels}}.
+Used by \code{predict} so that new data with only some of the
+levels produces the same design matrix columns.}
+
+\item{contrasts}{an optional list of the contrasts used in fitting,
+as from the \code{contrasts} attribute of the design matrix.}
 
 \item{newdata}{a \code{data.frame} from which we can extract a model
 frame via the formula of the \code{object}.}

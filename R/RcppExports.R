@@ -91,6 +91,7 @@ erank <- function(mu) {
 #' model.
 #'
 #' @param mu  a vector of the probabilities of taking first place.
+#' Must be all non-negative and non-NA.
 #' @param gamma  a vector of the gamma coefficients. Should have length
 #' one less than \code{mu}, but if longer the unused elements are ignored.
 #' If shorter, we reserve the right to either throw an error or extend out
