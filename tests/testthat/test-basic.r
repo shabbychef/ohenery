@@ -803,7 +803,7 @@ test_that("harsmfit regularization", {
       y = y,
       g = g,
       X = X,
-      reg_wt = rep(200, nfeat),
+      reg_wt = rep(300, nfeat),
       reg_power = 1,
       reg_zero = 0,
       reg_coef_idx = 1:nfeat
