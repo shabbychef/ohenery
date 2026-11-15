@@ -34,8 +34,10 @@
     return(0)
   }
   # 2FIX: check for compatible sizes?
+  stopifnot(!is.null(reg_coef_idx))
   stopifnot(all((reg_coef_idx >= 1) & (reg_coef_idx <= length(coef))))
   stopifnot(all(reg_wt >= 0))
+  stopifnot(!is.null(reg_power))
   stopifnot(all(reg_power >= 0))
 }
 
