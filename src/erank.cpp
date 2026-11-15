@@ -109,7 +109,11 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 NumericVector erank(NumericVector mu) {
 	int nel = mu.length();
-	if (nel < 2) { return mu; }
+	if (nel < 4) {
+		double sum_mu = sum(mu);
+		if (abs(sum_mu - 1) > 1e-09) { stop("mu should sum to one, otherwise ranks make no sense"); }
+	}
+	if (nel < 2) { return NumericVector::create(1.0); }
 	if (nel == 2) { return 2 - mu; }
 	if (nel == 3) { //FOLDUP
 		double O_1 = ODDSPLUS(mu[0]);
