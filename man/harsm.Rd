@@ -55,11 +55,12 @@ being fit here, the missing coefficients are initialized as zero.}
 
 \item{reg_wt}{the multiplicative weight(s) of the regularization terms.
 must be non-negative.
-May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.}
+May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
+If not given, defaults to zero which is equivalent to no regularization.}
 
 \item{reg_zero}{the \sQuote{zero} of the regularization terms. This would
 usually be zero if you want to shrink to zero, but in some cases you may
-with to shrink to 1 for example.
+wish to shrink to 1 for example.
 May be a scalar or vector, but will be recycled to the length of the \code{reg_coef_idx}.
 If \code{NULL} is given, defaults to zeroes for beta terms,
 and ones for gamma terms in a Henery model fit, all zeroes
