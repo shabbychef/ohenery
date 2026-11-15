@@ -133,7 +133,9 @@ hensmfit <- function(
   k <- ncol(X)
   if (is.null(beta0)) {
     beta0 <- array(0, k)
-  }
+  } else {
+		stopifnot(length(beta0)==k)
+	}
   theta0 <- c(beta0, gamma0)
   reg_zero <- .regularization_default_zero(reg_zero, reg_coef_idx, num_beta = k)
   reg_wt <- .regularization_standardize(
