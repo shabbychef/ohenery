@@ -108,7 +108,7 @@ IntegerVector rhenery(NumericVector mu,Rcpp::Nullable<NumericVector> gamma = R_N
 		if (nel > (1 + gammavals.length())) { stop("length mismatch: mu and gamma"); }
 	}
 	if (any( mu < 0 ).is_true()) { stop("mu out of bounds. must be non-negative."); }
-	if (any( is_nan(mu) ).is_true()) { stop("mu has NA values, not allowed."); }
+	if (any( is_na(mu) ).is_true()) { stop("mu has NA/NaN values, not allowed."); }
 	double summu = sum(mu);
 	if (summu < 0) { stop("negative mu makes no sense, or you have NA probs."); }
 	int max_el = nel;
