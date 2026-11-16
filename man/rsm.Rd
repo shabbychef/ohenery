@@ -13,13 +13,14 @@ Must be the same length as \code{g} if \code{g} is given.}
 \item{g}{a vector giving the group indices. If \code{NULL},
 then we assume only one group is in consideration.}
 
-\item{mu}{a vector of the probablities.
+\item{mu}{a vector of the probabilities.
 Must be the same length as \code{g} if \code{g} is given.
 If \code{mu} and \code{eta} are both given, we ignore
 \code{eta} and use \code{mu}.}
 
 \item{gamma}{a vector of the gamma parameters for the
-Henery model. Typically the first element should be 1.
+Henery model. The first element is \eqn{\gamma_2}, the exponent
+for second place, as in \code{\link{hensmlik}}.
 Omit or set all values to 1 to recover the Harville model.
 The last element will be extended if the gamma is
 not long enough for a given group. Note that gamma is expected
@@ -42,10 +43,11 @@ of 1 through \eqn{n_g} on each group as output.
 
 For a single group, the probability that the \eqn{i}th
 element of the output is a 1 is equal to
-\deqn{\pi_{1,i} = \frac{\mu_i^{\gamma_1}}{\sum_j \mu_j^{\gamma_1}}.}
+\deqn{\pi_{1,i} = \frac{\mu_i}{\sum_j \mu_j}.}
 Once an element has been selected to have output
-1, remove it from the set and iterate, but with the
-next \eqn{\gamma} elements.
+1, remove it from the set and iterate, raising the
+remaining \eqn{\mu} to the power \eqn{\gamma_2} for
+second place, \eqn{\gamma_3} for third place, and so on.
 }
 \note{
 The output of this function satisfies a kind

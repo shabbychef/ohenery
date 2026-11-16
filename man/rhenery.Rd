@@ -10,7 +10,9 @@ rhenery(mu, gamma = NULL)
 \item{mu}{a vector of the probabilities of taking first place.
 Must be all non-negative and non-NA.}
 
-\item{gamma}{a vector of the gamma coefficients. Should have length
+\item{gamma}{a vector of the gamma coefficients. The first element is
+\eqn{\gamma_2}, the exponent for second place, as in
+\code{\link{hensmlik}}. Should have length
 one less than \code{mu}, but if longer the unused elements are ignored.
 If shorter, we reserve the right to either throw an error or extend out
 the last gamma element. If not given, the coefficients are assumed
@@ -29,11 +31,12 @@ of the final outcome of a race for each participant.
 }
 \details{
 Given vectors \eqn{\mu} and \eqn{\gamma}, first computes
-\deqn{\pi_{1,i} = \frac{\mu_i^{\gamma_1}}{\sum_j \mu_j^{\gamma_1}},}
+\deqn{\pi_{1,i} = \frac{\mu_i}{\sum_j \mu_j},}
 then assigns a \eqn{1} to participant \eqn{i} with probability
 \eqn{\pi_{1,i}}. The \sQuote{winning} participant is then removed
 from consideration, and the process is repeated using the remaining
-\eqn{\mu} and \eqn{\gamma} vectors.
+\eqn{\mu}, raised to the power \eqn{\gamma_2} for second place,
+\eqn{\gamma_3} for third place, and so on.
 
 Typically one has that \eqn{\mu_i = \exp{\eta_i}}, for some
 \sQuote{odds}, \eqn{\eta_i}.

@@ -7,7 +7,7 @@
 inv_smax(mu, g = NULL)
 }
 \arguments{
-\item{mu}{a vector of the probablities.
+\item{mu}{a vector of the probabilities.
 Must be the same length as \code{g} if \code{g} is given.
 If \code{mu} and \code{eta} are both given, we ignore
 \code{eta} and use \code{mu}.}

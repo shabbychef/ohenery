@@ -13,7 +13,7 @@ harsm(
   weights = NULL,
   fit0 = NULL,
   reg_wt = NULL,
-  reg_zero = 0,
+  reg_zero = NULL,
   reg_power = NULL,
   reg_coef_idx = NULL,
   reg_standardize = FALSE,
@@ -67,7 +67,7 @@ and ones for gamma terms in a Henery model fit, all zeroes
 for Harville model fits.}
 
 \item{reg_power}{the power of the regularization terms, 2 for ridge
-regression, 1 for lasso.}
+regression, 1 for lasso. Must be positive.}
 
 \item{reg_coef_idx}{the index of the coefficient which the corresponding
 regularization term is applied to. For the Harville model, the indices only refer to
@@ -95,8 +95,8 @@ groups, weights, etc.}
 \item{x}{an object used to select a method.}
 }
 \value{
-An object of class \code{harsm}, but also of \code{maxLik} with the
-fit.
+An object of class \code{harsm} and \code{linodds}. The
+\code{maxLik} fit is stored in the \code{mle} element.
 }
 \description{
 A user friendly interface to the softmax regression under the Harville
