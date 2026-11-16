@@ -72,16 +72,17 @@ setOldClass('hensm')
 #' The code relies on the likelihood function of \code{\link{hensmlik}},
 #' and MLE code from \code{\link[maxLik]{maxLik}}.
 #'
-#' @param gamma0  an optional vector of the initial estimate of beta for
+#' @param gamma0  an optional vector of the initial estimate of gamma for
 #' \sQuote{warm start} of the estimation procedure.
-#' Must be of length \code{ngamma - 1}.
+#' If given, \code{ngamma} is taken to be \code{length(gamma0) + 1}.
 #' Should only affect the speed of the computation, not the results.
 #' Defaults to all ones.
 #'
 #' @inheritParams hensm
 #' @inheritParams harsmfit
 #' @inheritParams maxLik::maxLik
-#' @return An object of class \code{hensm}, \code{maxLik}, and \code{linodds}.
+#' @return An object of class \code{hensm} and \code{linodds}. The
+#' \code{maxLik} fit is stored in the \code{mle} element.
 #' @keywords fitting
 #' @seealso the friendly interface \code{hensm},
 #' the likelihood function, \code{\link{hensmlik}},
@@ -177,7 +178,7 @@ hensmfit <- function(
   retv <- list(
     mle = rv,
     beta = rv$estimate[1:k],
-    coefficients = rv,
+    coefficients = rv$estimate,
     gammas = rv$estimate[(k + 1):length(theta0)],
     gamma2 = rv$estimate[k + 1],
     estimate = rv$estimate, # sigh
@@ -199,6 +200,8 @@ hensmfit <- function(
     Xnames <- colnames(X)
   }
   names(retv$mle$estimate) <- c(Xnames, gnames)
+  names(retv$coefficients) <- c(Xnames, gnames)
+  names(retv$estimate) <- c(Xnames, gnames)
   names(retv$beta) <- Xnames
 
   # do some summarization
@@ -244,8 +247,8 @@ hensmfit <- function(
 #' @template etc
 #' @template note-ties
 #' @template note-weights
-#' @return An object of class \code{hensm}, but also of \code{maxLik} with the
-#' fit.
+#' @return An object of class \code{hensm} and \code{linodds}. The
+#' \code{maxLik} fit is stored in the \code{mle} element.
 #' @keywords fitting
 #' @seealso \code{\link{harsm}}, \code{\link{smlik}}.
 #' @template note-normalization
