@@ -54,3 +54,4 @@ nodist/node_modules
 ^node_modules$
 ^nodist/readings$
 ^\.github$
+^tofix\.md$
