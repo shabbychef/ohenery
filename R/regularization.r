@@ -38,7 +38,7 @@
   stopifnot(all((reg_coef_idx >= 1) & (reg_coef_idx <= length(coef))))
   stopifnot(all(reg_wt >= 0))
   stopifnot(!is.null(reg_power))
-  stopifnot(all(reg_power >= 0))
+  stopifnot(all(reg_power > 0))
 }
 
 .regularization_term <- function(
@@ -64,10 +64,13 @@
   if (is.null(reg_wt)) {
     return(0)
   }
-  gradbits <- -reg_wt *
-    reg_power *
-    (abs(coef[reg_coef_idx] - reg_zero)^(reg_power - 1)) *
-    sign(coef[reg_coef_idx] - reg_zero)
+  dif <- coef[reg_coef_idx] - reg_zero
+  # at the zero, use the subgradient 0, rather than 0 * Inf for powers below 1.
+  gradbits <- ifelse(
+    dif == 0,
+    0,
+    -reg_wt * reg_power * (abs(dif)^(reg_power - 1)) * sign(dif)
+  )
   grad <- rep(0, length(coef))
   for (idx in seq_along(reg_coef_idx)) {
     grad[reg_coef_idx[idx]] <- grad[reg_coef_idx[idx]] + gradbits[idx]
