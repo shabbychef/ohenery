@@ -1455,6 +1455,59 @@ test_that("harsmfit zero weights", {
     tolerance = 0.0001
   )
 }) #UNFOLD
+test_that("harsmfit replication weights", {
+  #FOLDUP
+  # confirm that replication weights act to duplicate data.
+  nfeat <- 5
+  set.seed(2345)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+  wt <- runif(length(g), min = 0.5, max = 1.5)
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+
+  # some races appear twice, under new race ids
+  dupe <- data$race <= 20
+  dupdata <- data[dupe, ]
+  dupdata$race <- dupdata$race + 1000
+  dupdata <- rbind(data, dupdata)
+  # equivalently, double the weights of those races.
+  repdata <- data
+  repdata$wt <- ifelse(dupe, 2, 1) * repdata$wt
+
+  # fit twice
+  expect_error(
+    fitm1 <- harsm(fmla, dupdata, group = race, weights = wt),
+    NA
+  )
+  expect_error(
+    fitm2 <- harsm(fmla, repdata, group = race, weights = wt),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )
+  expect_equal(
+    as.numeric(vcov(fitm2)),
+    as.numeric(vcov(fitm1)),
+    tolerance = 0.001
+  )
+  # and differs from the unweighted fit
+  expect_error(
+    fitm0 <- harsm(fmla, data, group = race, weights = wt),
+    NA
+  )
+  expect_false(isTRUE(all.equal(
+    as.numeric(coefficients(fitm0)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )))
+}) #UNFOLD
 test_that("hensmfit zero weights", {
   #FOLDUP
   # confirm that zero weights are equivalent to removing the data altogether
@@ -1504,6 +1557,59 @@ test_that("hensmfit zero weights", {
     as.numeric(coefficients(fitm1)),
     tolerance = 0.0001
   )
+}) #UNFOLD
+test_that("hensmfit replication weights", {
+  #FOLDUP
+  # confirm that replication weights act to duplicate data.
+  nfeat <- 5
+  set.seed(2345)
+  g <- ceiling(seq(0.1, 100, by = 0.1))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  eta <- X %*% beta
+  expect_error(y <- rsm(eta, g = g), NA)
+  wt <- runif(length(g), min = 0.5, max = 1.5)
+  data <- cbind(data.frame(outcome = y, race = g, wt = wt), as.data.frame(X))
+  fmla <- outcome ~ V1 + V2 + V3 + V4 + V5
+
+  # some races appear twice, under new race ids
+  dupe <- data$race <= 20
+  dupdata <- data[dupe, ]
+  dupdata$race <- dupdata$race + 1000
+  dupdata <- rbind(data, dupdata)
+  # equivalently, double the weights of those races.
+  repdata <- data
+  repdata$wt <- ifelse(dupe, 2, 1) * repdata$wt
+
+  # fit twice
+  expect_error(
+    fitm1 <- hensm(fmla, dupdata, group = race, weights = wt, ngamma = 2),
+    NA
+  )
+  expect_error(
+    fitm2 <- hensm(fmla, repdata, group = race, weights = wt, ngamma = 2),
+    NA
+  )
+  expect_equal(
+    as.numeric(coefficients(fitm2)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )
+  expect_equal(
+    as.numeric(vcov(fitm2)),
+    as.numeric(vcov(fitm1)),
+    tolerance = 0.001
+  )
+  # and differs from the unweighted fit
+  expect_error(
+    fitm0 <- hensm(fmla, data, group = race, weights = wt, ngamma = 2),
+    NA
+  )
+  expect_false(isTRUE(all.equal(
+    as.numeric(coefficients(fitm0)),
+    as.numeric(coefficients(fitm1)),
+    tolerance = 0.0001
+  )))
 }) #UNFOLD
 
 #UNFOLD
