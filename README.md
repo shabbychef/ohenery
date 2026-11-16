@@ -135,19 +135,19 @@ print(osmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 59 iterations
+## BFGS maximization, 24 iterations
 ## Return code 0: successful convergence 
 ## Log-Likelihood: -92 
 ## 7  free parameters
 ## Estimates:
 ##                                   Estimate Std. error t value Pr(> t)    
-## nominated_for_BestDirectorTRUE       3.294      0.850    3.88 0.00011 ***
-## nominated_for_BestActorTRUE          1.003      0.316    3.18 0.00149 ** 
-## nominated_for_BestActressTRUE        0.048      0.348    0.14 0.89048    
-## nominated_for_BestFilmEditingTRUE    1.949      0.399    4.88   1e-06 ***
-## Drama                               -0.659      0.605   -1.09 0.27580    
-## Romance                              0.521      0.974    0.53 0.59291    
-## Comedy                               1.317      1.013    1.30 0.19333    
+## nominated_for_BestDirectorTRUE      2.9963     0.7452    4.02 5.8e-05 ***
+## nominated_for_BestActorTRUE         0.9589     0.3072    3.12  0.0018 ** 
+## nominated_for_BestActressTRUE       0.0554     0.3434    0.16  0.8718    
+## nominated_for_BestFilmEditingTRUE   1.8584     0.3849    4.83 1.4e-06 ***
+## Drama                              -0.6695     0.6004   -1.12  0.2648    
+## Romance                             0.4468     0.9593    0.47  0.6414    
+## Comedy                              1.2442     1.0041    1.24  0.2153    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
@@ -276,7 +276,7 @@ print(effmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 44 iterations
+## BFGS maximization, 56 iterations
 ## Return code 0: successful convergence 
 ## Log-Likelihood: -6862 
 ## 3  free parameters
@@ -326,19 +326,19 @@ print(offmod)
 ```
 ## --------------------------------------------
 ## Maximum Likelihood estimation
-## BFGS maximization, 25 iterations
+## BFGS maximization, 15 iterations
 ## Return code 0: successful convergence 
 ## Log-Likelihood: -6872 
 ## 2  free parameters
 ## Estimates:
 ##                 Estimate Std. error t value Pr(> t)    
-## bettypeSURESHOT    0.816      0.150    5.43 5.5e-08 ***
-## bettypeVANILLA     0.437      0.126    3.46 0.00054 ***
+## bettypeSURESHOT    0.818      0.150    5.44 5.2e-08 ***
+## bettypeVANILLA     0.437      0.126    3.46 0.00053 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## --------------------------------------------
-##    R2: 0.1 
-## delR2: -0.86 
+##    R2: 0.53 
+## delR2: 0.024 
 ## --------------------------------------------
 ```
 
@@ -535,7 +535,7 @@ all.equal(as.numeric(coef(modh)),as.numeric(coef(modg)),tolerance=1e-4)
 ```
 
 ```
-## [1] TRUE
+## [1] "Mean relative difference: 0.0011"
 ```
 
 ``` r
@@ -543,7 +543,7 @@ all.equal(as.numeric(vcov(modh)),as.numeric(vcov(modg)),tolerance=1e-4)
 ```
 
 ```
-## [1] TRUE
+## [1] "Mean relative difference: 0.0014"
 ```
 
 ``` r
