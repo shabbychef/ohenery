@@ -98,7 +98,7 @@ test_that("harsmlik bits", {
     X = X
   )
 
-  expect_equal(fastval, numap, tolerance = 0.1)
+  expect_equal(fastval, numap, tolerance = 1e-6)
 
   # now reweight them
   wt <- runif(length(g))
@@ -161,7 +161,7 @@ test_that("hensmlik bits", {
     X = X,
     gams = gams
   )
-  expect_equal(fastval, numap, tolerance = 0.1)
+  expect_equal(fastval, numap, tolerance = 1e-6)
 
   gams <- c(1.0, 0.9, 0.8)
   idx <- order(g, y, decreasing = TRUE) - 1
@@ -182,7 +182,7 @@ test_that("hensmlik bits", {
     X = X,
     gams = gams
   )
-  expect_equal(fastval, numap, tolerance = 0.1)
+  expect_equal(fastval, numap, tolerance = 1e-6)
 
   # now reweight them
   wt <- runif(length(g))
@@ -1506,6 +1506,363 @@ test_that("hensmfit zero weights", {
   )
 }) #UNFOLD
 
+#UNFOLD
+
+context("likelihood gradients") #FOLDUP
+test_that("harsmlik gradient matches numerical gradient tightly", {
+  set.seed(1234)
+  g <- rep(1:3, each = 4)
+  X <- matrix(rnorm(24), ncol = 2)
+  beta <- c(0.3, -0.2)
+  y <- rsm(X %*% beta, g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  fastval <- attr(harsmlik(g, idx, X %*% beta, deleta = X), 'gradient')
+  numap <- grad(function(b) as.numeric(harsmlik(g, idx, X %*% b)), x = beta)
+  expect_equal(as.numeric(fastval), numap, tolerance = 1e-6)
+})
+test_that("harsmlik weighted gradient matches numerical gradient", {
+  set.seed(123)
+  g <- rep(1:3, each = 5)
+  X <- matrix(rnorm(30), ncol = 2)
+  beta <- c(0.3, -0.2)
+  wt <- runif(15)
+  y <- rsm(X %*% beta, g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  fastval <- attr(harsmlik(g, idx, X %*% beta, wt = wt, deleta = X), 'gradient')
+  numap <- grad(
+    function(b) as.numeric(harsmlik(g, idx, X %*% b, wt = wt)),
+    x = beta
+  )
+  expect_equal(as.numeric(fastval), numap, tolerance = 1e-6)
+})
+test_that("harsmlik and hensmlik(gamma=1) gradients agree", {
+  set.seed(123)
+  g <- rep(1:3, each = 4)
+  X <- matrix(rnorm(24), ncol = 2)
+  beta <- c(0.3, -0.2)
+  y <- rsm(X %*% beta, g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  har <- attr(harsmlik(g, idx, X %*% beta, deleta = X), 'gradient')
+  hen <- attr(
+    hensmlik(g, idx, X %*% beta, gamma = c(1, 1), deleta = X),
+    'gradient'
+  )
+  expect_equal(as.numeric(har), as.numeric(hen), tolerance = 1e-10)
+})
+test_that("harsmfit converges to a true stationary point", {
+  set.seed(987)
+  g <- rep(1:20, each = 3)
+  X <- matrix(rnorm(60), ncol = 1)
+  y <- rsm(X[, 1], g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  fit <- harsmfit(y, g, X)
+  numgrad <- grad(
+    function(b) as.numeric(harsmlik(g, idx, X %*% b)),
+    x = fit$coefficients
+  )
+  expect_lt(max(abs(numgrad)), 1e-3)
+})
+#UNFOLD
+
+context("harsmfit with offset") #FOLDUP
+test_that("harsmfit etahat includes the full eta0 offset", {
+  set.seed(234)
+  g <- rep(1:200, each = 5)
+  X <- matrix(rnorm(1000), ncol = 1)
+  eta0 <- rnorm(1000)
+  y <- rsm(0.5 * X[, 1] + eta0, g)
+  fit <- harsmfit(y, g, X, eta0 = eta0)
+  expect_equal(
+    as.numeric(fit$etahat),
+    as.numeric(X %*% fit$coefficients + eta0),
+    tolerance = 1e-8
+  )
+  expect_equal(
+    as.numeric(fit$erank),
+    harsm_invlink(as.numeric(X %*% fit$coefficients + eta0), g = g),
+    tolerance = 1e-8
+  )
+})
+#UNFOLD
+
+context("erank") #FOLDUP
+test_that("erank requires mu to sum to one for short vectors", {
+  # require mu to be a probability vector.
+  for (nel in 2:3) {
+    expect_error(erank(seq_len(nel)), info = paste('nel =', nel))
+  }
+})
+test_that("erank special cases agree with the general formula", {
+  for (nel in 2:5) {
+    mu <- normalize(seq_len(nel))
+    general <- nel + 0.5 - rowSums(outer(mu, mu, function(a, b) a / (a + b)))
+    expect_equal(erank(mu), general, info = paste('nel =', nel))
+  }
+})
+test_that("erank of a single entry is 1", {
+  expect_equal(erank(1), 1)
+})
+test_that("erank with tied probabilities", {
+  # all tied: everyone has the average rank.
+  for (nel in 2:6) {
+    expect_equal(erank(rep(1 / nel, nel)), rep((nel + 1) / 2, nel), info = paste('nel =', nel))
+  }
+  # partial ties: tied entries share a rank, larger mu ranks better,
+  # and the ranks sum to that of 1:n.
+  for (mu in list(c(0.4, 0.2, 0.2, 0.2), c(0.3, 0.3, 0.2, 0.2), c(0.25, 0.25, 0.25, 0.1, 0.1, 0.05))) {
+    er <- erank(mu)
+    for (val in unique(mu)) {
+      expect_equal(diff(range(er[mu == val])), 0)
+    }
+    expect_true(all(diff(er[order(-mu)]) >= -1e-12))
+    expect_equal(sum(er), sum(seq_along(mu)))
+  }
+  # compare a tied case to simulation.
+  set.seed(2345)
+  mu <- c(0.4, 0.2, 0.2, 0.2)
+  emp <- rowMeans(replicate(5000, rhenery(mu = mu)))
+  expect_equal(emp, erank(mu), tolerance = 0.05)
+})
+test_that("erank with tied zero probabilities", {
+  # zero probability entries tie for the last places.
+  expect_equal(erank(c(1, 0)), c(1, 2))
+  expect_equal(erank(c(1, 0, 0)), c(1, 2.5, 2.5))
+  expect_equal(erank(c(0, 1, 0)), c(2.5, 1, 2.5))
+  expect_equal(erank(c(0.5, 0.5, 0, 0)), c(1.5, 1.5, 3.5, 3.5))
+  expect_equal(erank(c(0.6, 0.4, 0, 0, 0)), c(1.4, 1.6, 4, 4, 4))
+  expect_equal(erank(c(0.6, 0, 0.4, 0, 0)), c(1.4, 4, 1.6, 4, 4))
+})
+#UNFOLD
+
+context("predict.linodds") #FOLDUP
+.make_factor_fit <- function() {
+  set.seed(345)
+  df <- data.frame(
+    race = rep(1:300, each = 4),
+    f = factor(sample(c('a', 'b', 'c'), 1200, TRUE))
+  )
+  df$y <- rsm(c(a = 0, b = 1, c = 2)[as.character(df$f)], df$race)
+  list(df = df, mod = harsm(y ~ f, data = df, group = race))
+}
+test_that("predict on newdata missing a factor level", {
+  ff <- .make_factor_fit()
+  mod <- ff$mod
+  nd <- data.frame(
+    race = c(1, 1),
+    f = factor(c('b', 'c'), levels = c('a', 'b', 'c'))
+  )
+  expect_equal(
+    as.numeric(predict(mod, newdata = nd, group = race, type = 'eta')),
+    as.numeric(coef(mod)[c('fb', 'fc')])
+  )
+})
+test_that("predict carries the na.action attribute", {
+  ff <- .make_factor_fit()
+  nd <- data.frame(race = c(1, 1, 1), f = factor(c('a', NA, 'c')))
+  pp <- predict(
+    ff$mod,
+    newdata = nd,
+    group = race,
+    type = 'eta',
+    na.action = na.omit
+  )
+  expect_false(is.null(attr(pp, 'na.action')))
+})
+#UNFOLD
+
+context("hensm object consistency") #FOLDUP
+test_that("hensmfit coefficients are numeric like harsmfit", {
+  set.seed(456)
+  g <- rep(1:100, each = 5)
+  X <- matrix(rnorm(500), ncol = 1)
+  y <- rsm(X[, 1], g)
+  hf <- hensmfit(y, g, X)
+  expect_true(is.numeric(hf$coefficients))
+  expect_equal(unname(hf$coefficients), unname(hf$estimate))
+})
+test_that("hensm class does not duplicate linodds", {
+  set.seed(567)
+  df <- data.frame(race = rep(1:100, each = 5), x = rnorm(500))
+  df$y <- rsm(df$x, df$race)
+  hf <- hensm(y ~ x, data = df, group = race)
+  expect_false(anyDuplicated(class(hf)) > 0)
+})
+test_that("hensmfit rejects beta0 of wrong length", {
+  set.seed(678)
+  g <- rep(1:100, each = 5)
+  X <- matrix(rnorm(500), ncol = 1)
+  y <- rsm(X[, 1], g)
+  expect_error(hensmfit(y, g, X, beta0 = c(0, 0)))
+})
+test_that("harsmfit names coefficients from colnames(X) like hensmfit", {
+  set.seed(789)
+  g <- rep(1:100, each = 5)
+  X <- cbind(foo = rnorm(500))
+  y <- rsm(X[, 1], g)
+  expect_equal(names(harsmfit(y, g, X)$coefficients), 'foo')
+})
+#UNFOLD
+
+context("regularization") #FOLDUP
+test_that("reg_wt without reg_power/reg_coef_idx is not a silent no-op", {
+  set.seed(234)
+  g <- rep(1:200, each = 5)
+  X <- matrix(rnorm(1000), ncol = 1)
+  y <- rsm(X[, 1], g)
+  b0 <- harsmfit(y, g, X)$coefficients
+  for (args in list(
+    list(reg_wt = 1000),
+    list(reg_wt = 1000, reg_power = 2)
+  )) {
+    res <- tryCatch(
+      do.call(harsmfit, c(list(y = y, g = g, X = X), args))$coefficients,
+      error = function(e) NULL
+    )
+    # either it errors, or the huge penalty actually shrinks the estimate
+    expect_true(is.null(res) || abs(res) < 0.5 * abs(b0))
+  }
+})
+#UNFOLD
+
+context("NA handling") #FOLDUP
+test_that("rhenery rejects NA probabilities", {
+  expect_error(rhenery(c(0.5, NA, 0.5)))
+})
+test_that("smax propagates NA everywhere", {
+  # without overflow, NA in gives NA out
+  expect_true(all(is.na(smax(c(1, NA, -1, 0)))))
+  # with overflow the NA is silently dropped and a 0 is put in its place
+  expect_true(all(is.na(smax(c(1000, NA, -1000, 0)))))
+})
+#UNFOLD
+
+context("broom") #FOLDUP
+test_that("tidy and glance return visibly", {
+  set.seed(456)
+  df <- data.frame(race = rep(1:100, each = 5), x = rnorm(500))
+  df$y <- rsm(df$x, df$race)
+  fit <- harsm(y ~ x, data = df, group = race)
+  expect_true(withVisible(tidy(fit))$visible)
+  expect_true(withVisible(glance(fit))$visible)
+})
+#UNFOLD
+
+context("finite difference gradient checks") #FOLDUP
+# central finite differences, with error O(h^2).
+.fd_grad <- function(f, x, h = 1e-5) {
+  vapply(
+    seq_along(x),
+    function(iii) {
+      e <- rep(0, length(x))
+      e[iii] <- h
+      (f(x + e) - f(x - e)) / (2 * h)
+    },
+    numeric(1)
+  )
+}
+# a messy design: unequal group sizes, including singletons and pairs,
+# groups not sorted, and some groups larger than ngamma + 1.
+.fd_setup <- function(seed = 1234, nfeat = 3) {
+  set.seed(seed)
+  sizes <- c(1, 2, 3, 4, 7, 2, 5, 9, 1, 6)
+  g <- sample(rep(seq_along(sizes), times = sizes))
+  X <- matrix(rnorm(length(g) * nfeat), ncol = nfeat)
+  beta <- rnorm(nfeat)
+  y <- rsm(X %*% beta, g)
+  idx <- order(g, y, decreasing = TRUE) - 1
+  list(g = g, X = X, beta = beta, y = y, idx = idx, n = length(g))
+}
+.fd_tol <- 1e-6
+
+test_that("harsmlik gradient vs finite differences", {
+  for (seed in c(1234, 2345, 3456)) {
+    d <- .fd_setup(seed)
+    f <- function(b) as.numeric(harsmlik(d$g, d$idx, d$X %*% b))
+    fast <- attr(harsmlik(d$g, d$idx, d$X %*% d$beta, deleta = d$X), 'gradient')
+    expect_equal(as.numeric(fast), .fd_grad(f, d$beta), tolerance = .fd_tol,
+      info = paste('seed', seed))
+  }
+})
+test_that("harsmlik weighted gradient vs finite differences", {
+  d <- .fd_setup()
+  # include some zero weights
+  wt <- runif(d$n) * (runif(d$n) > 0.2)
+  f <- function(b) as.numeric(harsmlik(d$g, d$idx, d$X %*% b, wt = wt))
+  fast <- attr(
+    harsmlik(d$g, d$idx, d$X %*% d$beta, wt = wt, deleta = d$X),
+    'gradient'
+  )
+  expect_equal(as.numeric(fast), .fd_grad(f, d$beta), tolerance = .fd_tol)
+})
+test_that("hensmlik beta and gamma gradients vs finite differences", {
+  d <- .fd_setup()
+  # ngamma shorter than the largest group, so the last gamma is reused
+  gam <- c(0.8, 1.3, 0.6)
+  for (use_wt in c(FALSE, TRUE)) {
+    wt <- if (use_wt) runif(d$n) * (runif(d$n) > 0.2) else NULL
+    fb <- function(b) as.numeric(hensmlik(d$g, d$idx, d$X %*% b, gamma = gam, wt = wt))
+    fg <- function(gg) as.numeric(hensmlik(d$g, d$idx, d$X %*% d$beta, gamma = gg, wt = wt))
+    hv <- hensmlik(d$g, d$idx, d$X %*% d$beta, gamma = gam, wt = wt, deleta = d$X)
+    expect_equal(as.numeric(attr(hv, 'gradient')), .fd_grad(fb, d$beta),
+      tolerance = .fd_tol, info = paste('wt', use_wt))
+    expect_equal(as.numeric(attr(hv, 'gradgamma')), .fd_grad(fg, gam),
+      tolerance = .fd_tol, info = paste('wt', use_wt))
+  }
+})
+# the internal objectives used by harsmfit and hensmfit, which always pass
+# the regularization arguments; reg_wt = NULL means no penalty.
+.obj_args <- function(d, wt, eta0, reg) {
+  c(list(d$g, d$idx, d$X, wt, eta0), reg)
+}
+.noreg <- list(reg_wt = NULL, reg_zero = NULL, reg_power = NULL,
+  reg_coef_idx = NULL)
+test_that("internal objective gradients (with offset) vs finite differences", {
+  d <- .fd_setup()
+  eta0 <- rnorm(d$n)
+  wt <- runif(d$n)
+  args <- .obj_args(d, wt, eta0, .noreg)
+  f <- function(b) as.numeric(do.call(ohenery:::.harsmlik, c(list(b), args)))
+  fast <- do.call(ohenery:::.harsmgrad, c(list(d$beta), args))
+  expect_equal(as.numeric(fast), .fd_grad(f, d$beta), tolerance = .fd_tol)
+
+  theta <- c(d$beta, 0.9, 1.1)
+  f <- function(th) as.numeric(do.call(ohenery:::.hensmlik, c(list(th), args)))
+  fast <- do.call(ohenery:::.hensmgrad, c(list(theta), args))
+  expect_equal(as.numeric(fast), .fd_grad(f, theta), tolerance = .fd_tol)
+})
+test_that("regularization gradient vs finite differences", {
+  set.seed(4321)
+  coef <- rnorm(5)
+  # repeated index (elasticnet style), mixed powers, nonzero zeroes;
+  # coefficients are kept away from reg_zero where |.|^p is not smooth.
+  reg_wt <- c(0.5, 1, 2, 0.3, 0.7)
+  reg_zero <- c(0, 0, 1, 0.2, 0)
+  reg_power <- c(2, 1, 1.5, 3, 2)
+  reg_coef_idx <- c(1, 1, 3, 4, 5)
+  f <- function(cc) {
+    ohenery:::.regularization_term(cc, reg_wt, reg_zero, reg_power, reg_coef_idx)
+  }
+  fast <- ohenery:::.regularization_grad(coef, reg_wt, reg_zero, reg_power, reg_coef_idx)
+  expect_equal(fast, .fd_grad(f, coef), tolerance = .fd_tol)
+})
+test_that("regularized objective gradients vs finite differences", {
+  d <- .fd_setup()
+  # Harville: ridge on beta1, power 1.5 shrinking beta2 toward 1
+  reg <- list(reg_wt = c(1, 0.5), reg_zero = c(0, 1), reg_power = c(2, 1.5),
+    reg_coef_idx = c(1, 2))
+  args <- .obj_args(d, NULL, NULL, reg)
+  f <- function(b) as.numeric(do.call(ohenery:::.harsmlik, c(list(b), args)))
+  fast <- do.call(ohenery:::.harsmgrad, c(list(d$beta), args))
+  expect_equal(as.numeric(fast), .fd_grad(f, d$beta), tolerance = .fd_tol)
+
+  # Henery: index 4 is the first gamma, shrunk toward 1
+  reg$reg_coef_idx <- c(1, 4)
+  args <- .obj_args(d, NULL, NULL, reg)
+  theta <- c(d$beta, 0.7, 1.2)
+  f <- function(th) as.numeric(do.call(ohenery:::.hensmlik, c(list(th), args)))
+  fast <- do.call(ohenery:::.hensmgrad, c(list(theta), args))
+  expect_equal(as.numeric(fast), .fd_grad(f, theta), tolerance = .fd_tol)
+})
 #UNFOLD
 
 #for vim modeline: (do not edit)
