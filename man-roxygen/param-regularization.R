@@ -10,7 +10,7 @@
 #' and ones for gamma terms in a Henery model fit, all zeroes
 #' for Harville model fits.
 #' @param reg_power  the power of the regularization terms, 2 for ridge
-#' regression, 1 for lasso.
+#' regression, 1 for lasso. Must be positive.
 #' @param reg_coef_idx  the index of the coefficient which the corresponding
 #' regularization term is applied to. For the Harville model, the indices only refer to
 #' the \eqn{\beta} coefficient vector. For the Henery model, the indices refer to the
