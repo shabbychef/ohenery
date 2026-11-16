@@ -9,6 +9,31 @@ News for package \sQuote{ohenery}
 \newcommand{\CRANpkg}{\href{https://cran.r-project.org/package=#1}{\pkg{#1}}}
 \newcommand{\ohenery}{\CRANpkg{ohenery}}
 }
+\section{\ohenery{} Version 0.1.5 (2025-11-15) }{
+
+\itemize{
+\item Fix gradient of harsmlik.
+\item Fix harsmfit computation of etahat, erank, R2 and delta_R2 when offset is given.
+\item Fix predict.linodds when newdata on missing factor levels. #8
+\item predict.linodds saves na.action attribute of the model frame.
+\item erank checks for mu summing to one, errors out otherwise.
+\item erank can deal with zero probabilities.
+\item harsmlik and hensmlik throw errors on empty input.
+\item hensmfit now stores the estimate, not the maxLik object, in coefficients.
+\item fix linodds class attribute of hensm, harsm.
+\item hensmfit checks length of beta0.
+\item harsmfit names coefficients from the column names of X, like hensmfit.
+\item sanity checks for reg_wt, reg_power, and so on.
+\item fix regularization gradient around zero.
+\item default reg_zero in harsm and harsmfit is now NULL, as in hensm.
+\item rhenery throws error on NA and NAN in mu.
+\item smax returns NA, rather than a zero, for NA input when values overflow.
+\item tidy and glance methods for harsm and hensm return visibly.
+\item documentation fixes.
+\item finite difference checks of all analytic gradients into unit tests.
+}
+}
+
 \section{\ohenery{} Version 0.1.4 (2025-09-07) }{
 
 \itemize{

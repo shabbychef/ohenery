@@ -1,4 +1,26 @@
 
+2026-11-15 Steven E. Pav <shabbychef@gmail.com>
+* 0.1.5 on CRAN
+* Fix gradient of harsmlik.
+* Fix harsmfit computation of etahat, erank, R2 and delta_R2 when offset is given.
+* Fix predict.linodds when newdata on missing factor levels. #8
+* predict.linodds saves na.action attribute of the model frame.
+* erank checks for mu summing to one, errors out otherwise.
+* erank can deal with zero probabilities.
+* harsmlik and hensmlik throw errors on empty input.
+* hensmfit now stores the estimate, not the maxLik object, in coefficients.
+* fix linodds class attribute of hensm, harsm.
+* hensmfit checks length of beta0.
+* harsmfit names coefficients from the column names of X, like hensmfit.
+* sanity checks for reg_wt, reg_power, and so on.
+* fix regularization gradient around zero.
+* default reg_zero in harsm and harsmfit is now NULL, as in hensm.
+* rhenery throws error on NA and NAN in mu.
+* smax returns NA, rather than a zero, for NA input when values overflow.
+* tidy and glance methods for harsm and hensm return visibly.
+* documentation fixes.
+* finite difference checks of all analytic gradients into unit tests.
+
 2025-09.07 Steven E. Pav <shabbychef@gmail.com>
 * 0.1.4 on CRAN
 * Adding regularization. #9
