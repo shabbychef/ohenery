@@ -34,11 +34,6 @@
 
 #define MAX(_a_,_b_) ((_a_>_b_)? (_a_):(_b_))
 #define MIN(_a_,_b_) ((_a_<_b_)? (_a_):(_b_))
-#define ODDS(_p_) ((_p_) / (1.0 - _p_))
-
-// this is 1 + p / (1-p) = 1 / (1-p)
-#define ODDSPLUS(_p_) ((1.0) / (1.0 - _p_))
-#define ERANK_THREE(_p_,_opa_,_opb_) (3.0 - _p_ * (_opa_ + _opb_))
 
 #endif /* __DEF_ERANK__ */
 
@@ -115,15 +110,6 @@ NumericVector erank(NumericVector mu) {
 	}
 	if (nel < 2) { return NumericVector::create(1.0); }
 	if (nel == 2) { return 2 - mu; }
-	if (nel == 3) { //FOLDUP
-		double O_1 = ODDSPLUS(mu[0]);
-		double O_2 = ODDSPLUS(mu[1]);
-		double O_3 = ODDSPLUS(mu[2]);
-		return NumericVector::create( ERANK_THREE(mu[0],O_2,O_3), 
-																	ERANK_THREE(mu[1],O_1,O_3), 
-																	ERANK_THREE(mu[2],O_1,O_2) );
-	}//UNFOLD
-
 	NumericVector output(nel,double(nel));
 	double nextv, mui, muj;
 	for (int iii=0;iii < nel;iii++) {
@@ -131,8 +117,14 @@ NumericVector erank(NumericVector mu) {
 		for (int jjj=0;jjj < iii;jjj++) {
 			muj = mu[jjj];
 			nextv = (mui + muj);
-			output[iii] -= mui / nextv;
-			output[jjj] -= muj / nextv;
+			// two zero entries are tied.
+			if (nextv <= 0) {
+				output[iii] -= 0.5;
+				output[jjj] -= 0.5;
+			} else {
+				output[iii] -= mui / nextv;
+				output[jjj] -= muj / nextv;
+			}
 		}
 	}
 	return output;
